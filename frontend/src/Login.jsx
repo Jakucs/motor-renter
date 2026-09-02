@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { useState } from "react"; 
 
@@ -6,6 +7,8 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -61,12 +64,12 @@ function Login() {
 
         </form>
 
-        <div className="text-center fadeIn fifth underlineHover">
-            <a href="/register" style={{ textDecoration: "none", color: "inherit" }}>
-              Nincs még fiókod? 
-              <span style={{ color: "#91bbfa" }}> Regisztrálj</span>
-            </a>
-        </div>
+            <div className="text-center fadeIn fifth underlineHover">
+            Nincs még fiókod? 
+            <span onClick={() => navigate("/register")} style={{ color: "#91bbfa", cursor: "pointer" }}>
+                Regisztrálj
+            </span>
+            </div>
 
         <div id="formFooter">
           <a className="underlineHover" href="#">

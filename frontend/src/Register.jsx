@@ -49,7 +49,7 @@ function Register() {
           />
 
           <input
-            type="email"
+            type="text"
             className="fadeIn second"
             placeholder="Email cím"
             value={email}
