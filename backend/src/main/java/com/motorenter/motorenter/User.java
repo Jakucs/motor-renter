@@ -12,7 +12,9 @@ public class User {
     @GeneratedValue(strategy =GenerationType.IDENTITY)
     //private static int counter = 0;
     private int id;
-    private String name;
+    private String userName;
+    private String lastName;
+    private String firstName;
     private String phoneNumber;
     private String email;
     private String password;
@@ -21,10 +23,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User(String name, String phoneNumber, String email, String password, Role role){
+    public User(String userName, String lastName, String firstName, String phoneNumber, String email, String password, Role role){
         //this.id = ++counter;
         this.createdAt = LocalDate.now();
-        this.name = name;
+        this.userName = userName;
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
@@ -33,8 +37,8 @@ public class User {
 
     protected User() {}
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
     public int getId() {
