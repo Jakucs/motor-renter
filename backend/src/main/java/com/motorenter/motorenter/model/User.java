@@ -1,5 +1,6 @@
-package com.motorenter.motorenter;
+package com.motorenter.motorenter.model;
 
+import com.motorenter.motorenter.Role;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
