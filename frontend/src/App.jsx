@@ -25,8 +25,8 @@ function App() {
   return (
     <div className="wrapper">
       <div id="formContent" className="fadeInDown">
-
-        <h2 className="active">Bejelentkezés</h2>
+      <img src="moto-share.png" alt="logo" width="200" style={{ display: "block", margin: "20px auto 0 auto" }} />
+        <h2 className="active" style={{ marginTop: "5px" }}>Bejelentkezés</h2>
 
         <form onSubmit={handleLogin}>
 
