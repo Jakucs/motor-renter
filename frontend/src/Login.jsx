@@ -10,7 +10,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
     setError("");
@@ -23,7 +23,19 @@ function Login() {
     console.log("Email:", email);
     console.log("Password:", password);
 
-    // Később ide kerül a Spring Boot API hívás
+    // Spring Boot API hívás:
+      const response = await fetch("http://localhost:8080/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (response.ok) {
+        console.log("Cooool")
+        navigate("/home");
+      } else {
+        setError("Hibás email vagy jelszó!");
+      }
   };
 
   return (

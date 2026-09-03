@@ -12,10 +12,12 @@ public class User {
     @GeneratedValue(strategy =GenerationType.IDENTITY)
     //private static int counter = 0;
     private int id;
+    @Column(unique = true)
     private String userName;
     private String lastName;
     private String firstName;
     private String phoneNumber;
+    @Column(unique = true)
     private String email;
     private String password;
     private LocalDate createdAt;

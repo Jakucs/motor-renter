@@ -115,6 +115,8 @@ function Register() {
           />
         </form>
 
+
+
         <div id="formFooter">
           <a className="underlineHover" href="#">
             Elfelejtetted a jelszavad?
