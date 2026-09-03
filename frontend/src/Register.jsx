@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -9,7 +10,9 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleRegister = (event) => {
+  const navigate = useNavigate();
+
+  const handleRegister = async (event) => {
     event.preventDefault();
     setError("");
 
@@ -31,6 +34,12 @@ function Register() {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({username, email, firstname, lastname, password})
     });
+
+        if (response.ok) {
+            navigate("/");  // sikeres regisztráció → login oldalra
+        } else {
+            setError("Sikertelen regisztráció!");
+        }
   };
 
   return (

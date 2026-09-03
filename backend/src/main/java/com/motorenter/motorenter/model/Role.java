@@ -1,4 +1,4 @@
-package com.motorenter.motorenter;
+package com.motorenter.motorenter.model;
 
 public enum Role {
     PASSENGER,
