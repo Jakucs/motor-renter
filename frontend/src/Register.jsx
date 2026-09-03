@@ -27,8 +27,8 @@ function Register() {
     }
 
     console.log("Register:", { username, email, firstname, lastname, password });
-    // Később ide kerül a Spring Boot API hívás
 
+    // Spring Boot API hívás:
     const response = await fetch("http://localhost:8080/api/register", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -41,7 +41,7 @@ function Register() {
     });
 
         if (response.ok) {
-            navigate("/");  // sikeres regisztráció → login oldalra
+            navigate("/successfulregister");  // sikeres regisztráció → login oldalra
         } else {
             setError("Sikertelen regisztráció!");
         }
