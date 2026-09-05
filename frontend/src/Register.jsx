@@ -41,7 +41,7 @@ function Register() {
     });
 
         if (response.ok) {
-            navigate("/successfulregister");  // sikeres regisztráció → login oldalra
+            navigate("/successfulregister");  // sikeres regisztráció → successful oldalra
         } else {
             setError("Sikertelen regisztráció!");
         }
