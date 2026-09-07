@@ -22,6 +22,9 @@ function Home() {
           <>
             <div className="sidebar-overlay" onClick={() => setMenuOpen(false)} />
             <div className="sidebar">
+              <div className="sidebar-item" onClick={() => navigate("/home")}>Főoldal</div>
+              <div className="sidebar-item" onClick={() => navigate("/")}>Személyes profil</div>
+              <div className="sidebar-item" onClick={() => navigate("/")}>Beállítások</div>
               <div className="sidebar-item" onClick={() => navigate("/")}>Kilépés</div>
             </div>
           </>
