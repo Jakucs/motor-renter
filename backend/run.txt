@@ -1,1 +1,1 @@
-mvnw.cmd spring-bootrun
+mvnw.cmd spring-boot:run
