@@ -2,6 +2,7 @@ import Map from "./Map";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./Home.css";
+import Menu from "./Menu";
 
 function Home() {
   const navigate = useNavigate();
@@ -11,24 +12,10 @@ function Home() {
     <div className="wrapper">
       <div id="formContent" className="fadeInDown" style={{ padding: "15px", textAlign: "center", position: "relative" }}>
 
-        <div className="home-header">
-          <img src="moto-share.png" alt="logo" width="200" />
-          <button className="hamburger-btn" onClick={() => setMenuOpen(!menuOpen)}>
-            ☰
-          </button>
-        </div>
-
-        {menuOpen && (
-          <>
-            <div className="sidebar-overlay" onClick={() => setMenuOpen(false)} />
-            <div className="sidebar">
-              <div className="sidebar-item" onClick={() => navigate("/home")}>Főoldal</div>
-              <div className="sidebar-item" onClick={() => navigate("/")}>Személyes profil</div>
-              <div className="sidebar-item" onClick={() => navigate("/")}>Beállítások</div>
-              <div className="sidebar-item" onClick={() => navigate("/")}>Kilépés</div>
-            </div>
-          </>
-        )}
+      <div className="home-header">
+        <Menu />
+        <img src="moto-share.png" alt="logo" width="200" />
+      </div>
 
         <Map />
         <br />
