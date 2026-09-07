@@ -1,4 +1,4 @@
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import { useState, useEffect } from "react";
 
 const mapContainerStyle = {
@@ -34,7 +34,19 @@ function Map() {
       mapContainerStyle={mapContainerStyle}
       zoom={13}
       center={center}
-    />
+    >
+      <Marker 
+      position={center}
+        icon={{
+        path: window.google.maps.SymbolPath.CIRCLE,
+        scale: 10,
+        fillColor: "#4285F4",
+        fillOpacity: 1,
+        strokeColor: "white",
+        strokeWeight: 2,
+      }}
+      />
+    </GoogleMap>
   );
 }
 
