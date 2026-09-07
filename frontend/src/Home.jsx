@@ -9,7 +9,7 @@ function Home() {
 
   return (
     <div className="wrapper">
-      <div id="formContent" className="fadeInDown" style={{ padding: "40px", textAlign: "center", position: "relative" }}>
+      <div id="formContent" className="fadeInDown" style={{ padding: "15px", textAlign: "center", position: "relative" }}>
 
         <div className="home-header">
           <img src="moto-share.png" alt="logo" width="200" />
@@ -19,11 +19,12 @@ function Home() {
         </div>
 
         {menuOpen && (
-          <div className="dropdown-menu">
-            <div className="dropdown-item" onClick={() => navigate("/")}>
-              Kilépés
+          <>
+            <div className="sidebar-overlay" onClick={() => setMenuOpen(false)} />
+            <div className="sidebar">
+              <div className="sidebar-item" onClick={() => navigate("/")}>Kilépés</div>
             </div>
-          </div>
+          </>
         )}
 
         <Map />
