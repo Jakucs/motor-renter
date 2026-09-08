@@ -126,6 +126,11 @@
     padding: 10px 20px;
   }
 
+  .desktop-nav img {
+    width: 200px;
+    margin-left: -25px;
+  }
+
   .mobile-nav {
     display: none;
   }
