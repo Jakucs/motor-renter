@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 const mapContainerStyle = {
   width: "100%",
-  height: "400px"
+  height: "70vh"
 };
 
 /* const center = {

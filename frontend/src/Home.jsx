@@ -12,7 +12,18 @@ function Home() {
     <div className="wrapper">
       <div id="formContent" className="fadeInDown" style={{ padding: "15px", textAlign: "center", position: "relative" }}>
 
-      <div className="home-header">
+
+<div className="desktop-nav">
+  <img src="moto-share.png" alt="logo" width="120" />
+  <div className="nav-links">
+    <span onClick={() => navigate("/home")}>Főoldal</span>
+    <span onClick={() => navigate("/profile")}>Személyes profil</span>
+    <span onClick={() => navigate("/settings")}>Beállítások</span>
+    <span onClick={() => navigate("/")}>Kilépés</span>
+  </div>
+</div>
+
+      <div className="mobile-nav">
         <Menu />
         <img src="moto-share.png" alt="logo" width="200" />
       </div>
