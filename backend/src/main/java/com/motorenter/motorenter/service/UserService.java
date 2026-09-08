@@ -33,7 +33,7 @@ public class UserService {
             throw new RuntimeException("Nem található felhasználó!");
         }
 
-        if (!user.get().getPassword().equals(password)) {
+        if (!passwordEncoder.matches(password, user.get().getPassword())) {
             throw new RuntimeException("Hibás jelszó!");
         }
 

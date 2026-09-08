@@ -62,4 +62,8 @@ public class User {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
