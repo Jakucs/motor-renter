@@ -14,7 +14,12 @@ function Home() {
 
 
       <div className="desktop-nav">
-        <img src="moto-share.png" alt="logo" width="120" />
+        <img 
+        src="moto-share.png" 
+        alt="logo" 
+        width="120"   
+        onClick={() => navigate("/home")}
+        style={{ cursor: "pointer" }}/>
         <div className="nav-links">
           <span onClick={() => navigate("/home")}>Főoldal</span>
           <span onClick={() => navigate("/profile")}>Személyes profil</span>
@@ -25,7 +30,12 @@ function Home() {
 
       <div className="mobile-nav">
         <Menu />
-        <img src="moto-share.png" alt="logo" width="200" />
+        <img 
+        src="moto-share.png" 
+        alt="logo" 
+        width="200"         
+        onClick={() => navigate("/home")}
+        style={{ cursor: "pointer" }}/>
       </div>
 
         <Map />
