@@ -2,3 +2,9 @@
   width: 90%;
   max-width: 450px;
 }
+
+/* @media (max-width: 767px) {
+  .wrapper {
+    padding-top: 0 !important;
+  }
+} */
