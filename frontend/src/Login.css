@@ -9,6 +9,12 @@ body,
   min-height: 100%;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 body {
   font-family: "Poppins", sans-serif;
   min-height: 100vh;
@@ -288,6 +294,26 @@ input[type="submit"] {
     transform: translateY(-10vh); /* még feljebb tolja */
     transition: transform 0.3s ease;
   }
+
+  #formContent.home-full {
+  max-width: 100%;
+  width: 100%;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+}
+
+@media (min-width: 768px) {
+  input[type="text"],
+  input[type="password"] {
+    width: 55%;
+  }
+
+    #formFooter {
+    width: 800px;
+    margin: 0 auto;
+  }
 }
 
 
@@ -303,4 +329,3 @@ input[type="submit"] {
   font-size: 0.9rem;
   font-weight: 500;
 }
-
