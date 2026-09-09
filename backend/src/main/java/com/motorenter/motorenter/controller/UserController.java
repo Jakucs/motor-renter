@@ -25,5 +25,8 @@ public class UserController {
         return userService.login(user.getEmail(), user.getPassword());
     }
 
-
+    @PostMapping("/auth/google")
+    public User googleAuth(@RequestBody GoogleAuthRequest request) {
+        return userService.loginOrRegisterWithGoogle(request.getToken());
+    }
 }
