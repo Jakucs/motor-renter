@@ -93,10 +93,13 @@ function Login() {
             value="Belépés"
           />
 
+          <div>
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={() => setError("Google bejelentkezés sikertelen!")}
           />
+          </div>
+          <br />
 
         </form>
 

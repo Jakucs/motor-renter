@@ -19,7 +19,7 @@ public class User {
     private String phoneNumber;
     @Column(unique = true)
     private String email;
-    private String password;
+    private String password; //google bejelentkezés miatt lehet null is
     private LocalDate createdAt;
 
     @Enumerated(EnumType.STRING)
@@ -65,5 +65,17 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
