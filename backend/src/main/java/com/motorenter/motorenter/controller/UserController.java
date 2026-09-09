@@ -1,5 +1,6 @@
 package com.motorenter.motorenter.controller;
 
+import com.motorenter.motorenter.dto.GoogleAuthRequest;
 import com.motorenter.motorenter.model.User;
 import com.motorenter.motorenter.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -23,4 +24,6 @@ public class UserController {
     public User login(@RequestBody User user) {
         return userService.login(user.getEmail(), user.getPassword());
     }
+
+
 }

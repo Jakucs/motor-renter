@@ -37,7 +37,7 @@ public class User {
         this.role = role;
     }
 
-    protected User() {}
+    public User() {}
 
     public String getUserName() {
         return userName;
@@ -61,6 +61,14 @@ public class User {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public void setPassword(String password) {
