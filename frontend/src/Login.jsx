@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { useState } from "react"; 
+import { GoogleLogin } from "@react-oauth/google";
 
 function Login() {
 
@@ -38,6 +39,24 @@ function Login() {
       }
   };
 
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/google", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: credentialResponse.credential })
+      });
+
+      if (response.ok) {
+        navigate("/home");
+      } else {
+        setError("Google bejelentkezés sikertelen!");
+      }
+    } catch (err) {
+      setError("Hiba történt a bejelentkezés során!");
+    }
+  };
+
   return (
     <div className="wrapper">
       <div id="formContent" className="fadeInDown">
@@ -72,6 +91,11 @@ function Login() {
             type="submit"
             className="fadeIn fourth"
             value="Belépés"
+          />
+
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => setError("Google bejelentkezés sikertelen!")}
           />
 
         </form>
