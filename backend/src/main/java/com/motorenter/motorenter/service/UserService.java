@@ -11,6 +11,7 @@ import com.motorenter.motorenter.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -77,6 +78,7 @@ public class UserService {
                         newUser.setUserName(email.split("@")[0]);
                         newUser.setPassword(null);
                         newUser.setRole(Role.PASSENGER);
+                        newUser.setCreatedAt(LocalDate.now());
                         return userRepository.save(newUser);
                     });
 
