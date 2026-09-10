@@ -32,7 +32,8 @@ function Login() {
       });
 
       if (response.ok) {
-        console.log("Cooool")
+            const user = await response.json(); //REFAKTOR
+            localStorage.setItem("userId", user.id); //MUSZÁJ LENNE SESSIONT CSINÁLNI HOGY BIZTONSÁGOS LEGYEN
         navigate("/home");
       } else {
         setError("Hibás email vagy jelszó!");
@@ -48,6 +49,8 @@ function Login() {
       });
 
       if (response.ok) {
+            const user = await response.json(); //REFAKTOR
+            localStorage.setItem("userId", user.id); //MUSZÁJ LENNE SESSIONT CSINÁLNI HOGY BIZTONSÁGOS LEGYEN
         navigate("/home");
       } else {
         setError("Google bejelentkezés sikertelen!");
