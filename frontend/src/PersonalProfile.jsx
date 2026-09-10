@@ -32,9 +32,11 @@ function PersonalProfile() {
     event.preventDefault();
     setError("");
 
-    if (!phone) {
-      setError("Kérlek töltsd ki az összes mezőt!");
-      return;
+    const phoneRegex = /^(\+36|06)[0-9]{9}$/;
+
+    if (!phone || !phoneRegex.test(phone)) {
+    setError("Érvénytelen telefonszám! (pl. +36301234567 vagy 06301234567)");
+    return;
     }
 
     const userId = localStorage.getItem("userId");
