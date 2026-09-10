@@ -21,6 +21,7 @@ public class User {
     private String email;
     private String password; //google bejelentkezés miatt lehet null is
     private LocalDate createdAt;
+    private String profilePictureUrl;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -73,6 +74,14 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 
     public void setEmail(String email) {
