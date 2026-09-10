@@ -32,15 +32,15 @@ function PersonalProfile() {
     event.preventDefault();
     setError("");
 
-    if (!username || !email || !firstname || !lastname || !phone) {
+    if (!phone) {
       setError("Kérlek töltsd ki az összes mezőt!");
       return;
     }
 
-    const response = await fetch("http://localhost:8080/api/profile", {
+    const response = await fetch("http://localhost:8080/api/profile/${userId}", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userName: username, firstName: firstname, lastName: lastname, email: email, phoneNumber: phone })
+      body: JSON.stringify({ phoneNumber: phone })
     });
 
     if (response.ok) {
@@ -65,6 +65,7 @@ function PersonalProfile() {
             placeholder="Felhasználónév"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            readOnly
           />
 
           <input
@@ -73,6 +74,7 @@ function PersonalProfile() {
             placeholder="Email cím"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            readOnly
           />
 
           <input
@@ -81,6 +83,7 @@ function PersonalProfile() {
             placeholder="Vezetéknév"
             value={firstname}
             onChange={(e) => setFirstname(e.target.value)}
+            readOnly
           />
 
           <input
@@ -89,6 +92,7 @@ function PersonalProfile() {
             placeholder="Keresztnév"
             value={lastname}
             onChange={(e) => setLastname(e.target.value)}
+            readOnly
           />
 
           <input
