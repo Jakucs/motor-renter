@@ -4,6 +4,9 @@ import com.motorenter.motorenter.dto.GoogleAuthRequest;
 import com.motorenter.motorenter.model.User;
 import com.motorenter.motorenter.service.UserService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -38,5 +41,12 @@ public class UserController {
     @PutMapping("/profile/{id}")
     public User updateProfile(@PathVariable Integer id, @RequestBody User updatedUser) {
         return userService.updatePhone(id, updatedUser.getPhoneNumber());
+    }
+
+    @PostMapping("/profile/{id}/upload-picture")
+    public User uploadProfilePicture(
+            @PathVariable int id,
+            @RequestParam("file") MultipartFile file) throws IOException {
+        return userService.uploadProfilePicture(id, file);
     }
 }
