@@ -52,6 +52,12 @@ public class UserService {
         return user.get();
     }
 
+    public User getUserById(Integer id){
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+    }
+
     public User loginOrRegisterWithGoogle(String idTokenString) {
         System.out.println("Google Client ID: " + googleClientId);
         try {

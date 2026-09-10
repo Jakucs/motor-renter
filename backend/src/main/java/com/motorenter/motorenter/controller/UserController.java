@@ -29,4 +29,9 @@ public class UserController {
     public User googleAuth(@RequestBody GoogleAuthRequest request) {
         return userService.loginOrRegisterWithGoogle(request.getToken());
     }
+
+    @GetMapping("/profile/{id}")
+    public User getProfile(@PathVariable Integer id){
+        return userService.getUserById(id);
+    }
 }
