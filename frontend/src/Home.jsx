@@ -22,7 +22,6 @@ function Home() {
         style={{ cursor: "pointer" }}/>
         <div className="nav-links">
           <span onClick={() => navigate("/home")}>Főoldal</span>
-          <span onClick={() => navigate("/profile")}>Személyes profil</span>
           <span onClick={() => navigate("/settings")}>Beállítások</span>
           <span onClick={() => navigate("/")}>Kilépés</span>
         </div>
