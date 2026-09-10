@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function PersonalProfile() {
@@ -10,6 +10,23 @@ function PersonalProfile() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+
+    useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    console.log("userId:", userId);
+
+    fetch(`http://localhost:8080/api/profile/${userId}`)
+      .then(res => res.json())
+      .then(user => {
+        setUsername(user.userName ?? "");
+        setEmail(user.email);
+        setFirstname(user.firstName);
+        setLastname(user.lastName);
+        setPhone(user.phoneNumber ?? "");
+      })
+      .catch(err => console.log("error:", err));
+      ;
+  }, []);
 
   const handleSave = async (event) => {
     event.preventDefault();
@@ -23,7 +40,7 @@ function PersonalProfile() {
     const response = await fetch("http://localhost:8080/api/profile", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userName: username, firstName: firstname, lastName: lastname, email: email, phone: phone })
+      body: JSON.stringify({ userName: username, firstName: firstname, lastName: lastname, email: email, phoneNumber: phone })
     });
 
     if (response.ok) {

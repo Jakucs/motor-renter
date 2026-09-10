@@ -63,6 +63,14 @@ public class User {
         return phoneNumber;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
