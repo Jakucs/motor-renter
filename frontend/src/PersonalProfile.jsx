@@ -7,6 +7,7 @@ function PersonalProfile() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [phone, setPhone] = useState("");
+  //const [profilePicture, setProfilePicture] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ function PersonalProfile() {
         setFirstname(user.firstName);
         setLastname(user.lastName);
         setPhone(user.phoneNumber ?? "");
+        //setProfilePicture(user.profilePicture ?? "");
       })
       .catch(err => console.log("error:", err));
       ;
@@ -62,6 +64,12 @@ function PersonalProfile() {
 
         <form onSubmit={handleSave}>
           {error && <div className="error-message">{error}</div>}
+
+{/*             {!profilePicture && (
+                <div className="info-message">
+                Tölts fel profilképet!
+                </div>
+            )} */}
 
           <input
             type="text"
