@@ -34,4 +34,9 @@ public class UserController {
     public User getProfile(@PathVariable Integer id){
         return userService.getUserById(id);
     }
+
+    @PutMapping("/profile/{id}")
+    public User updateProfile(@PathVariable Integer id, @RequestBody User updatedUser) {
+        return userService.updatePhone(id, updatedUser.getPhoneNumber());
+    }
 }

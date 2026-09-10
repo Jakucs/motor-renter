@@ -58,6 +58,13 @@ public class UserService {
 
     }
 
+    public User updatePhone(Integer id, String phoneNumber) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setPhoneNumber(phoneNumber);
+        return userRepository.save(user);
+    }
+
     public User loginOrRegisterWithGoogle(String idTokenString) {
         System.out.println("Google Client ID: " + googleClientId);
         try {

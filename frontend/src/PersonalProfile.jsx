@@ -37,7 +37,9 @@ function PersonalProfile() {
       return;
     }
 
-    const response = await fetch("http://localhost:8080/api/profile/${userId}", {
+    const userId = localStorage.getItem("userId");
+
+    const response = await fetch(`http://localhost:8080/api/profile/${userId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phoneNumber: phone })
