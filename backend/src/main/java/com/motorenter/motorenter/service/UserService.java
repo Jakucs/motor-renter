@@ -10,7 +10,13 @@ import com.motorenter.motorenter.model.User;
 import com.motorenter.motorenter.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Optional;
@@ -62,6 +68,24 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setPhoneNumber(phoneNumber);
+        return userRepository.save(user);
+    }
+
+    public User uploadProfilePicture(int userId, MultipartFile file) throws IOException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Nem található felhasználó!"));
+
+        String fileName = "user_" + userId + "_" + file.getOriginalFilename();
+        Path uploadPath = Paths.get("uploads/profile-pictures/");
+
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        Path filePath = uploadPath.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        user.setProfilePictureUrl("/uploads/profile-pictures/" + fileName);
         return userRepository.save(user);
     }
 
