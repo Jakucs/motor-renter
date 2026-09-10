@@ -48,7 +48,7 @@ function PersonalProfile() {
     });
 
     if (response.ok) {
-      navigate("/home");
+      navigate("/successful-save");
     } else {
       setError("Sikertelen mentés!");
     }

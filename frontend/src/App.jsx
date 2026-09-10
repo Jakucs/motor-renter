@@ -5,6 +5,7 @@ import Register from "./Register";
 import SuccessfulRegister from "./SuccessfulRegister";
 import Home from "./Home";
 import PersonalProfile from "./PersonalProfile";
+import Successful from "./SuccessfulSave";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/successfulregister" element={<SuccessfulRegister/>}/>
       <Route path="/home" element={<Home/>}/>
       <Route path="/settings/profile" element={<PersonalProfile/>}/>
+      <Route path="/successful-save" element={<Successful />} />
     </Routes>
   );
 }
