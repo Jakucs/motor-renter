@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
 import "./App.css";
 import Login from "./Login";
 import Register from "./Register";
 import SuccessfulRegister from "./SuccessfulRegister";
 import Home from "./Home";
+import PersonalProfile from "./PersonalProfile";
 
 function App() {
   return (
@@ -13,6 +13,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/successfulregister" element={<SuccessfulRegister/>}/>
       <Route path="/home" element={<Home/>}/>
+      <Route path="/settings/profile" element={<PersonalProfile/>}/>
     </Routes>
   );
 }
