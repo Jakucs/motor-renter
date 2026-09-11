@@ -71,6 +71,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User updateRole(Integer id, Role role) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setRole(role);
+        return userRepository.save(user);
+    }
+
     public User uploadProfilePicture(int userId, MultipartFile file) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Nem található felhasználó!"));
