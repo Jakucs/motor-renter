@@ -7,7 +7,8 @@ function PersonalProfile() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [phone, setPhone] = useState("");
-  //const [profilePicture, setProfilePicture] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -29,6 +30,38 @@ function PersonalProfile() {
       .catch(err => console.log("error:", err));
       ;
   }, []);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleUpload = async () => {
+  if (!selectedFile) {
+    setError("Válassz ki egy képet!");
+    return;
+  }
+
+  const userId = localStorage.getItem("userId");
+  const formData = new FormData();
+  formData.append("file", selectedFile);
+
+  try {
+    const response = await fetch(`http://localhost:8080/api/profile/${userId}/upload-picture`, {
+      method: "POST",
+      body: formData
+    });
+
+    if (response.ok) {
+      const updatedUser = await response.json();
+      setProfilePicture(updatedUser.profilePictureUrl);
+    } else {
+      setError("Sikertelen képfeltöltés!");
+    }
+  } catch (err) {
+    setError("Hiba történt a feltöltés során!");
+  }
+};
+  
 
   const handleSave = async (event) => {
     event.preventDefault();
