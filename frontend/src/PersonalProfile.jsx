@@ -31,63 +31,86 @@ function PersonalProfile() {
       ;
   }, []);
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+    const handleFileChange = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
 
-  const handleUpload = async () => {
-  if (!selectedFile) {
-    setError("Válassz ki egy képet!");
-    return;
-  }
+        setSelectedFile(file);
 
-  const userId = localStorage.getItem("userId");
-  const formData = new FormData();
-  formData.append("file", selectedFile);
+        const userId = localStorage.getItem("userId");
+        const formData = new FormData();
+        formData.append("file", file);
 
-  try {
-    const response = await fetch(`http://localhost:8080/api/profile/${userId}/upload-picture`, {
-      method: "POST",
-      body: formData
-    });
+        try {
+            const response = await fetch(`http://localhost:8080/api/profile/${userId}/upload-picture`, {
+                method: "POST",
+                body: formData
+            });
 
-    if (response.ok) {
-      const updatedUser = await response.json();
-      setProfilePicture(updatedUser.profilePictureUrl);
-    } else {
-      setError("Sikertelen képfeltöltés!");
-    }
-  } catch (err) {
-    setError("Hiba történt a feltöltés során!");
-  }
-};
+            if (response.ok) {
+                const updatedUser = await response.json();
+                setProfilePicture(updatedUser.profilePictureUrl);
+            } else {
+                setError("Sikertelen képfeltöltés!");
+            }
+        } catch (err) {
+            setError("Hiba történt a feltöltés során!");
+        }
+    };
+
+/*       const handleUpload = async () => {
+      if (!selectedFile) {
+        setError("Válassz ki egy képet!");
+        return;
+      }
+
+      const userId = localStorage.getItem("userId");
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      try {
+        const response = await fetch(`http://localhost:8080/api/profile/${userId}/upload-picture`, {
+          method: "POST",
+          body: formData
+        });
+
+        if (response.ok) {
+          const updatedUser = await response.json();
+          setProfilePicture(updatedUser.profilePictureUrl);
+        } else {
+          setError("Sikertelen képfeltöltés!");
+        }
+      } catch (err) {
+        setError("Hiba történt a feltöltés során!");
+      }
+    }; */
   
 
   const handleSave = async (event) => {
-    event.preventDefault();
-    setError("");
+      event.preventDefault();
+      setError("");
 
-    const phoneRegex = /^(\+36|06)[0-9]{9}$/;
+      const phoneRegex = /^(\+36|06)[0-9]{9}$/;
 
-    if (!phone || !phoneRegex.test(phone)) {
-        setError("Érvénytelen telefonszám! (pl. +36301234567 vagy 06301234567)");
-        return;
-    }
+      if (!phone || !phoneRegex.test(phone)) {
+          setError("Érvénytelen telefonszám! (pl. +36301234567 vagy 06301234567)");
+          return;
+      }
 
-    const userId = localStorage.getItem("userId");
+      const userId = localStorage.getItem("userId");
 
-    const response = await fetch(`http://localhost:8080/api/profile/${userId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phoneNumber: phone })
-    });
+      const response = await fetch(`http://localhost:8080/api/profile/${userId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phoneNumber: phone })
+      });
 
-    if (response.ok) {
-      navigate("/successful-save");
-    } else {
-      setError("Sikertelen mentés!");
-    }
-  };
+      if (response.ok) {
+        navigate("/successful-save");
+      } else {
+        setError("Sikertelen mentés!");
+      }
+    };
 
   return (
     <div className="wrapper">
@@ -107,16 +130,16 @@ function PersonalProfile() {
         />
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", margin: "10px auto" }}>
-<label htmlFor="fileInput" style={{
-    padding: "8px 16px",
-    background: "#91bbfa",
-    color: "white",
-    borderRadius: "6px",
-    cursor: "pointer",
-    whiteSpace: "nowrap"
-}}>
-    {selectedFile ? `📷 ${selectedFile.name}` : "📷 Profilkép feltöltése"}
-</label>
+        <label htmlFor="fileInput" style={{
+            padding: "8px 16px",
+            background: "#91bbfa",
+            color: "white",
+            borderRadius: "6px",
+            cursor: "pointer",
+            whiteSpace: "nowrap"
+        }}>
+            {selectedFile ? `📷 ${selectedFile.name}` : "📷 Profilkép feltöltése"}
+        </label>
 
       {/*     {!profilePicture && (
               <span style={{ color: "#555", fontSize: "14px" }}>
