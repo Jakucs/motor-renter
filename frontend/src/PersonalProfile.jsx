@@ -117,7 +117,7 @@ function PersonalProfile() {
   return (
     <div className="wrapper">
       <div id="formContent" className="fadeInDown">
-        <img src="moto-share.png" alt="logo" width="200" style={{ display: "block", margin: "20px auto 0 auto" }} />
+       <img src="/moto-share.png" alt="logo" width="200" style={{ display: "block", margin: "20px auto 0 auto" }} />
         <h2 className="active">Személyes profil</h2>
 
         <form onSubmit={handleSave}>
