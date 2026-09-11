@@ -98,26 +98,40 @@ function PersonalProfile() {
         <form onSubmit={handleSave}>
           {error && <div className="error-message">{error}</div>}
 
-            {!profilePicture && (
-                <div className="info-message">
-                Tölts fel profilképet!
-                </div>
-            )} 
+        <input
+            type="file"
+            accept="image/*"
+            id="fileInput"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+        />
 
-          <input
-              type="file"
-              accept="image/*"
-              className="fadeIn second"
-              onChange={handleFileChange}
-          />
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", margin: "10px auto" }}>
+            <label htmlFor="fileInput" style={{
+                padding: "8px 16px",
+                background: "#91bbfa",
+                color: "white",
+                borderRadius: "6px",
+                cursor: "pointer",
+                whiteSpace: "nowrap"
+            }}>
+                📷 Profilkép feltöltése
+          </label>
 
-          {profilePicture && (
-            <img
-              src={`http://localhost:8080${profilePicture}`}
-              alt="Profilkép"
-              style={{ width: "100px", height: "100px", borderRadius: "50%", objectFit: "cover" }}
-            />
-          )}
+      {/*     {!profilePicture && (
+              <span style={{ color: "#555", fontSize: "14px" }}>
+                  Tölts fel profilképet!
+              </span>
+          )} */}
+
+    {profilePicture && (
+        <img
+            src={`http://localhost:8080${profilePicture}`}
+            alt="Profilkép"
+            style={{ width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover" }}
+        />
+    )}
+  </div>
 
           <input
             type="text"
