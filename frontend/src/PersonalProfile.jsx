@@ -107,16 +107,16 @@ function PersonalProfile() {
         />
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", margin: "10px auto" }}>
-            <label htmlFor="fileInput" style={{
-                padding: "8px 16px",
-                background: "#91bbfa",
-                color: "white",
-                borderRadius: "6px",
-                cursor: "pointer",
-                whiteSpace: "nowrap"
-            }}>
-                📷 Profilkép feltöltése
-          </label>
+<label htmlFor="fileInput" style={{
+    padding: "8px 16px",
+    background: "#91bbfa",
+    color: "white",
+    borderRadius: "6px",
+    cursor: "pointer",
+    whiteSpace: "nowrap"
+}}>
+    {selectedFile ? `📷 ${selectedFile.name}` : "📷 Profilkép feltöltése"}
+</label>
 
       {/*     {!profilePicture && (
               <span style={{ color: "#555", fontSize: "14px" }}>
