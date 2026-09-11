@@ -107,6 +107,7 @@ function PersonalProfile() {
           <input
               type="file"
               accept="image/*"
+              className="fadeIn second"
               onChange={handleFileChange}
           />
 
