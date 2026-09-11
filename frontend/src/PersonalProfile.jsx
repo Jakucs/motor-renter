@@ -98,11 +98,22 @@ function PersonalProfile() {
         <form onSubmit={handleSave}>
           {error && <div className="error-message">{error}</div>}
 
-{/*             {!profilePicture && (
+            {!profilePicture && (
                 <div className="info-message">
                 Tölts fel profilképet!
                 </div>
-            )} */}
+            )} 
+
+          <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+          />
+            <button type="button" onClick={handleUpload}>
+              Kép feltöltése
+            </button>
+
+
 
           <input
             type="text"
