@@ -26,7 +26,7 @@ function PersonalProfile() {
         setFirstname(user.firstName);
         setLastname(user.lastName);
         setPhone(user.phoneNumber ?? "");
-        //setProfilePicture(user.profilePicture ?? "");
+        setProfilePicture(user.profilePictureUrl ?? "");
       })
       .catch(err => console.log("error:", err));
       ;
@@ -132,30 +132,35 @@ function PersonalProfile() {
         />
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", margin: "10px auto" }}>
-        <label htmlFor="fileInput" style={{
-            padding: "8px 16px",
-            background: "#91bbfa",
-            color: "white",
-            borderRadius: "6px",
-            cursor: "pointer",
-            whiteSpace: "nowrap"
-        }}>
-            {selectedFile ? `📷 ${selectedFile.name}` : "📷 Profilkép feltöltése"}
-        </label>
-
-      {/*     {!profilePicture && (
-              <span style={{ color: "#555", fontSize: "14px" }}>
-                  Tölts fel profilképet!
-              </span>
-          )} */}
-
+<div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", margin: "10px auto" }}>
+    
     {profilePicture && (
         <img
             src={`http://localhost:8080${profilePicture}`}
             alt="Profilkép"
-            style={{ width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover" }}
+            style={{ 
+                width: "120px", 
+                height: "120px", 
+                borderRadius: "50%", 
+                objectFit: "cover",
+                border: "3px solid #91bbfa",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
+            }}
         />
     )}
+
+    <label htmlFor="fileInput" style={{
+        padding: "8px 16px",
+        background: "#91bbfa",
+        color: "white",
+        borderRadius: "6px",
+        cursor: "pointer",
+        whiteSpace: "nowrap"
+    }}>
+        {selectedFile ? `📷 ${selectedFile.name}` : profilePicture ? "📷 Profilkép módosítása" : "📷 Profilkép feltöltése"}
+    </label>
+
+</div>
   </div>
 
     <div>
