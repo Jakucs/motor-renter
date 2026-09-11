@@ -10,6 +10,7 @@ function PersonalProfile() {
   const [profilePicture, setProfilePicture] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [role, setRole] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ function PersonalProfile() {
         setFirstname(user.firstName);
         setLastname(user.lastName);
         setPhone(user.phoneNumber ?? "");
+        setRole(user.role ?? "");
         setProfilePicture(user.profilePictureUrl ?? "");
       })
       .catch(err => console.log("error:", err));
@@ -114,10 +116,28 @@ function PersonalProfile() {
       }
     };
 
+          const handleRoleSwitch = async () => {
+          const userId = localStorage.getItem("userId");
+          const newRole = role === "DRIVER" ? "PASSENGER" : "DRIVER";
+
+          const response = await fetch(`http://localhost:8080/api/profile/${userId}/role`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ role: newRole })
+          });
+
+          if (response.ok) {
+              setRole(newRole);
+          } else {
+              setError("Sikertelen státuszváltás!");
+          }
+      };
+
   return (
     <div className="wrapper">
       <div id="formContent" className="fadeInDown">
        <img src="/moto-share.png" alt="logo" width="200" style={{ display: "block", margin: "20px auto 0 auto" }} />
+        
         <h2 className="active">Személyes profil</h2>
 
         <form onSubmit={handleSave}>
@@ -132,35 +152,35 @@ function PersonalProfile() {
         />
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", margin: "10px auto" }}>
-<div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", margin: "10px auto" }}>
-    
-    {profilePicture && (
-        <img
-            src={`http://localhost:8080${profilePicture}`}
-            alt="Profilkép"
-            style={{ 
-                width: "120px", 
-                height: "120px", 
-                borderRadius: "50%", 
-                objectFit: "cover",
-                border: "3px solid #91bbfa",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
-            }}
-        />
-    )}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", margin: "10px auto" }}>
+            
+            {profilePicture && (
+                <img
+                    src={`http://localhost:8080${profilePicture}`}
+                    alt="Profilkép"
+                    style={{ 
+                        width: "120px", 
+                        height: "120px", 
+                        borderRadius: "50%", 
+                        objectFit: "cover",
+                        border: "3px solid #91bbfa",
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
+                    }}
+                />
+            )}
 
-    <label htmlFor="fileInput" style={{
-        padding: "8px 16px",
-        background: "#91bbfa",
-        color: "white",
-        borderRadius: "6px",
-        cursor: "pointer",
-        whiteSpace: "nowrap"
-    }}>
-        {selectedFile ? `📷 ${selectedFile.name}` : profilePicture ? "📷 Profilkép módosítása" : "📷 Profilkép feltöltése"}
-    </label>
+            <label htmlFor="fileInput" style={{
+                padding: "8px 16px",
+                background: "#91bbfa",
+                color: "white",
+                borderRadius: "6px",
+                cursor: "pointer",
+                whiteSpace: "nowrap"
+            }}>
+                {selectedFile ? `📷 ${selectedFile.name}` : profilePicture ? "📷 Profilkép módosítása" : "📷 Profilkép feltöltése"}
+            </label>
 
-</div>
+        </div>
   </div>
 
     <div>
@@ -171,6 +191,13 @@ function PersonalProfile() {
         )}
     </div>
     <br />
+
+{/*           <input
+              type="button"
+              className="fadeIn fourth"
+              value="Jármű beállítások →"
+              onClick={() => navigate("/settings/vehicle")}
+          /> */}
 
           <input
             type="text"
@@ -216,11 +243,24 @@ function PersonalProfile() {
             onChange={(e) => setPhone(e.target.value)}
           />
 
+
           <input
             type="submit"
             className="fadeIn fourth"
             value="Mentés"
           />
+          <div style={{ textAlign: "center", margin: "10px 0" }}>
+              <p style={{ color: "#555", marginBottom: "8px" }}>
+                  Jelenlegi státusz: <strong>{role === "DRIVER" ? "🏍️ Sofőr" : "🧍 Utas"}</strong>
+              </p>
+              <input
+                  type="button"
+                  className="fadeIn fourth"
+                  value={role === "DRIVER" ? "Váltás: Utas" : "Váltás: Sofőr"}
+                  onClick={handleRoleSwitch}
+              />
+          </div>
+
         </form>
       </div>
     </div>
