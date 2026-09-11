@@ -9,6 +9,7 @@ function PersonalProfile() {
   const [phone, setPhone] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -50,6 +51,7 @@ function PersonalProfile() {
             if (response.ok) {
                 const updatedUser = await response.json();
                 setProfilePicture(updatedUser.profilePictureUrl);
+                setUploadSuccess(true);
             } else {
                 setError("Sikertelen képfeltöltés!");
             }
@@ -155,6 +157,15 @@ function PersonalProfile() {
         />
     )}
   </div>
+
+    <div>
+          {uploadSuccess && (
+            <div style={{ color: "green", fontSize: "14px", textAlign: "center" }}>
+                ✅ Képfeltöltés sikeres!
+            </div>
+        )}
+    </div>
+    <br />
 
           <input
             type="text"
