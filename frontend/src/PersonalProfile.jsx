@@ -109,11 +109,14 @@ function PersonalProfile() {
               accept="image/*"
               onChange={handleFileChange}
           />
-            <button type="button" onClick={handleUpload}>
-              Kép feltöltése
-            </button>
 
-
+          {profilePicture && (
+            <img
+              src={`http://localhost:8080${profilePicture}`}
+              alt="Profilkép"
+              style={{ width: "100px", height: "100px", borderRadius: "50%", objectFit: "cover" }}
+            />
+          )}
 
           <input
             type="text"
