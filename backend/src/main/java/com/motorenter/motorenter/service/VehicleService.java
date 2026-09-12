@@ -19,5 +19,28 @@ public class VehicleService {
         this.userRepository = userRepository;
     }
 
+    public List<Vehicle> getVehiclesByUserId(int userId) {
+        return vehicleRepository.findByUserId(userId);
+    }
 
+    public Vehicle addVehicle(int userId, Vehicle vehicle) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        vehicle.setUser(user);
+        return vehicleRepository.save(vehicle);
+    }
+
+    public Vehicle updateVehicle(int vehicleId, Vehicle updatedVehicle) {
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+        vehicle.setBrand(updatedVehicle.getBrand());
+        vehicle.setModel(updatedVehicle.getModel());
+        vehicle.setYear(updatedVehicle.getYear());
+        vehicle.setEngineSize(updatedVehicle.getEngineSize());
+        return vehicleRepository.save(vehicle);
+    }
+
+    public void deleteVehicle(int vehicleId) {
+        vehicleRepository.deleteById(vehicleId);
+    }
 }
