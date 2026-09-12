@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function VehicleData() {
   const [brand, setBrand] = useState("");
@@ -7,6 +7,9 @@ function VehicleData() {
   const [year, setYear] = useState("");
   const [engineSize, setEngineSize] = useState("");
   const [error, setError] = useState("");
+  const [vehiclePicture, setVehiclePicture] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -21,6 +24,7 @@ function VehicleData() {
         setModel(vehicle.model ?? "");
         setYear(vehicle.year ?? "");
         setEngineSize(vehicle.engineSize ?? "");
+        setVehiclePicture(vehicle.pictureUrl ?? null);
       });
   }, [id]);
 
@@ -54,6 +58,34 @@ function VehicleData() {
       }
     };
 
+    const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    setSelectedFile(file);
+
+    if (!id) {
+        setError("Előbb mentsd el a jármű adatait, majd töltsd fel a képet!");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch(`http://localhost:8080/api/vehicle/${id}/upload-picture`, {
+        method: "POST",
+        body: formData
+    });
+
+    if (response.ok) {
+        const updatedVehicle = await response.json();
+        setVehiclePicture(updatedVehicle.pictureUrl);
+        setUploadSuccess(true);
+    } else {
+        setError("Sikertelen képfeltöltés!");
+    }
+};
+
   return (
     <div className="wrapper">
       <div id="formContent" className="fadeInDown">
@@ -68,6 +100,48 @@ function VehicleData() {
 
         <form onSubmit={handleSave}>
           {error && <div className="error-message">{error}</div>}
+
+          <input
+              type="file"
+              accept="image/*"
+              id="vehicleFileInput"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+          />
+
+  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", margin: "10px auto" }}>
+      {vehiclePicture && (
+          <img
+              src={`http://localhost:8080${vehiclePicture}`}
+              alt="Jármű kép"
+              style={{ 
+                  width: "120px", 
+                  height: "120px", 
+                  borderRadius: "10px", 
+                  objectFit: "cover",
+                  border: "3px solid #91bbfa",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
+              }}
+          />
+      )}
+
+      <label htmlFor="vehicleFileInput" style={{
+          padding: "8px 16px",
+          background: "#91bbfa",
+          color: "white",
+          borderRadius: "6px",
+          cursor: "pointer",
+          whiteSpace: "nowrap"
+      }}>
+          {selectedFile ? `📷 ${selectedFile.name}` : vehiclePicture ? "📷 Kép módosítása" : "📷 Kép feltöltése"}
+      </label>
+
+      {uploadSuccess && (
+          <div style={{ color: "green", fontSize: "14px" }}>
+              ✅ Képfeltöltés sikeres!
+          </div>
+      )}
+  </div>
 
           <input
             type="text"
