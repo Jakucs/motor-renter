@@ -1,7 +1,0 @@
-input[type="number"] {
-    -webkit-appearance: none;
-    -moz-appearance: textfield;
-    appearance: textfield;
-    width: 100%;
-    box-sizing: border-box;
-}
