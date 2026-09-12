@@ -6,6 +6,7 @@ import SuccessfulRegister from "./SuccessfulRegister";
 import Home from "./Home";
 import PersonalProfile from "./PersonalProfile";
 import Successful from "./SuccessfulSave";
+import VehicleData from "./VehicleProfile";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/home" element={<Home/>}/>
       <Route path="/settings/profile" element={<PersonalProfile/>}/>
       <Route path="/successful-save" element={<Successful />} />
+      <Route path="/settings/vehicle" element={<VehicleData />} />
     </Routes>
   );
 }
