@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./css/VehicleProfile.css";
 
 function VehicleData() {
   const [brand, setBrand] = useState("");

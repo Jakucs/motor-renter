@@ -1,7 +1,7 @@
 import Map from "./Map";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import "./Home.css";
+import "./css/Home.css";
 import Menu from "./Menu";
 
 function Home() {
