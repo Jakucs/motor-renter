@@ -7,6 +7,7 @@ import Home from "./Home";
 import PersonalProfile from "./PersonalProfile";
 import Successful from "./SuccessfulSave";
 import VehicleData from "./VehicleProfile";
+import Vehicles from "./Vehicles";
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
       <Route path="/home" element={<Home/>}/>
       <Route path="/settings/profile" element={<PersonalProfile/>}/>
       <Route path="/successful-save" element={<Successful />} />
-      <Route path="/settings/vehicle" element={<VehicleData />} />
+      <Route path="/settings/vehicle" element={<Vehicles />} />
+      <Route path="/settings/vehicle/new" element={<VehicleData />} />
+      <Route path="/settings/vehicle/:id" element={<VehicleData />} />
     </Routes>
   );
 }
