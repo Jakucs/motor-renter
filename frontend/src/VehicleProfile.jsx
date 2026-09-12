@@ -9,30 +9,50 @@ function VehicleData() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  const { id } = useParams();
+
+    useEffect(() => {
+    if (!id) return; // új jármű, nem tölt be semmit
+
+    fetch(`http://localhost:8080/api/vehicle/single/${id}`)
+      .then(res => res.json())
+      .then(vehicle => {
+        setBrand(vehicle.brand ?? "");
+        setModel(vehicle.model ?? "");
+        setYear(vehicle.year ?? "");
+        setEngineSize(vehicle.engineSize ?? "");
+      });
+  }, [id]);
 
   const handleSave = async (event) => {
-    event.preventDefault();
-    setError("");
+      event.preventDefault();
+      setError("");
 
-    if (!brand || !model || !year || !engineSize) {
-      setError("Kérlek töltsd ki az összes mezőt!");
-      return;
-    }
+      if (!brand || !model || !year || !engineSize) {
+        setError("Kérlek töltsd ki az összes mezőt!");
+        return;
+      }
 
-    const userId = localStorage.getItem("userId");
+      const userId = localStorage.getItem("userId");
 
-    const response = await fetch(`http://localhost:8080/api/vehicle/${userId}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ brand, model, year: parseInt(year), engineSize: parseInt(engineSize) })
-    });
+      const url = id
+        ? `http://localhost:8080/api/vehicle/${id}`
+        : `http://localhost:8080/api/vehicle/${userId}`;
 
-    if (response.ok) {
-      navigate("/successful-save");
-    } else {
-      setError("Sikertelen mentés!");
-    }
-  };
+      const method = id ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ brand, model, year: parseInt(year), engineSize: parseInt(engineSize) })
+      });
+
+      if (response.ok) {
+        navigate("/successful-save");
+      } else {
+        setError("Sikertelen mentés!");
+      }
+    };
 
   return (
     <div className="wrapper">
