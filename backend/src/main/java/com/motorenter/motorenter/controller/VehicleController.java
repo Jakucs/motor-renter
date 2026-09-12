@@ -36,4 +36,9 @@ public class VehicleController {
     public void deleteVehicle(@PathVariable int vehicleId) {
         vehicleService.deleteVehicle(vehicleId);
     }
+
+    @GetMapping("/single/{id}")
+    public Vehicle getVehicle(@PathVariable int id) {
+        return vehicleService.getVehicleById(id);
+    }
 }

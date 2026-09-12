@@ -40,6 +40,11 @@ public class VehicleService {
         return vehicleRepository.save(vehicle);
     }
 
+    public Vehicle getVehicleById(int id) {
+        return vehicleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+    }
+
     public void deleteVehicle(int vehicleId) {
         vehicleRepository.deleteById(vehicleId);
     }
