@@ -5,7 +5,13 @@ import com.motorenter.motorenter.model.Vehicle;
 import com.motorenter.motorenter.repository.UserRepository;
 import com.motorenter.motorenter.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Service
@@ -47,5 +53,23 @@ public class VehicleService {
 
     public void deleteVehicle(int vehicleId) {
         vehicleRepository.deleteById(vehicleId);
+    }
+
+    public Vehicle uploadPicture(int id, MultipartFile file) throws IOException {
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        String fileName = "vehicle_" + id + "_" + file.getOriginalFilename();
+        Path uploadPath = Paths.get("uploads/vehicle-pictures/");
+
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        Path filePath = uploadPath.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        vehicle.setPictureUrl("/uploads/vehicle-pictures/" + fileName);
+        return vehicleRepository.save(vehicle);
     }
 }
