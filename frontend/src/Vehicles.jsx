@@ -26,12 +26,36 @@ function Vehicles() {
 
         <h2 className="active">Járműveim</h2>
 
-        <input
-          type="button"
-          className="fadeIn fourth"
-          value="+ Új jármű hozzáadása"
-          onClick={() => navigate("/settings/vehicle/new")}
-        />
+        {vehicles.length === 0 ? (
+        <p style={{ color: "#555", textAlign: "center", marginTop: "20px" }}>
+            Még nincs hozzáadott jármű.
+        </p>
+        ) : (
+        vehicles.map(vehicle => (
+            <div
+            key={vehicle.id}
+            onClick={() => navigate(`/settings/vehicle/${vehicle.id}`)}s
+            style={{
+                padding: "12px 16px",
+                margin: "8px 10px",
+                background: "#f5f5f5",
+                borderRadius: "8px",
+                cursor: "pointer",
+                textAlign: "left",
+                border: "1px solid #ddd"
+            }}
+            >
+            🏍️ <strong>{vehicle.brand} {vehicle.model}</strong> — {vehicle.year}
+            </div>
+        ))
+        )}
+
+<input
+  type="button"
+  className="fadeIn fourth"
+  value="+ Új jármű hozzáadása"
+  onClick={() => navigate("/settings/vehicle/new")}
+/>
 
         {vehicles.length === 0 ? (
           <p style={{ color: "#555", textAlign: "center", marginTop: "20px" }}>
