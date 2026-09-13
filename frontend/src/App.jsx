@@ -2,10 +2,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./css/App.css";
 import Login from "./Login";
 import Register from "./Register";
-import SuccessfulRegister from "./SuccessfulRegister";
+import SuccessfulRegister from "./redirect/SuccessfulRegister";
 import Home from "./Home";
 import PersonalProfile from "./PersonalProfile";
-import Successful from "./SuccessfulSave";
+import Successful from "./redirect/SuccessfulSave";
 import VehicleData from "./VehicleProfile";
 import Vehicles from "./Vehicles";
 
