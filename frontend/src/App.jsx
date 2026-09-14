@@ -8,6 +8,7 @@ import PersonalProfile from "./PersonalProfile";
 import Successful from "./redirect/SuccessfulSave";
 import VehicleData from "./VehicleProfile";
 import Vehicles from "./Vehicles";
+import NoVehicle from "./redirect/NoVehicle";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Route path="/settings/vehicle" element={<Vehicles />} />
       <Route path="/settings/vehicle/new" element={<VehicleData />} />
       <Route path="/settings/vehicle/:id" element={<VehicleData />} />
+      <Route path="/no-vehicle" element={<NoVehicle/>}/>
     </Routes>
   );
 }
