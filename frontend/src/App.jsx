@@ -22,7 +22,7 @@ function App() {
       <Route path="/settings/vehicle" element={<Vehicles />} />
       <Route path="/settings/vehicle/new" element={<VehicleData />} />
       <Route path="/settings/vehicle/:id" element={<VehicleData />} />
-      <Route path="/no-vehicle" element={<NoVehicle/>}/>
+      <Route path="/no-vehicle" element={<NoVehicle />} />
     </Routes>
   );
 }

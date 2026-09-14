@@ -116,22 +116,41 @@ function PersonalProfile() {
       }
     };
 
-          const handleRoleSwitch = async () => {
-          const userId = localStorage.getItem("userId");
-          const newRole = role === "DRIVER" ? "PASSENGER" : "DRIVER";
+    const handleRoleSwitch = async () => {
+        if (role === "DRIVER") {
+            const userId = localStorage.getItem("userId");
+            const response = await fetch(`http://localhost:8080/api/profile/${userId}/role`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ role: "PASSENGER" })
+            });
+            if (response.ok) setRole("PASSENGER");
+            return;
+        }
 
-          const response = await fetch(`http://localhost:8080/api/profile/${userId}/role`, {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ role: newRole })
-          });
+        if (!phone) {
+            setError("Kérlek add meg a telefonszámodat a Sofőr státuszhoz!");
+            return;
+        }
 
-          if (response.ok) {
-              setRole(newRole);
-          } else {
-              setError("Sikertelen státuszváltás!");
-          }
-      };
+        const userId = localStorage.getItem("userId");
+
+        const vehicleResponse = await fetch(`http://localhost:8080/api/vehicle/${userId}`);
+        const vehicles = await vehicleResponse.json();
+
+        if (!vehicles || vehicles.length === 0) {
+            navigate("/no-vehicle");
+            return;
+        }
+
+        const response = await fetch(`http://localhost:8080/api/profile/${userId}/role`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ role: "DRIVER" })
+        });
+
+        if (response.ok) setRole("DRIVER");
+    };
 
   return (
     <div className="wrapper">
