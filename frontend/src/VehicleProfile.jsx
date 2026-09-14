@@ -98,6 +98,20 @@ const handleSave = async (event) => {
     }
 };
 
+const handleDelete = async () => {
+    if (!window.confirm("Biztosan törölni szeretnéd ezt a járművet?")) return;
+
+    const response = await fetch(`http://localhost:8080/api/vehicle/${id}`, {
+        method: "DELETE"
+    });
+
+    if (response.ok) {
+        navigate("/settings/vehicle");
+    } else {
+        setError("Sikertelen törlés!");
+    }
+};
+
   return (
     <div className="wrapper">
       <div id="formContent" className="fadeInDown">
@@ -192,6 +206,17 @@ const handleSave = async (event) => {
             className="fadeIn fourth"
             value="Mentés"
           />
+
+          {id && (
+              <input
+                  type="button"
+                  className="fadeIn fourth"
+                  value="🗑️ Jármű törlése"
+                  onClick={handleDelete}
+                  style={{ backgroundColor: "#e74c3c", boxShadow: "0 10px 30px 0 rgba(231,76,60,0.4)" }}
+              />
+          )}
+          
         </form>
       </div>
     </div>
