@@ -28,35 +28,47 @@ function VehicleData() {
       });
   }, [id]);
 
-  const handleSave = async (event) => {
-      event.preventDefault();
-      setError("");
+const handleSave = async (event) => {
+    event.preventDefault();
+    setError("");
 
-      if (!brand || !model || !year || !engineSize) {
+    if (!brand || !model || !year || !engineSize) {
         setError("Kérlek töltsd ki az összes mezőt!");
         return;
-      }
+    }
 
-      const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem("userId");
 
-      const url = id
+    const url = id
         ? `http://localhost:8080/api/vehicle/${id}`
         : `http://localhost:8080/api/vehicle/${userId}`;
 
-      const method = id ? "PUT" : "POST";
+    const method = id ? "PUT" : "POST";
 
-      const response = await fetch(url, {
+    const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ brand, model, year: parseInt(year), engineSize: parseInt(engineSize) })
-      });
+    });
 
-      if (response.ok) {
+    if (response.ok) {
+        const savedVehicle = await response.json();
+
+        if (selectedFile) {
+            const formData = new FormData();
+            formData.append("file", selectedFile);
+
+            await fetch(`http://localhost:8080/api/vehicle/${savedVehicle.id}/upload-picture`, {
+                method: "POST",
+                body: formData
+            });
+        }
+
         navigate("/successful-save");
-      } else {
+    } else {
         setError("Sikertelen mentés!");
-      }
-    };
+    }
+};
 
     const handleFileChange = async (event) => {
     const file = event.target.files[0];
