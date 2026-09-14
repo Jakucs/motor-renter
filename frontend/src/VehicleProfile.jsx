@@ -14,6 +14,30 @@ function VehicleData() {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const validate = () => {
+    const nameRegex = /^[a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ0-9\s\-]{2,50}$/;
+    const yearRegex = /^(19[0-9]{2}|20[0-2][0-9])$/;
+    const engineRegex = /^[0-9]{2,4}$/;
+
+    if (!nameRegex.test(brand)) {
+        setError("Érvénytelen márka!");
+        return false;
+    }
+    if (!nameRegex.test(model)) {
+        setError("Érvénytelen modell!");
+        return false;
+    }
+    if (!yearRegex.test(year)) {
+        setError("Érvénytelen évjárat! (1900-2026)");
+        return false;
+    }
+    if (!engineRegex.test(engineSize)) {
+        setError("Érvénytelen hengerűrtartalom! (pl. 125, 650, 1000)");
+        return false;
+    }
+    return true;
+};
+
     useEffect(() => {
     if (!id) return; // új jármű, nem tölt be semmit
 
@@ -28,47 +52,49 @@ function VehicleData() {
       });
   }, [id]);
 
-const handleSave = async (event) => {
-    event.preventDefault();
-    setError("");
+    const handleSave = async (event) => {
+        event.preventDefault();
+        setError("");
 
-    if (!brand || !model || !year || !engineSize) {
-        setError("Kérlek töltsd ki az összes mezőt!");
-        return;
-    }
-
-    const userId = localStorage.getItem("userId");
-
-    const url = id
-        ? `http://localhost:8080/api/vehicle/${id}`
-        : `http://localhost:8080/api/vehicle/${userId}`;
-
-    const method = id ? "PUT" : "POST";
-
-    const response = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ brand, model, year: parseInt(year), engineSize: parseInt(engineSize) })
-    });
-
-    if (response.ok) {
-        const savedVehicle = await response.json();
-
-        if (selectedFile) {
-            const formData = new FormData();
-            formData.append("file", selectedFile);
-
-            await fetch(`http://localhost:8080/api/vehicle/${savedVehicle.id}/upload-picture`, {
-                method: "POST",
-                body: formData
-            });
+        if (!brand || !model || !year || !engineSize) {
+            setError("Kérlek töltsd ki az összes mezőt!");
+            return;
         }
 
-        navigate("/successful-save");
-    } else {
-        setError("Sikertelen mentés!");
-    }
-};
+        if (!validate()) return;
+
+        const userId = localStorage.getItem("userId");
+
+        const url = id
+            ? `http://localhost:8080/api/vehicle/${id}`
+            : `http://localhost:8080/api/vehicle/${userId}`;
+
+        const method = id ? "PUT" : "POST";
+
+        const response = await fetch(url, {
+            method,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ brand, model, year: parseInt(year), engineSize: parseInt(engineSize) })
+        });
+
+        if (response.ok) {
+            const savedVehicle = await response.json();
+
+            if (selectedFile) {
+                const formData = new FormData();
+                formData.append("file", selectedFile);
+
+                await fetch(`http://localhost:8080/api/vehicle/${savedVehicle.id}/upload-picture`, {
+                    method: "POST",
+                    body: formData
+                });
+            }
+
+            navigate("/successful-save");
+        } else {
+            setError("Sikertelen mentés!");
+        }
+    };
 
     const handleFileChange = async (event) => {
     const file = event.target.files[0];
