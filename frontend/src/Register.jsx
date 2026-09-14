@@ -12,6 +12,35 @@ function Register() {
 
   const navigate = useNavigate();
 
+  const validate = () => {
+    const nameRegex = /^[a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ\s]{2,50}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+    const passwordRegex = /^.{8,}$/;
+
+    if (!usernameRegex.test(username)) {
+        setError("Felhasználónév 3-20 karakter, csak betű, szám, _!");
+        return false;
+    }
+    if (!emailRegex.test(email)) {
+        setError("Érvénytelen email cím!");
+        return false;
+    }
+    if (!nameRegex.test(lastname)) {
+        setError("Érvénytelen vezetéknév! Csak betű, 2-50 karakter.");
+        return false;
+    }
+    if (!nameRegex.test(firstname)) {
+        setError("Érvénytelen keresztnév! Csak betű, 2-50 karakter.");
+        return false;
+    }
+    if (!passwordRegex.test(password)) {
+        setError("A jelszó legalább 8 karakter legyen!");
+        return false;
+    }
+    return true;
+};
+
   const handleRegister = async (event) => {
     event.preventDefault();
     setError("");
@@ -25,6 +54,8 @@ function Register() {
       setError("A két jelszó nem egyezik!");
       return;
     }
+
+    if (!validate()) return;
 
     console.log("Register:", { username, email, firstname, lastname, password });
 
