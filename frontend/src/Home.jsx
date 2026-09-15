@@ -20,23 +20,22 @@ function Home() {
             onClick={() => navigate("/home")}
             style={{ cursor: "pointer" }}
           />
-          <div className="nav-links">
-            <span onClick={() => navigate("/home")}>Főoldal</span>
+<div className="nav-links">
+  <span onClick={() => navigate("/home")}>Főoldal</span>
 
-            <div className="dropdown">
-              <span onClick={() => setSettingsOpen(!settingsOpen)}>Beállítások ▾</span>
-              {settingsOpen && (
-                <div className="dropdown-menu">
-                  <div onClick={() => navigate("/settings/profile")}>Személyes profil</div>
-                  <div onClick={() => navigate("/settings/vehicle")}>Jármű adatok</div>
-                  <div onClick={() => navigate("/settings/moto")}>Motor specifikus</div>
-                  <div onClick={() => navigate("/settings/availability")}>Elérhetőség</div>
-                </div>
-              )}
-            </div>
+  <div className="dropdown">
+    <span onClick={() => setSettingsOpen(!settingsOpen)}>Beállítások ▾</span>
+    {settingsOpen && (
+      <div className="dropdown-menu">
+        <div onClick={() => navigate("/settings/profile")}>Személyes profil</div>
+        <div onClick={() => navigate("/settings/vehicle")}>Jármű adatok</div>
+      </div>
+    )}
+  </div>
 
-            <span onClick={() => navigate("/")}>Kilépés</span>
-          </div>
+  <span onClick={() => navigate("/settings/availability")}>Elérhetőség</span>
+  <span onClick={() => navigate("/")}>Kilépés</span>
+</div>
         </div>
 
         <div className="mobile-nav">

@@ -37,6 +37,7 @@ function Menu() {
               <>
                 <div className="sidebar-item" onClick={() => navigate("/home")}>Főoldal</div>
                 <div className="sidebar-item" onClick={() => setSettingsOpen(true)}>Beállítások</div>
+                <div className="sidebar-item" onClick={() => navigate("/settings/availability")}>Elérhetőség</div>
                 <div className="sidebar-item" onClick={() => navigate("/")}>Kilépés</div>
               </>
             ) : (
@@ -44,8 +45,6 @@ function Menu() {
                 <div className="sidebar-item" onClick={() => setSettingsOpen(false)}>← Vissza</div>
                 <div className="sidebar-item" onClick={() => navigate("/settings/profile")}>Személyes profil</div>
                 <div className="sidebar-item" onClick={() => navigate("/settings/vehicle")}>Jármű adatok</div>
-                <div className="sidebar-item" onClick={() => navigate("/settings/moto")}>Motor specifikus</div>
-                <div className="sidebar-item" onClick={() => navigate("/settings/availability")}>Elérhetőség</div>
               </>
             )}
           </div>
