@@ -1,4 +1,4 @@
-package seeder;
+package com.motorenter.motorenter.seeder;
 
 import com.motorenter.motorenter.model.MotorcycleCatalog;
 import com.motorenter.motorenter.repository.MotorcycleCatalogRepository;
@@ -29,8 +29,11 @@ public class MotorcycleDataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (repository.count() > 0) return; //ha már felvavn töltve
-
+        if (repository.count() > 0){
+            System.out.println("Motorcycle catalog already loaded.");
+            return; //ha már felvavn töltve
+        }
+        System.out.println("Loading motorcycle catalog...");
         List<String> makes = List.of("Honda", "Yamaha", "Kawasaki", "Suzuki", "BMW",
                 "Ducati", "KTM", "Triumph", "Harley-Davidson",
                 "Aprilia", "MV Agusta", "Royal Enfield");
