@@ -45,7 +45,7 @@ function Menu() {
                 <div className="sidebar-item" onClick={() => setSettingsOpen(false)}>← Vissza</div>
                 <div className="sidebar-item" onClick={() => navigate("/settings/profile")}>Személyes profil</div>
                 <div className="sidebar-item" onClick={() => navigate("/settings/vehicle")}>Jármű adatok</div>
-                <div className="sidebar-item" onClick={() => navigate("/settings/protectedequipment")}>Ruházat</div>
+                <div className="sidebar-item" onClick={() => navigate("/settings/riding-gear")}>Ruházat</div>
               </>
             )}
           </div>

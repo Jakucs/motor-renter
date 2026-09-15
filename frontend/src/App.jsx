@@ -11,6 +11,7 @@ import VehicleData from "./VehicleProfile";
 import Vehicles from "./Vehicles";
 import NoVehicle from "./redirect/NoVehicle";
 import About from "./About";
+import RidingGear from "./RidingGear";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
       <Route path="/settings/vehicle/new" element={<ProtectedRoute><VehicleData /></ProtectedRoute>}/>
       <Route path="/settings/vehicle/:id" element={<ProtectedRoute><VehicleData /></ProtectedRoute>}/>
       <Route path="/no-vehicle" element={<ProtectedRoute><NoVehicle /></ProtectedRoute>}/>
+      <Route path="/settings/riding-gear" element={<ProtectedRoute><RidingGear /></ProtectedRoute>}/>
       <Route path="/about" element={<About />} />
     </Routes>
   );

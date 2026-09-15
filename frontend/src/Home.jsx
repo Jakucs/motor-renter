@@ -29,7 +29,8 @@ function Home() {
                 <div className="dropdown-menu">
                   <div onClick={() => navigate("/settings/profile")}>Személyes profil</div>
                   <div onClick={() => navigate("/settings/vehicle")}>Jármű adatok</div>
-                  <div onClick={() => navigate("/settings/profile")}>Ruházat</div>
+                  <div onClick={() => navigate("/settings/riding-gear")}>Ruházat</div>
+
                 </div>
               )}
             </div>
