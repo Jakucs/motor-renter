@@ -2,6 +2,7 @@ package seeder;
 
 import com.motorenter.motorenter.model.MotorcycleCatalog;
 import com.motorenter.motorenter.repository.MotorcycleCatalogRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -9,8 +10,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.net.http.HttpHeaders;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpEntity;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,9 @@ import java.util.Map;
 public class MotorcycleDataSeeder implements CommandLineRunner {
 
     private final MotorcycleCatalogRepository repository;
+
+    @Value("${api.ninjas.key}")
+    private String apiKey;
 
     public MotorcycleDataSeeder(MotorcycleCatalogRepository repository) {
         this.repository = repository;
@@ -32,7 +36,6 @@ public class MotorcycleDataSeeder implements CommandLineRunner {
                 "Aprilia", "MV Agusta", "Royal Enfield");
 
         RestTemplate restTemplate = new RestTemplate();
-        String apiKey = "API KULCS";
 
         for (String make : makes) {
             String url = "https://api.api-ninjas.com/v1/motorcycles?make=" + make + "&limit=50";
