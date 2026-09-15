@@ -26,7 +26,7 @@ function About() {
                     <div style={{ borderTop: "1px solid #eee", paddingTop: "20px" }}>
                         <h3 style={{ color: "#0d0d0d", marginBottom: "15px" }}>Kapcsolat</h3>
 
-                        <p>📧 <a href="mailto:moto-share@gmail.com">moto-share@gmail.com</a></p>
+                        <p>📧 <a href="mailto:moto-share@gmail.com">motosharebudapest@gmail.com</a></p>
                         <p>📞 <a href="tel:06301515743">06301515743</a></p>
                         <p>📍 Budapest, Üllői út 159 6/61</p>
                     </div>
