@@ -22,8 +22,8 @@ public class User {
     private String password; //google bejelentkezés miatt lehet null is
     private LocalDate createdAt;
     private String profilePictureUrl;
-    private boolean hasHelmet;
-    private boolean hasProtectiveGear;
+    private Boolean hasHelmet = false;
+    private Boolean hasProtectiveGear = false;
 
 
     @Enumerated(EnumType.STRING)
@@ -95,19 +95,19 @@ public class User {
         this.role = role;
     }
 
-    public boolean isHasHelmet() {
+    public Boolean getHasHelmet() {
         return hasHelmet;
     }
 
-    public void setHasHelmet(boolean hasHelmet) {
+    public void setHasHelmet(Boolean hasHelmet) {
         this.hasHelmet = hasHelmet;
     }
 
-    public boolean isHasProtectiveGear() {
+    public Boolean getHasProtectiveGear() {
         return hasProtectiveGear;
     }
 
-    public void setHasProtectiveGear(boolean hasProtectiveGear) {
+    public void setHasProtectiveGear(Boolean hasProtectiveGear) {
         this.hasProtectiveGear = hasProtectiveGear;
     }
 

@@ -47,7 +47,13 @@ function RidingGear() {
   return (
     <div className="wrapper">
       <div id="formContent" className="fadeInDown">
-        <img src="/moto-share.png" alt="logo" width="200" style={{ display: "block", margin: "20px auto 0 auto" }} />
+        <img
+          src="/moto-share.png"
+          alt="logo"
+          width="200"
+          style={{ display: "block", margin: "20px auto 0 auto", cursor: "pointer" }}
+          onClick={() => navigate("/home")}
+        />
         <h2 className="active">Felszerelés</h2>
 
         <form onSubmit={handleSave}>
