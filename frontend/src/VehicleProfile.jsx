@@ -96,47 +96,82 @@ function VehicleData() {
         }
     };
 
+            //LEKICSINYÍTJÜK A KÉPET
+            const compressImage = (file) => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement("canvas");
+                        const maxSize = 800;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height && width > maxSize) {
+                            height = (height * maxSize) / width;
+                            width = maxSize;
+                        } else if (height > maxSize) {
+                            width = (width * maxSize) / height;
+                            height = maxSize;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        canvas.toBlob((blob) => {
+                            resolve(new File([blob], file.name, { type: "image/jpeg" }));
+                        }, "image/jpeg", 0.7); // 70% minőség
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        };
+
     const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+        const file = event.target.files[0];
+        if (!file) return;
 
-    setSelectedFile(file);
+        setSelectedFile(file);
 
-    if (!id) {
-        setError("Előbb mentsd el a jármű adatait, majd töltsd fel a képet!");
-        return;
-    }
+        if (!id) {
+            setError("Előbb mentsd el a jármű adatait, majd töltsd fel a képet!");
+            return;
+        }
 
-    const formData = new FormData();
-    formData.append("file", file);
+        const formData = new FormData();
+        formData.append("file", file);
 
-    const response = await fetch(`http://localhost:8080/api/vehicle/${id}/upload-picture`, {
-        method: "POST",
-        body: formData
-    });
+        const response = await fetch(`http://localhost:8080/api/vehicle/${id}/upload-picture`, {
+            method: "POST",
+            body: formData
+        });
 
-    if (response.ok) {
-        const updatedVehicle = await response.json();
-        setVehiclePicture(updatedVehicle.pictureUrl);
-        setUploadSuccess(true);
-    } else {
-        setError("Sikertelen képfeltöltés!");
-    }
-};
+        if (response.ok) {
+            const updatedVehicle = await response.json();
+            setVehiclePicture(updatedVehicle.pictureUrl);
+            setUploadSuccess(true);
+        } else {
+            setError("Sikertelen képfeltöltés!");
+        }
+    };
 
-const handleDelete = async () => {
-    if (!window.confirm("Biztosan törölni szeretnéd ezt a járművet?")) return;
+    const handleDelete = async () => {
+        if (!window.confirm("Biztosan törölni szeretnéd ezt a járművet?")) return;
 
-    const response = await fetch(`http://localhost:8080/api/vehicle/${id}`, {
-        method: "DELETE"
-    });
+        const response = await fetch(`http://localhost:8080/api/vehicle/${id}`, {
+            method: "DELETE"
+        });
 
-    if (response.ok) {
-        navigate("/settings/vehicle");
-    } else {
-        setError("Sikertelen törlés!");
-    }
-};
+        if (response.ok) {
+            navigate("/settings/vehicle");
+        } else {
+            setError("Sikertelen törlés!");
+        }
+    };
 
   return (
     <div className="wrapper">
