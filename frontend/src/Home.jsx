@@ -27,9 +27,10 @@ function Home() {
               <span onClick={() => setSettingsOpen(!settingsOpen)}>Beállítások ▾</span>
               {settingsOpen && (
                 <div className="dropdown-menu">
-                  <div onClick={() => navigate("/settings/profile")}>Személyes profil</div>
+                  <div onClick={() => navigate("/settings/profile")}>Személyes adatok</div>
                   <div onClick={() => navigate("/settings/vehicle")}>Jármű adatok</div>
                   <div onClick={() => navigate("/settings/riding-gear")}>Ruházat</div>
+                  <div onClick={() => navigate("/settings/driver-status")}>Sofőr státusz</div>
 
                 </div>
               )}
@@ -39,17 +40,7 @@ function Home() {
             <span onClick={() => navigate("/")}>Kilépés</span>
           </div>
         </div>
-<div className="driver-status">
-    <div>
-        <strong>Sofőr státusz</strong>
-        <span>🟢 Aktív – fuvarokat fogadhatsz</span>
-    </div>
 
-    <label className="switch">
-        <input type="checkbox" />
-        <span className="slider"></span>
-    </label>
-</div>
         <div className="mobile-nav">
           <Menu />
           <img 
