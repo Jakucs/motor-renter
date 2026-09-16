@@ -114,45 +114,63 @@ function VehicleData() {
         };
 
             //LEKICSINYÍTJÜK A KÉPET
-            const compressImage = (file) => {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.createElement("canvas");
-                        const maxSize = 800;
-                        let width = img.width;
-                        let height = img.height;
+            const compressImage = (file, maxSizeBytes = 2 * 1024 * 1024) => {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            let quality = 0.7;
+                            let maxDim = 800;
 
-                        if (width > height && width > maxSize) {
-                            height = (height * maxSize) / width;
-                            width = maxSize;
-                        } else if (height > maxSize) {
-                            width = (width * maxSize) / height;
-                            height = maxSize;
-                        }
+                            const tryCompress = () => {
+                                const canvas = document.createElement("canvas");
+                                let width = img.width;
+                                let height = img.height;
 
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext("2d");
-                        ctx.drawImage(img, 0, 0, width, height);
+                                if (width > height && width > maxDim) {
+                                    height = (height * maxDim) / width;
+                                    width = maxDim;
+                                } else if (height > maxDim) {
+                                    width = (width * maxDim) / height;
+                                    height = maxDim;
+                                }
 
-                        canvas.toBlob((blob) => {
-                            resolve(new File([blob], file.name, { type: "image/jpeg" }));
-                        }, "image/jpeg", 0.7); // 70% minőség
+                                canvas.width = width;
+                                canvas.height = height;
+                                const ctx = canvas.getContext("2d");
+                                ctx.drawImage(img, 0, 0, width, height);
+
+                                canvas.toBlob((blob) => {
+                                    if (blob.size > maxSizeBytes && quality > 0.3) {
+                                        // ha még mindig túl nagy, csökkentjük a minőséget és/vagy méretet
+                                        quality -= 0.1;
+                                        maxDim = Math.max(300, maxDim - 100);
+                                        tryCompress();
+                                    } else {
+                                        resolve(new File([blob], file.name, { type: "image/jpeg" }));
+                                    }
+                                }, "image/jpeg", quality);
+                            };
+
+                            tryCompress();
+                        };
+                        img.src = e.target.result;
                     };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-        };
+                    reader.readAsDataURL(file);
+                });
+            };
 
         const handleFileChange = async (event) => {
             const file = event.target.files[0];
             if (!file) return;
 
             const compressed = await compressImage(file);
+                const maxSizeBytes = 5 * 1024 * 1024; // 5MB, biztonsági tartalék a 10MB-os backend limithez képest
+                if (compressed.size > maxSizeBytes) {
+                    setError("A kép mérete a tömörítés után is túl nagy. Próbálj kisebb felbontású képet feltölteni.");
+                    return;
+                }
             setSelectedFile(compressed);
 
             if (!id) {
