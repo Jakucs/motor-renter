@@ -1,6 +1,7 @@
 package com.motorenter.motorenter.controller;
 
 import com.motorenter.motorenter.dto.GoogleAuthRequest;
+import com.motorenter.motorenter.dto.RidingGearRequest;
 import com.motorenter.motorenter.model.Role;
 import com.motorenter.motorenter.model.User;
 import com.motorenter.motorenter.service.UserService;
@@ -56,5 +57,10 @@ public class UserController {
             @PathVariable int id,
             @RequestParam("file") MultipartFile file) throws IOException {
         return userService.uploadProfilePicture(id, file);
+    }
+
+    @PutMapping("/profile/{id}/riding-gear")
+    public User updateRidingGear(@PathVariable int id, @RequestBody RidingGearRequest request) {
+        return userService.updateRidingGear(id, request);
     }
 }
