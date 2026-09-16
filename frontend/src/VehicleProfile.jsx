@@ -52,49 +52,66 @@ function VehicleData() {
       });
   }, [id]);
 
-    const handleSave = async (event) => {
-        event.preventDefault();
-        setError("");
+        const handleSave = async (event) => {
+            event.preventDefault();
+            setError("");
 
-        if (!brand || !model || !year || !engineSize) {
-            setError("Kérlek töltsd ki az összes mezőt!");
-            return;
-        }
-
-        if (!validate()) return;
-
-        const userId = localStorage.getItem("userId");
-
-        const url = id
-            ? `http://localhost:8080/api/vehicle/${id}`
-            : `http://localhost:8080/api/vehicle/${userId}`;
-
-        const method = id ? "PUT" : "POST";
-
-        const response = await fetch(url, {
-            method,
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ brand, model, year: parseInt(year), engineSize: parseInt(engineSize) })
-        });
-
-        if (response.ok) {
-            const savedVehicle = await response.json();
-
-            if (selectedFile) {
-                const formData = new FormData();
-                formData.append("file", selectedFile);
-
-                await fetch(`http://localhost:8080/api/vehicle/${savedVehicle.id}/upload-picture`, {
-                    method: "POST",
-                    body: formData
-                });
+            if (!brand || !model || !year || !engineSize) {
+                setError("Kérlek töltsd ki az összes mezőt!");
+                return;
             }
 
-            navigate("/successful-save");
-        } else {
-            setError("Sikertelen mentés!");
-        }
-    };
+            if (!validate()) return;
+
+            const userId = localStorage.getItem("userId");
+
+            const url = id
+                ? `http://localhost:8080/api/vehicle/${id}`
+                : `http://localhost:8080/api/vehicle/${userId}`;
+
+            const method = id ? "PUT" : "POST";
+
+            try {
+                const response = await fetch(url, {
+                    method,
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ brand, model, year: parseInt(year), engineSize: parseInt(engineSize) })
+                });
+
+                if (!response.ok) {
+                    setError(`Sikertelen mentés! (${response.status})`);
+                    return;
+                }
+
+                const savedVehicle = await response.json();
+
+                if (selectedFile) {
+                    try {
+                        const formData = new FormData();
+                        formData.append("file", selectedFile);
+
+                        const uploadRes = await fetch(`http://localhost:8080/api/vehicle/${savedVehicle.id}/upload-picture`, {
+                            method: "POST",
+                            body: formData
+                        });
+
+                        if (!uploadRes.ok) {
+                            setError(`A jármű elmentve, de a kép feltöltése sikertelen (${uploadRes.status}).`);
+                            return;
+                        }
+                    } catch (uploadErr) {
+                        console.error("Kép feltöltési hiba:", uploadErr);
+                        setError("A jármű elmentve, de a kép feltöltése közben hálózati hiba történt.");
+                        return;
+                    }
+                }
+
+                navigate("/successful-save");
+            } catch (err) {
+                console.error("Mentési hiba:", err);
+                setError("Nem sikerült kapcsolódni a szerverhez. Ellenőrizd, hogy fut-e a backend.");
+            }
+        };
 
             //LEKICSINYÍTJÜK A KÉPET
             const compressImage = (file) => {
@@ -131,47 +148,58 @@ function VehicleData() {
             });
         };
 
-    const handleFileChange = async (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
+        const handleFileChange = async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
 
-        setSelectedFile(file);
+            const compressed = await compressImage(file);
+            setSelectedFile(compressed);
 
-        if (!id) {
-            setError("Előbb mentsd el a jármű adatait, majd töltsd fel a képet!");
-            return;
-        }
+            if (!id) {
+                setError("Előbb mentsd el a jármű adatait, majd töltsd fel a képet!");
+                return;
+            }
 
-        const formData = new FormData();
-        formData.append("file", file);
+            try {
+                const formData = new FormData();
+                formData.append("file", compressed);
 
-        const response = await fetch(`http://localhost:8080/api/vehicle/${id}/upload-picture`, {
-            method: "POST",
-            body: formData
-        });
+                const response = await fetch(`http://localhost:8080/api/vehicle/${id}/upload-picture`, {
+                    method: "POST",
+                    body: formData
+                });
 
-        if (response.ok) {
-            const updatedVehicle = await response.json();
-            setVehiclePicture(updatedVehicle.pictureUrl);
-            setUploadSuccess(true);
-        } else {
-            setError("Sikertelen képfeltöltés!");
-        }
-    };
+                if (response.ok) {
+                    const updatedVehicle = await response.json();
+                    setVehiclePicture(updatedVehicle.pictureUrl);
+                    setUploadSuccess(true);
+                } else {
+                    setError(`Sikertelen képfeltöltés! (${response.status})`);
+                }
+            } catch (err) {
+                console.error("Képfeltöltési hiba:", err);
+                setError("Nem sikerült kapcsolódni a szerverhez a kép feltöltésekor.");
+            }
+        };
 
-    const handleDelete = async () => {
-        if (!window.confirm("Biztosan törölni szeretnéd ezt a járművet?")) return;
+        const handleDelete = async () => {
+            if (!window.confirm("Biztosan törölni szeretnéd ezt a járművet?")) return;
 
-        const response = await fetch(`http://localhost:8080/api/vehicle/${id}`, {
-            method: "DELETE"
-        });
+            try {
+                const response = await fetch(`http://localhost:8080/api/vehicle/${id}`, {
+                    method: "DELETE"
+                });
 
-        if (response.ok) {
-            navigate("/settings/vehicle");
-        } else {
-            setError("Sikertelen törlés!");
-        }
-    };
+                if (response.ok) {
+                    navigate("/settings/vehicle");
+                } else {
+                    setError(`Sikertelen törlés! (${response.status})`);
+                }
+            } catch (err) {
+                console.error("Törlési hiba:", err);
+                setError("Nem sikerült kapcsolódni a szerverhez a törlés során.");
+            }
+        };
 
   return (
     <div className="wrapper">
