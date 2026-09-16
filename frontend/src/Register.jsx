@@ -41,42 +41,57 @@ function Register() {
     return true;
 };
 
-  const handleRegister = async (event) => {
-    event.preventDefault();
-    setError("");
+    const handleRegister = async (event) => {
+        event.preventDefault();
+        setError("");
 
-    if (!username || !email || !firstname || !lastname || !password || !confirmPassword) {
-      setError("Kérlek töltsd ki az összes mezőt!");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError("A két jelszó nem egyezik!");
-      return;
-    }
-
-    if (!validate()) return;
-
-    console.log("Register:", { username, email, firstname, lastname, password });
-
-    // Spring Boot API hívás:
-    const response = await fetch("http://localhost:8080/api/register", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({  userName: username,
-                                firstName: firstname,
-                                lastName: lastname,
-                                email: email,
-                                password: password
-                              })
-    });
-
-        if (response.ok) {
-            navigate("/successfulregister");  // sikeres regisztráció → successful oldalra
-        } else {
-            setError("Sikertelen regisztráció!");
+        if (!username || !email || !firstname || !lastname || !password || !confirmPassword) {
+            setError("Kérlek töltsd ki az összes mezőt!");
+            return;
         }
-  };
+
+        if (password !== confirmPassword) {
+            setError("A két jelszó nem egyezik!");
+            return;
+        }
+
+        if (!validate()) return;
+
+        console.log("Register:", {
+            username,
+            email,
+            firstname,
+            lastname,
+            password
+        });
+
+        try {
+            // Spring Boot API hívás:
+            const response = await fetch("http://localhost:8080/api/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    userName: username,
+                    firstName: firstname,
+                    lastName: lastname,
+                    email: email,
+                    password: password
+                })
+            });
+
+            if (response.ok) {
+                navigate("/successfulregister");
+            } else {
+                setError("Sikertelen regisztráció!");
+            }
+
+        } catch (error) {
+            console.error(error);
+            setError("Nem sikerült kapcsolódni a szerverhez!");
+        }
+    };
 
   return (
     <div className="wrapper">
