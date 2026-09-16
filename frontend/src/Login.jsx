@@ -11,7 +11,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleLogin = async (event) => {
+const handleLogin = async (event) => {
     event.preventDefault();
 
     setError("");
@@ -24,7 +24,8 @@ function Login() {
     console.log("Email:", email);
     console.log("Password:", password);
 
-    // Spring Boot API hívás:
+    try {
+      // Spring Boot API hívás:
       const response = await fetch("http://localhost:8080/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -32,12 +33,16 @@ function Login() {
       });
 
       if (response.ok) {
-            const user = await response.json(); //REFAKTOR
-            localStorage.setItem("userId", user.id); //MUSZÁJ LENNE SESSIONT CSINÁLNI HOGY BIZTONSÁGOS LEGYEN
+        const user = await response.json(); //REFAKTOR
+        localStorage.setItem("userId", user.id); //MUSZÁJ LENNE SESSIONT CSINÁLNI HOGY BIZTONSÁGOS LEGYEN
         navigate("/home");
       } else {
         setError("Hibás email vagy jelszó!");
       }
+    } catch (err) {
+      console.error("Bejelentkezési hiba:", err);
+      setError("Nem sikerült kapcsolódni a szerverhez. Ellenőrizd, hogy fut-e a backend.");
+    }
   };
 
   const handleGoogleSuccess = async (credentialResponse) => {
@@ -49,13 +54,14 @@ function Login() {
       });
 
       if (response.ok) {
-            const user = await response.json(); //REFAKTOR
-            localStorage.setItem("userId", user.id); //MUSZÁJ LENNE SESSIONT CSINÁLNI HOGY BIZTONSÁGOS LEGYEN
+        const user = await response.json(); //REFAKTOR
+        localStorage.setItem("userId", user.id); //MUSZÁJ LENNE SESSIONT CSINÁLNI HOGY BIZTONSÁGOS LEGYEN
         navigate("/home");
       } else {
         setError("Google bejelentkezés sikertelen!");
       }
     } catch (err) {
+      console.error("Google bejelentkezési hiba:", err);
       setError("Hiba történt a bejelentkezés során!");
     }
   };
