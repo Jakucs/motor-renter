@@ -4,6 +4,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
+import com.motorenter.motorenter.dto.RidingGearRequest;
 import org.springframework.beans.factory.annotation.Value;
 import com.motorenter.motorenter.model.Role;
 import com.motorenter.motorenter.model.User;
@@ -130,6 +131,16 @@ public class UserService {
         } catch (Exception e) {
             throw new RuntimeException("Google bejelentkezés sikertelen: " + e.getMessage());
         }
+    }
+
+    public User updateRidingGear(int userId, RidingGearRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Nem található felhasználó!"));
+
+        user.setHasHelmet(request.isHasHelmet());
+        user.setHasProtectiveGear(request.isHasProtectiveGear());
+
+        return userRepository.save(user);
     }
 
 }
