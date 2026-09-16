@@ -22,8 +22,11 @@ public class User {
     private String password; //google bejelentkezés miatt lehet null is
     private LocalDate createdAt;
     private String profilePictureUrl;
-    private Boolean hasHelmet = false;
-    private Boolean hasProtectiveGear = false;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean hasHelmet;
+
+    @Column(columnDefinition = "boolean default false")
+    private Boolean hasProtectiveGear;
 
 
     @Enumerated(EnumType.STRING)
