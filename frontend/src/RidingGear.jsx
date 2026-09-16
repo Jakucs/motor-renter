@@ -72,6 +72,11 @@ function RidingGear() {
                 className="gear-checkbox"
             />
             </label>
+            <input
+              type="submit"
+              className="fadeIn fourth"
+              value="Mentés"
+            />
         </form>
       </div>
     </div>
