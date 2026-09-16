@@ -39,7 +39,17 @@ function Home() {
             <span onClick={() => navigate("/")}>Kilépés</span>
           </div>
         </div>
+<div className="driver-status">
+    <div>
+        <strong>Sofőr státusz</strong>
+        <span>🟢 Aktív – fuvarokat fogadhatsz</span>
+    </div>
 
+    <label className="switch">
+        <input type="checkbox" />
+        <span className="slider"></span>
+    </label>
+</div>
         <div className="mobile-nav">
           <Menu />
           <img 
