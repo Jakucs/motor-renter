@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./css/Login.css";
+import "./css/RidingGear.css";
 
 function RidingGear() {
   const [hasHelmet, setHasHelmet] = useState(false);
@@ -52,29 +53,25 @@ function RidingGear() {
         <form onSubmit={handleSave}>
           {error && <div className="error-message">{error}</div>}
 
-          <label style={{ display: "flex", alignItems: "center", gap: "10px", margin: "10px 0" }}>
+            <label className="gear-item">
+            <span>2 bukósisak</span>
             <input
-              type="checkbox"
-              checked={hasHelmet}
-              onChange={(e) => setHasHelmet(e.target.checked)}
+                type="checkbox"
+                checked={hasHelmet}
+                onChange={(e) => setHasHelmet(e.target.checked)}
+                className="gear-checkbox"
             />
-            Van bukósisakom
-          </label>
+            </label>
 
-          <label style={{ display: "flex", alignItems: "center", gap: "10px", margin: "10px 0" }}>
+            <label className="gear-item">
+            <span>Protektoros ruha</span>
             <input
-              type="checkbox"
-              checked={hasProtectiveGear}
-              onChange={(e) => setHasProtectiveGear(e.target.checked)}
+                type="checkbox"
+                checked={hasProtectiveGear}
+                onChange={(e) => setHasProtectiveGear(e.target.checked)}
+                className="gear-checkbox"
             />
-            Van protektoros ruhám
-          </label>
-
-          <input
-            type="submit"
-            className="fadeIn fourth"
-            value="Mentés"
-          />
+            </label>
         </form>
       </div>
     </div>
