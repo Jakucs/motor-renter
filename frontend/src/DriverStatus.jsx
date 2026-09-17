@@ -33,13 +33,14 @@ function DriverStatus() {
 
         loadRole();
     }, []);
-
+    
+    //ÚJ USEEFFFFFFFFFFFFFFFFFFFFFFFECT
     //AMÍG A SOFŐR AKTÍV, ADDIG KÜLDI A USER A POZÍCIÓT
     useEffect(() => {
         if (role !== "DRIVER" || !isActive) return;
 
         const userId = localStorage.getItem("userId");
-
+        // egyenlőre a böngészőtől kérjük le a locationt ,ha gps-t kapcsolunk áttvált a gps koordinátáira
         const watchId = navigator.geolocation.watchPosition(
             (position) => {
                 fetch(`http://localhost:8080/api/profile/${userId}/location`, {
@@ -54,7 +55,7 @@ function DriverStatus() {
             (err) => console.error("Geolocation error:", err),
             { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 }
         );
-
+        //clearWatchal leállítjukl a figyelést
         return () => navigator.geolocation.clearWatch(watchId);
     }, [role, isActive]);
 

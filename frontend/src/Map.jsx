@@ -13,6 +13,7 @@ const mapContainerStyle = {
 
 function Map() {
    const [center, setCenter] = useState({ lat: 47.4979, lng: 19.0402 });
+   const [activeDrivers, setActiveDrivers] = useState([]);
 
     useEffect(() => {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -23,11 +24,31 @@ function Map() {
       })
     }, [])
 
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY
-  });
+    useEffect(() => {
+      const fetchActiveDrivers = async () => {
+        try {
+          const res = await fetch("http://localhost:8080/api/drivers/active");
+          if (res.ok) {
+            const data = await res.json();
+            setActiveDrivers(data);
+          }
+        } catch (err) {
+          console.error("Failed to load active drivers:", err);
+        }
+      };
 
-  if (!isLoaded) return <div>Térkép betöltése...</div>;
+      fetchActiveDrivers();
+      const interval = setInterval(fetchActiveDrivers, 5000);
+      return () => clearInterval(interval);
+    }, []);
+
+    const { isLoaded } = useLoadScript({
+      googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+    });
+
+    if (!isLoaded) return <div>Térkép betöltése...</div>;
+
+    const userId = localStorage.getItem("userId");
 
   return (
     <GoogleMap
@@ -35,17 +56,32 @@ function Map() {
       zoom={13}
       center={center}
     >
-      <Marker 
-      position={center}
+      {/* saját pozíció */}
+      <Marker
+        position={center}
         icon={{
-        path: window.google.maps.SymbolPath.CIRCLE,
-        scale: 10,
-        fillColor: "#4285F4",
-        fillOpacity: 1,
-        strokeColor: "white",
-        strokeWeight: 2,
-      }}
+          path: window.google.maps.SymbolPath.CIRCLE,
+          scale: 10,
+          fillColor: "#4285F4",
+          fillOpacity: 1,
+          strokeColor: "white",
+          strokeWeight: 2,
+        }}
       />
+
+      {/* aktív sofőrök (a saját magunkat kihagyva) */}
+      {activeDrivers
+        .filter((d) => String(d.userId) !== userId)
+        .map((driver) => (
+          <Marker
+            key={driver.userId}
+            position={{ lat: driver.lat, lng: driver.lng }}
+            icon={{
+              url: "/moto-marker.png",
+              scaledSize: new window.google.maps.Size(36, 36)
+            }}
+          />
+        ))}
     </GoogleMap>
   );
 }
