@@ -34,6 +34,30 @@ function DriverStatus() {
         loadRole();
     }, []);
 
+    //AMÍG A SOFŐR AKTÍV, ADDIG KÜLDI A USER A POZÍCIÓT
+    useEffect(() => {
+        if (role !== "DRIVER" || !isActive) return;
+
+        const userId = localStorage.getItem("userId");
+
+        const watchId = navigator.geolocation.watchPosition(
+            (position) => {
+                fetch(`http://localhost:8080/api/profile/${userId}/location`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    })
+                }).catch((err) => console.error("Location update failed:", err));
+            },
+            (err) => console.error("Geolocation error:", err),
+            { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 }
+        );
+
+        return () => navigator.geolocation.clearWatch(watchId);
+    }, [role, isActive]);
+
     const handleRoleSwitch = async () => {
         const userId = localStorage.getItem("userId");
 
