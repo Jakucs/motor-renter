@@ -10,7 +10,6 @@ function PersonalProfile() {
   const [profilePicture, setProfilePicture] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
-  const [role, setRole] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -27,7 +26,6 @@ function PersonalProfile() {
         setFirstname(user.firstName);
         setLastname(user.lastName);
         setPhone(user.phoneNumber ?? "");
-        setRole(user.role ?? "");
         setProfilePicture(user.profilePictureUrl ?? "");
       })
       .catch(err => console.log("error:", err));
@@ -114,42 +112,6 @@ function PersonalProfile() {
       } else {
         setError("Sikertelen mentés!");
       }
-    };
-
-    const handleRoleSwitch = async () => {
-        if (role === "DRIVER") {
-            const userId = localStorage.getItem("userId");
-            const response = await fetch(`http://localhost:8080/api/profile/${userId}/role`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ role: "PASSENGER" })
-            });
-            if (response.ok) setRole("PASSENGER");
-            return;
-        }
-
-        if (!phone) {
-            setError("Kérlek add meg a telefonszámodat a Sofőr státuszhoz!");
-            return;
-        }
-
-        const userId = localStorage.getItem("userId");
-
-        const vehicleResponse = await fetch(`http://localhost:8080/api/vehicle/${userId}`);
-        const vehicles = await vehicleResponse.json();
-
-        if (!vehicles || vehicles.length === 0) {
-            navigate("/no-vehicle");
-            return;
-        }
-
-        const response = await fetch(`http://localhost:8080/api/profile/${userId}/role`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ role: "DRIVER" })
-        });
-
-        if (response.ok) setRole("DRIVER");
     };
 
   return (
@@ -274,17 +236,6 @@ function PersonalProfile() {
             className="fadeIn fourth"
             value="Mentés"
           />
-          <div style={{ textAlign: "center", margin: "10px 0" }}>
-              <p style={{ color: "#555", marginBottom: "8px" }}>
-                  Jelenlegi státusz: <strong>{role === "DRIVER" ? "🏍️ Sofőr" : "🧍 Utas"}</strong>
-              </p>
-              <input
-                  type="button"
-                  className="fadeIn fourth"
-                  value={role === "DRIVER" ? "Váltás: Utas" : "Váltás: Sofőr"}
-                  onClick={handleRoleSwitch}
-              />
-          </div>
 
         </form>
       </div>
