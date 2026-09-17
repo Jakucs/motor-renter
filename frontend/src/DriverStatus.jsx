@@ -136,17 +136,17 @@ function DriverStatus() {
                     )}
                 </p>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" }}>
-                    <input
-                        type="button"
-                        className="fadeIn fourth"
-                        value={
-                            role === "DRIVER"
-                                ? "Váltás: Utas"
-                                : "Váltás: Sofőr"
-                        }
-                        onClick={handleRoleSwitch}
-                    />
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" }}>
+                <input
+                    type="button"
+                    className="fadeIn fourth"
+                    value={
+                        role === "DRIVER"
+                            ? "Váltás: Utas"
+                            : "Váltás: Sofőr"
+                    }
+                    onClick={handleRoleSwitch}
+                />
 
                 {role === "DRIVER" && (
                     <input
@@ -156,7 +156,7 @@ function DriverStatus() {
                         onClick={handleActiveToggle}
                     />
                 )}
-                </div>
+            </div>
             </div>
         </div>
     );
