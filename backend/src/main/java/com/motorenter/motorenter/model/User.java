@@ -28,7 +28,8 @@ public class User {
     private Boolean hasHelmet;
     @Column(columnDefinition = "boolean default false")
     private Boolean hasProtectiveGear;
-    private boolean isActive;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isActive;
 
     public User(String userName, String lastName, String firstName, String phoneNumber, String email, String password, Role role){
         //this.id = ++counter;
@@ -112,8 +113,13 @@ public class User {
         this.hasProtectiveGear = hasProtectiveGear;
     }
 
-    public boolean isActive() { return isActive; }
-    public void setActive(boolean active) { isActive = active; }
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
 
     public void setPassword(String password) {
         this.password = password;

@@ -63,4 +63,10 @@ public class UserController {
     public User updateRidingGear(@PathVariable int id, @RequestBody RidingGearRequest request) {
         return userService.updateRidingGear(id, request);
     }
+
+    @PutMapping("/profile/{id}/active")
+    public User updateActive(@PathVariable Integer id, @RequestBody Map<String, Boolean> body){
+        Boolean isActive = body.get("isActivev");
+        return userService.updateActive(id, isActive);
+    }
 }

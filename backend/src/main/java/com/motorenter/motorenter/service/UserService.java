@@ -143,4 +143,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User updateActive(Integer id, boolean isActive){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setActive(isActive);
+        return userRepository.save(user);
+    }
+
 }
