@@ -13,6 +13,7 @@ import NoVehicle from "./redirect/NoVehicle";
 import About from "./About";
 import RidingGear from "./RidingGear";
 import DriverStatus from "./DriverStatus";
+import NoPhoneNumber from "./redirect/NoPhoneNumber";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <Route path="/no-vehicle" element={<ProtectedRoute><NoVehicle /></ProtectedRoute>}/>
       <Route path="/settings/riding-gear" element={<ProtectedRoute><RidingGear /></ProtectedRoute>}/>
       <Route path="/settings/driver-status" element={<ProtectedRoute><DriverStatus /></ProtectedRoute>} />
+      <Route path="/no-phone-number" element={<NoPhoneNumber />} />
       <Route path="/about" element={<About />} />
     </Routes>
   );

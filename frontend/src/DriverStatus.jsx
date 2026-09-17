@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function DriverStatus() {
     const [role, setRole] = useState("");
     const [error, setError] = useState("");
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const loadRole = async () => {
@@ -28,41 +31,61 @@ function DriverStatus() {
         loadRole();
     }, []);
 
-    const handleRoleSwitch = async () => {
-        const userId = localStorage.getItem("userId");
+        const handleRoleSwitch = async () => {
+            const userId = localStorage.getItem("userId");
 
-        const newRole = role === "DRIVER"
-            ? "PASSENGER"
-            : "DRIVER";
+            if (role !== "DRIVER") {
+                const userResponse = await fetch(`http://localhost:8080/api/profile/${userId}`);
+                const user = await userResponse.json();
 
-        try {
-            const response = await fetch(
-                `http://localhost:8080/api/profile/${userId}/role`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        role: newRole
-                    })
+                if (!user.phoneNumber) {
+                    navigate("/no-phone-number");
+                    return;
                 }
-            );
 
-            if (response.ok) {
-                setRole(newRole);
-            } else {
-                setError("Nem sikerült módosítani a státuszt!");
+                const vehicleResponse = await fetch(`http://localhost:8080/api/vehicle/${userId}`);
+                const vehicles = await vehicleResponse.json();
+
+                if (!vehicles || vehicles.length === 0) {
+                    navigate("/no-vehicle");
+                    return;
+                }
             }
-        } catch (err) {
-            console.error(err);
-            setError("Nem sikerült kapcsolódni a szerverhez!");
-        }
-    };
+
+            const newRole = role === "DRIVER" ? "PASSENGER" : "DRIVER";
+
+            try {
+                const response = await fetch(
+                    `http://localhost:8080/api/profile/${userId}/role`,
+                    {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ role: newRole })
+                    }
+                );
+
+                if (response.ok) {
+                    setRole(newRole);
+                } else {
+                    setError("Nem sikerült módosítani a státuszt!");
+                }
+            } catch (err) {
+                console.error(err);
+                setError("Nem sikerült kapcsolódni a szerverhez!");
+            }
+        };
 
     return (
         <div>
             <div style={{ textAlign: "center", margin: "10px 0" }}>
+
+                   <img 
+            src="/moto-share.png" 
+            alt="logo" 
+            width="200" 
+            onClick={() => navigate("/home")}
+            style={{ display: "block", margin: "20px auto 0 auto", cursor: "pointer" }} 
+        />
 
                 {error && (
                     <div className="error-message">

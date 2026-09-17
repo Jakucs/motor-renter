@@ -22,15 +22,13 @@ public class User {
     private String password; //google bejelentkezés miatt lehet null is
     private LocalDate createdAt;
     private String profilePictureUrl;
-    @Column(columnDefinition = "boolean default false")
-    private Boolean hasHelmet;
-
-    @Column(columnDefinition = "boolean default false")
-    private Boolean hasProtectiveGear;
-
-
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean hasHelmet;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean hasProtectiveGear;
+    private boolean isActive;
 
     public User(String userName, String lastName, String firstName, String phoneNumber, String email, String password, Role role){
         //this.id = ++counter;
@@ -113,6 +111,9 @@ public class User {
     public void setHasProtectiveGear(Boolean hasProtectiveGear) {
         this.hasProtectiveGear = hasProtectiveGear;
     }
+
+    public boolean isActive() { return isActive; }
+    public void setActive(boolean active) { isActive = active; }
 
     public void setPassword(String password) {
         this.password = password;
