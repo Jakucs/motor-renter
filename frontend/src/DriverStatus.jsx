@@ -148,14 +148,14 @@ function DriverStatus() {
                         onClick={handleRoleSwitch}
                     />
 
-{role === "DRIVER" && (
-    <input
-        type="button"
-        className={`fadeIn fourth ${isActive ? "active-toggle-on" : "active-toggle-off"}`}
-        value={isActive ? "🟢 Elérhető vagyok" : "⚪ Nem vagyok elérhető"}
-        onClick={handleActiveToggle}
-    />
-)}
+                {role === "DRIVER" && (
+                    <input
+                        type="button"
+                        className={`fadeIn fourth ${isActive ? "active-toggle-on" : "active-toggle-off"}`}
+                        value={isActive ? "🟢 Elérhető vagyok" : "⚪ Nem vagyok elérhető"}
+                        onClick={handleActiveToggle}
+                    />
+                )}
                 </div>
             </div>
         </div>

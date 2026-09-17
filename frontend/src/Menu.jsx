@@ -46,6 +46,7 @@ function Menu() {
                 <div className="sidebar-item" onClick={() => navigate("/settings/profile")}>Személyes adatok</div>
                 <div className="sidebar-item" onClick={() => navigate("/settings/vehicle")}>Jármű adatok</div>
                 <div className="sidebar-item" onClick={() => navigate("/settings/riding-gear")}>Ruházat</div>
+                <div className="sidebar-item" onClick={() => navigate("/settings/driver-status")}>Sofőr státusz</div>
               </>
             )}
           </div>
