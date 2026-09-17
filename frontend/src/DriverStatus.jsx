@@ -128,30 +128,35 @@ function DriverStatus() {
                             ? "🏍️ Sofőr"
                             : "🧍 Utas"}
                     </strong>
+                    {role === "DRIVER" && (
+                        <>
+                            {" — "}
+                            <strong>{isActive ? "🟢 Aktív" : "⚪ Inaktív"}</strong>
+                        </>
+                    )}
                 </p>
 
-                <input
-                    type="button"
-                    className="fadeIn fourth"
-                    value={
-                        role === "DRIVER"
-                            ? "Váltás: Utas"
-                            : "Váltás: Sofőr"
-                    }
-                    onClick={handleRoleSwitch}
-                />
-
-                {role === "DRIVER" && (
-                <label className="active-toggle">
-                    <span>{isActive ? "🟢 Elérhető vagyok" : "⚪ Nem vagyok elérhető"}</span>
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" }}>
                     <input
-                    type="checkbox"
-                    checked={isActive}
-                    onChange={handleActiveToggle}
-                    className="active-toggle-checkbox"
+                        type="button"
+                        className="fadeIn fourth"
+                        value={
+                            role === "DRIVER"
+                                ? "Váltás: Utas"
+                                : "Váltás: Sofőr"
+                        }
+                        onClick={handleRoleSwitch}
                     />
-                </label>
-                )}
+
+                    {role === "DRIVER" && (
+                        <input
+                            type="button"
+                            className="fadeIn fourth"
+                            value={isActive ? "🟢 Elérhető vagyok" : "⚪ Nem vagyok elérhető"}
+                            onClick={handleActiveToggle}
+                        />
+                    )}
+                </div>
             </div>
         </div>
     );
