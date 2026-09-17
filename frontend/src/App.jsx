@@ -12,6 +12,7 @@ import Vehicles from "./Vehicles";
 import NoVehicle from "./redirect/NoVehicle";
 import About from "./About";
 import RidingGear from "./RidingGear";
+import DriverStatus from "./DriverStatus";
 
 function App() {
   return (
@@ -19,7 +20,6 @@ function App() {
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/successfulregister" element={<SuccessfulRegister/>}/>
-
       <Route path="/home" element={<ProtectedRoute><Home/></ProtectedRoute>}/>
       <Route path="/settings/profile" element={<ProtectedRoute><PersonalProfile/></ProtectedRoute>}/>
       <Route path="/successful-save" element={<ProtectedRoute><Successful /></ProtectedRoute>}/>
@@ -28,6 +28,7 @@ function App() {
       <Route path="/settings/vehicle/:id" element={<ProtectedRoute><VehicleData /></ProtectedRoute>}/>
       <Route path="/no-vehicle" element={<ProtectedRoute><NoVehicle /></ProtectedRoute>}/>
       <Route path="/settings/riding-gear" element={<ProtectedRoute><RidingGear /></ProtectedRoute>}/>
+      <Route path="/settings/driver-status" element={<ProtectedRoute><DriverStatus /></ProtectedRoute>} />
       <Route path="/about" element={<About />} />
     </Routes>
   );
