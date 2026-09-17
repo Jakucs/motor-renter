@@ -66,7 +66,7 @@ public class UserController {
 
     @PutMapping("/profile/{id}/active")
     public User updateActive(@PathVariable Integer id, @RequestBody Map<String, Boolean> body){
-        Boolean isActive = body.get("isActivev");
+        Boolean isActive = body.get("isActive");
         return userService.updateActive(id, isActive);
     }
 }

@@ -78,30 +78,30 @@ function DriverStatus() {
         }
     };
 
-    const handleActiveToggle = async () => {
-        const userId = localStorage.getItem("userId");
-        const newActive = !isActive;
+        const handleActiveToggle = async () => {
+            const userId = localStorage.getItem("userId");
+            const newActive = !isActive;
 
-        try {
-            const response = await fetch(
-                `http://localhost:8080/api/profile/${userId}/active`,
-                {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ isActive: newActive })
+            try {
+                const response = await fetch(
+                    `http://localhost:8080/api/profile/${userId}/active`,
+                    {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ isActive: newActive }) // isActive helyett active
+                    }
+                );
+
+                if (response.ok) {
+                    setIsActive(newActive);
+                } else {
+                    setError("Nem sikerült módosítani az elérhetőséget!");
                 }
-            );
-
-            if (response.ok) {
-                setIsActive(newActive);
-            } else {
-                setError("Nem sikerült módosítani az elérhetőséget!");
+            } catch (err) {
+                console.error(err);
+                setError("Nem sikerült kapcsolódni a szerverhez!");
             }
-        } catch (err) {
-            console.error(err);
-            setError("Nem sikerült kapcsolódni a szerverhez!");
-        }
-    };
+        };
 
     return (
         <div>
