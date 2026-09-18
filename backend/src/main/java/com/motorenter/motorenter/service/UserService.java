@@ -161,7 +161,7 @@ public class UserService {
     }
 
     public List<ActiveDriverDTO> getActiveDrivers() {
-        return userRepository.findByRoleAndActive(Role.DRIVER, true).stream()
+        return userRepository.findByRoleAndIsActive(Role.DRIVER, true).stream()
                 .filter(u -> u.getLat() != null && u.getLng() != null)
                 .map(u -> new ActiveDriverDTO(u.getId(), u.getLat(), u.getLng()))
                 .toList();

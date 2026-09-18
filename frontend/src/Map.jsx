@@ -31,6 +31,7 @@ function Map() {
           const res = await fetch("http://localhost:8080/api/drivers/active");
           if (res.ok) {
             const data = await res.json();
+            console.log("active drivers:", data);
             setActiveDrivers(data);
           }
         } catch (err) {

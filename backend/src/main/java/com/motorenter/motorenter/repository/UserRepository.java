@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByEmail(String email); // we can find the exact user by email
-    List<User> findByRoleAndActive(Role role, Boolean active);
+    List<User> findByRoleAndIsActive(Role role, Boolean isActive);
 }

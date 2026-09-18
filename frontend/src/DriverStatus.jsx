@@ -21,6 +21,7 @@ function DriverStatus() {
                 if (response.ok) {
                     const user = await response.json();
                     setRole(user.role ?? "");
+                    console.log("user.isActive:", user.isActive);
                     setIsActive(user.isActive ?? false);
                 } else {
                     setError("Nem sikerült betölteni a státuszt!");
@@ -33,7 +34,7 @@ function DriverStatus() {
 
         loadRole();
     }, []);
-    
+
     //ÚJ USEEFFFFFFFFFFFFFFFFFFFFFFFECT
     //AMÍG A SOFŐR AKTÍV, ADDIG KÜLDI A USER A POZÍCIÓT
     useEffect(() => {
