@@ -24,6 +24,7 @@ function Map() {
       })
     }, [])
 
+    //2. USEFFECT
     useEffect(() => {
       const fetchActiveDrivers = async () => {
         try {
@@ -38,9 +39,11 @@ function Map() {
       };
 
       fetchActiveDrivers();
+      //egyenlőre 5másodpercenként frissítjük az aktuális position -t
       const interval = setInterval(fetchActiveDrivers, 5000);
       return () => clearInterval(interval);
     }, []);
+
 
     const { isLoaded } = useLoadScript({
       googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY
@@ -48,6 +51,7 @@ function Map() {
 
     if (!isLoaded) return <div>Térkép betöltése...</div>;
 
+    //KÖVETÉSHEZ ID
     const userId = localStorage.getItem("userId");
 
   return (
@@ -68,8 +72,9 @@ function Map() {
           strokeWeight: 2,
         }}
       />
+      
 
-      {/* aktív sofőrök (a saját magunkat kihagyva) */}
+      {/* aktív sofőrök (saját magunkat kihagyva) */}
       {activeDrivers
         .filter((d) => String(d.userId) !== userId)
         .map((driver) => (

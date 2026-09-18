@@ -30,6 +30,8 @@ public class User {
     private Boolean hasProtectiveGear;
     @Column(columnDefinition = "boolean default false")
     private Boolean isActive;
+    private Double lat;
+    private Double lng;
 
     public User(String userName, String lastName, String firstName, String phoneNumber, String email, String password, Role role){
         //this.id = ++counter;
@@ -79,6 +81,22 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
     }
 
     public String getProfilePictureUrl() {
