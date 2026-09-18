@@ -35,30 +35,7 @@ function DriverStatus() {
         loadRole();
     }, []);
 
-    //ÚJ USEEFFFFFFFFFFFFFFFFFFFFFFFECT
-    //AMÍG A SOFŐR AKTÍV, ADDIG KÜLDI A USER A POZÍCIÓT
-    useEffect(() => {
-        if (role !== "DRIVER" || !isActive) return;
 
-        const userId = localStorage.getItem("userId");
-        // egyenlőre a böngészőtől kérjük le a locationt ,ha gps-t kapcsolunk áttvált a gps koordinátáira
-        const watchId = navigator.geolocation.watchPosition(
-            (position) => {
-                fetch(`http://localhost:8080/api/profile/${userId}/location`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    })
-                }).catch((err) => console.error("Location update failed:", err));
-            },
-            (err) => console.error("Geolocation error:", err),
-            { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 }
-        );
-        //clearWatchal leállítjukl a figyelést
-        return () => navigator.geolocation.clearWatch(watchId);
-    }, [role, isActive]);
 
     const handleRoleSwitch = async () => {
         const userId = localStorage.getItem("userId");

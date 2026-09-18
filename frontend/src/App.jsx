@@ -14,9 +14,29 @@ import About from "./About";
 import RidingGear from "./RidingGear";
 import DriverStatus from "./DriverStatus";
 import NoPhoneNumber from "./redirect/NoPhoneNumber";
+import { useEffect, useState } from "react";
+import LocationTracker from "./LocationTracker";
 
 function App() {
+    const [role, setRole] = useState("");
+    const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+      const userId = localStorage.getItem("userId");
+      if (!userId) return;
+      console.log("App useEffect - userId:", userId);
+
+      fetch(`http://localhost:8080/api/profile/${userId}`)
+        .then(res => res.json())
+        .then(user => {
+          setRole(user.role ?? "");
+          setIsActive(user.isActive ?? false);
+        });
+    }, []);
+
   return (
+    <>
+    <LocationTracker role={role} isActive={isActive} />
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
@@ -33,6 +53,7 @@ function App() {
       <Route path="/no-phone-number" element={<NoPhoneNumber />} />
       <Route path="/about" element={<About />} />
     </Routes>
+    </>
   );
 }
 
