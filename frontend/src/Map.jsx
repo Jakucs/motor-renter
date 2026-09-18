@@ -79,14 +79,14 @@ function Map() {
       {activeDrivers
         .filter((d) => String(d.userId) !== userId)
         .map((driver) => (
-          <Marker
-            key={driver.userId}
+        <Marker
+            key={`${driver.userId}-${driver.lat}-${driver.lng}`}
             position={{ lat: driver.lat, lng: driver.lng }}
             icon={{
-              url: "/moto-marker.png",
-              scaledSize: new window.google.maps.Size(36, 36)
+                url: "/moto-marker.png",
+                scaledSize: new window.google.maps.Size(36, 36)
             }}
-          />
+        />
         ))}
     </GoogleMap>
   );

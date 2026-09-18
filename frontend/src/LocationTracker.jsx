@@ -15,13 +15,12 @@ function LocationTracker({ role, isActive }) {
         // egyenlőre a böngészőtől kérjük le a locationt ,ha gps-t kapcsolunk áttvált a gps koordinátáira
         const watchId = navigator.geolocation.watchPosition(
             (position) => {
-                console.log("sending location:", 47.5100, 19.0500);
                 fetch(`http://localhost:8080/api/profile/${userId}/location`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        lat: 47.5100,
-                        lng: 19.0500
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
                     })
                 }).catch((err) => console.error("Location update failed:", err));
             },
