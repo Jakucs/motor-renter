@@ -1,5 +1,5 @@
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const mapContainerStyle = {
   width: "100%",
@@ -15,9 +15,16 @@ function Map() {
    const [center, setCenter] = useState(null);
    const [activeDrivers, setActiveDrivers] = useState([]);
 
+       const mapRef = useRef(null);
+
+        const onMapLoad = (map) => {
+            mapRef.current = map;
+        };
+
   useEffect(() => {
       let didRespond = false;
 
+      //indulunk a BP centertől
       const fallbackTimer = setTimeout(() => {
           if (!didRespond) {
               setCenter({ lat: 47.4979, lng: 19.0402 });
@@ -26,18 +33,22 @@ function Map() {
 
       navigator.geolocation.getCurrentPosition(
           (position) => {
+              //ha megvan a position beállítjuk
               didRespond = true;
+              //töröljük a timert, nemkell fallback
               clearTimeout(fallbackTimer);
               const newCenter = {
                   lat: position.coords.latitude,
                   lng: position.coords.longitude
               };
               setCenter(newCenter);
+              //átmozdítjuk a current position-re a térképet
               if (mapRef.current) {
                   mapRef.current.panTo(newCenter);
               }
           },
           (err) => {
+            //ha nincs position, marad a center
               didRespond = true;
               clearTimeout(fallbackTimer);
               setCenter({ lat: 47.4979, lng: 19.0402 });
@@ -87,6 +98,7 @@ return center ? (
         zoom={13}
         center={center}
         options={{ gestureHandling: "greedy" }}
+        onLoad={onMapLoad}
     >
         {/* saját pozíció */}
         <Marker
