@@ -1,5 +1,6 @@
 package com.motorenter.motorenter.controller;
 
+import com.motorenter.motorenter.dto.ActiveDriverDTO;
 import com.motorenter.motorenter.dto.GoogleAuthRequest;
 import com.motorenter.motorenter.dto.RidingGearRequest;
 import com.motorenter.motorenter.model.Role;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -68,5 +70,17 @@ public class UserController {
     public User updateActive(@PathVariable Integer id, @RequestBody Map<String, Boolean> body){
         Boolean isActive = body.get("isActive");
         return userService.updateActive(id, isActive);
+    }
+
+    @PutMapping("/profile/{id}/location")
+    public User updateLocation(@PathVariable Integer id, @RequestBody Map<String, Double> body) {
+        Double lat = body.get("lat");
+        Double lng = body.get("lng");
+        return userService.updateLocation(id, lat, lng);
+    }
+
+    @GetMapping("/drivers/active")
+    public List<ActiveDriverDTO> getActiveDrivers() {
+        return userService.getActiveDrivers();
     }
 }
