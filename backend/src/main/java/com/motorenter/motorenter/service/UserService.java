@@ -150,4 +150,19 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User updateLocation(Integer id, Double lat, Double lng){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setLat(lat);
+        user.setLng(lng);
+        return userRepository.save(user);
+    }
+
+    public List<ActiveDriverDTO> getActiveDrivers() {
+        return userRepository.findByRoleAndActive(Role.DRIVER, true).stream()
+                .filter(u -> u.getLat() != null && u.getLng() != null)
+                .map(u -> new ActiveDriverDTO(u.getId(), u.getLat(), u.getLng()))
+                .toList();
+    }
+
 }
