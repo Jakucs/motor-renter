@@ -1,1 +1,2 @@
 Heartbeat/TTL
+milyen egyéb ötletekkel lehetne fejleszteni az alkalmazást?
