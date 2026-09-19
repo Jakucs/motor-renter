@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authFetch } from "./utils/authFetch";
 import "./css/Login.css";
 import "./css/RidingGear.css";
 
@@ -10,38 +11,34 @@ function RidingGear() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-
-    fetch(`http://localhost:8080/api/profile/${userId}`)
-      .then(res => res.json())
-      .then(user => {
-        setHasHelmet(user.hasHelmet ?? false);
-        setHasProtectiveGear(user.hasProtectiveGear ?? false);
-      })
-      .catch(err => console.log("error:", err));
+      authFetch(`http://localhost:8080/api/profile`)
+        .then(res => res.json())
+        .then(user => {
+          setHasHelmet(user.hasHelmet ?? false);
+          setHasProtectiveGear(user.hasProtectiveGear ?? false);
+        })
+        .catch(err => console.log("error:", err));
   }, []);
 
   const handleSave = async (event) => {
-    event.preventDefault();
-    setError("");
+      event.preventDefault();
+      setError("");
 
-    const userId = localStorage.getItem("userId");
+      try {
+          const response = await authFetch(`http://localhost:8080/api/profile/riding-gear`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ hasHelmet, hasProtectiveGear })
+          });
 
-    try {
-      const response = await fetch(`http://localhost:8080/api/profile/${userId}/riding-gear`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ hasHelmet, hasProtectiveGear })
-      });
-
-      if (response.ok) {
-        navigate("/successful-save");
-      } else {
-        setError("Sikertelen mentés!");
+          if (response.ok) {
+              navigate("/successful-save");
+          } else {
+              setError("Sikertelen mentés!");
+          }
+      } catch (err) {
+          setError("Hiba történt a mentés során!");
       }
-    } catch (err) {
-      setError("Hiba történt a mentés során!");
-    }
   };
 
   return (
