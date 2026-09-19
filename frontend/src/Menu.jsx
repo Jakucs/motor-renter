@@ -19,6 +19,13 @@ function Menu() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("role");
+    navigate("/");
+};
+
   return (
     <>
       <button className="hamburger-btn" onClick={() => setMenuOpen(!menuOpen)}>
@@ -38,7 +45,7 @@ function Menu() {
                 <div className="sidebar-item" onClick={() => navigate("/home")}>Főoldal</div>
                 <div className="sidebar-item" onClick={() => setSettingsOpen(true)}>Beállítások</div>
                 <div className="sidebar-item" onClick={() => navigate("/settings/availability")}>Elérhetőség</div>
-                <div className="sidebar-item" onClick={() => navigate("/")}>Kilépés</div>
+                <div className="sidebar-item" onClick={handleLogout}>Kilépés</div>
               </>
             ) : (
               <>

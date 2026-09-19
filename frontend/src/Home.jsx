@@ -8,6 +8,13 @@ function Home() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
 
+    const handleLogout = () => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("role");
+      navigate("/");
+  };
+
   return (
     <div className="wrapper">
       <div id="formContent" className="fadeInDown" style={{ padding: "15px", textAlign: "center", position: "relative" }}>
@@ -37,7 +44,7 @@ function Home() {
             </div>
 
             <span onClick={() => navigate("/about")}>Elérhetőség</span>
-            <span onClick={() => navigate("/")}>Kilépés</span>
+            <span onClick={handleLogout}>Kilépés</span>
           </div>
         </div>
 
