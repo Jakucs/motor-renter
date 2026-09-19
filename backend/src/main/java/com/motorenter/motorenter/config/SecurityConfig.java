@@ -26,7 +26,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // nincs session, csak token
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // csak token, session nélkül
                 )
                 .authorizeHttpRequests(auth -> auth
                         // publikus endpointok - token nélkül elérhetők
