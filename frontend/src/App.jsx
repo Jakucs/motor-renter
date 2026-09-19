@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { authFetch } from "./utils/authFetch";
 import "./css/App.css";
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "./Login";
@@ -22,17 +23,16 @@ function App() {
     const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-      const userId = localStorage.getItem("userId");
-      if (!userId) return;
-      console.log("App useEffect - userId:", userId);
+      const token = localStorage.getItem("token");
+      if (!token) return;
 
-      fetch(`http://localhost:8080/api/profile/${userId}`)
+      authFetch(`http://localhost:8080/api/profile`)
         .then(res => res.json())
         .then(user => {
           setRole(user.role ?? "");
           setIsActive(user.isActive ?? false);
         });
-    }, []);
+  }, []);
 
   return (
     <>

@@ -1,5 +1,6 @@
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import { useState, useEffect, useRef } from "react";
+import { authFetch } from "./utils/authFetch";
 
 const mapContainerStyle = {
   width: "100%",
@@ -63,7 +64,7 @@ function Map() {
     useEffect(() => {
       const fetchActiveDrivers = async () => {
         try {
-          const res = await fetch("http://localhost:8080/api/drivers/active");
+          const res = await authFetch("http://localhost:8080/api/drivers/active");
           if (res.ok) {
             const data = await res.json();
             console.log("active drivers:", data);

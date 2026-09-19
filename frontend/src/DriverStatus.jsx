@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authFetch } from "./utils/authFetch";
 import "./css/DriverStatus.css";
 
 function DriverStatus() {
@@ -11,17 +12,14 @@ function DriverStatus() {
 
     useEffect(() => {
         const loadRole = async () => {
-            const userId = localStorage.getItem("userId");
-
             try {
-                const response = await fetch(
-                    `http://localhost:8080/api/profile/${userId}`
+                const response = await authFetch(
+                    `http://localhost:8080/api/profile`
                 );
 
                 if (response.ok) {
                     const user = await response.json();
                     setRole(user.role ?? "");
-                    console.log("user.isActive:", user.isActive);
                     setIsActive(user.isActive ?? false);
                 } else {
                     setError("Nem sikerült betölteni a státuszt!");
@@ -35,13 +33,9 @@ function DriverStatus() {
         loadRole();
     }, []);
 
-
-
     const handleRoleSwitch = async () => {
-        const userId = localStorage.getItem("userId");
-
         if (role !== "DRIVER") {
-            const userResponse = await fetch(`http://localhost:8080/api/profile/${userId}`);
+            const userResponse = await authFetch(`http://localhost:8080/api/profile`);
             const user = await userResponse.json();
 
             if (!user.phoneNumber) {
@@ -49,6 +43,7 @@ function DriverStatus() {
                 return;
             }
 
+            const userId = localStorage.getItem("userId"); // a VehicleController még nincs átírva
             const vehicleResponse = await fetch(`http://localhost:8080/api/vehicle/${userId}`);
             const vehicles = await vehicleResponse.json();
 
@@ -61,8 +56,8 @@ function DriverStatus() {
         const newRole = role === "DRIVER" ? "PASSENGER" : "DRIVER";
 
         try {
-            const response = await fetch(
-                `http://localhost:8080/api/profile/${userId}/role`,
+            const response = await authFetch(
+                `http://localhost:8080/api/profile/role`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -81,30 +76,29 @@ function DriverStatus() {
         }
     };
 
-        const handleActiveToggle = async () => {
-            const userId = localStorage.getItem("userId");
-            const newActive = !isActive;
+    const handleActiveToggle = async () => {
+        const newActive = !isActive;
 
-            try {
-                const response = await fetch(
-                    `http://localhost:8080/api/profile/${userId}/active`,
-                    {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ isActive: newActive }) // isActive helyett active
-                    }
-                );
-
-                if (response.ok) {
-                    setIsActive(newActive);
-                } else {
-                    setError("Nem sikerült módosítani az elérhetőséget!");
+        try {
+            const response = await authFetch(
+                `http://localhost:8080/api/profile/active`,
+                {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ isActive: newActive }) //isActive helyett active lenne a basic
                 }
-            } catch (err) {
-                console.error(err);
-                setError("Nem sikerült kapcsolódni a szerverhez!");
+            );
+
+            if (response.ok) {
+                setIsActive(newActive);
+            } else {
+                setError("Nem sikerült módosítani az elérhetőséget!");
             }
-        };
+        } catch (err) {
+            console.error(err);
+            setError("Nem sikerült kapcsolódni a szerverhez!");
+        }
+    };
 
     return (
         <div>
