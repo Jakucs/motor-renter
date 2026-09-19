@@ -2,10 +2,13 @@ package com.motorenter.motorenter.controller;
 
 import com.motorenter.motorenter.dto.ActiveDriverDTO;
 import com.motorenter.motorenter.dto.GoogleAuthRequest;
+import com.motorenter.motorenter.dto.LoginResponse;
 import com.motorenter.motorenter.dto.RidingGearRequest;
 import com.motorenter.motorenter.model.Role;
 import com.motorenter.motorenter.model.User;
+import com.motorenter.motorenter.service.JwtService;
 import com.motorenter.motorenter.service.UserService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,9 +21,11 @@ import java.util.Map;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
+    private final JwtService jwtService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtService jwtService) {
         this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
@@ -29,54 +34,58 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public User login(@RequestBody User user) {
-        return userService.login(user.getEmail(), user.getPassword());
+    public LoginResponse login(@RequestBody User user) {
+        User loggedInUser = userService.login(user.getEmail(), user.getPassword());
+        String token = jwtService.generateToken(loggedInUser);
+        return new LoginResponse(token, loggedInUser.getId(), loggedInUser.getRole().name());
     }
 
     @PostMapping("/auth/google")
-    public User googleAuth(@RequestBody GoogleAuthRequest request) {
-        return userService.loginOrRegisterWithGoogle(request.getToken());
+    public LoginResponse googleAuth(@RequestBody GoogleAuthRequest request) {
+        User user = userService.loginOrRegisterWithGoogle(request.getToken());
+        String token = jwtService.generateToken(user);
+        return new LoginResponse(token, user.getId(), user.getRole().name());
     }
 
-    @GetMapping("/profile/{id}")
-    public User getProfile(@PathVariable Integer id){
-        return userService.getUserById(id);
+    @GetMapping("/profile")
+    public User getProfile(@AuthenticationPrincipal Integer userId){
+        return userService.getUserById(userId);
     }
 
-    @PutMapping("/profile/{id}")
-    public User updateProfile(@PathVariable Integer id, @RequestBody User updatedUser) {
-        return userService.updatePhone(id, updatedUser.getPhoneNumber());
+    @PutMapping("/profile")
+    public User updateProfile(@AuthenticationPrincipal Integer userId, @RequestBody User updatedUser) {
+        return userService.updatePhone(userId, updatedUser.getPhoneNumber());
     }
 
-    @PutMapping("/profile/{id}/role")
-    public User updateRole(@PathVariable Integer id, @RequestBody Map<String, String> body){
+    @PutMapping("/profile/role")
+    public User updateRole(@AuthenticationPrincipal Integer userId, @RequestBody Map<String, String> body){
         String role = body.get("role");
-        return userService.updateRole(id, Role.valueOf(role));
+        return userService.updateRole(userId, Role.valueOf(role));
     }
 
-    @PostMapping("/profile/{id}/upload-picture")
+    @PostMapping("/profile/upload-picture")
     public User uploadProfilePicture(
-            @PathVariable int id,
+            @AuthenticationPrincipal Integer userId,
             @RequestParam("file") MultipartFile file) throws IOException {
-        return userService.uploadProfilePicture(id, file);
+        return userService.uploadProfilePicture(userId, file);
     }
 
-    @PutMapping("/profile/{id}/riding-gear")
-    public User updateRidingGear(@PathVariable int id, @RequestBody RidingGearRequest request) {
-        return userService.updateRidingGear(id, request);
+    @PutMapping("/profile/riding-gear")
+    public User updateRidingGear(@AuthenticationPrincipal Integer userId, @RequestBody RidingGearRequest request) {
+        return userService.updateRidingGear(userId, request);
     }
 
-    @PutMapping("/profile/{id}/active")
-    public User updateActive(@PathVariable Integer id, @RequestBody Map<String, Boolean> body){
+    @PutMapping("/profile/active")
+    public User updateActive(@AuthenticationPrincipal Integer userId, @RequestBody Map<String, Boolean> body){
         Boolean isActive = body.get("isActive");
-        return userService.updateActive(id, isActive);
+        return userService.updateActive(userId, isActive);
     }
 
-    @PutMapping("/profile/{id}/location")
-    public User updateLocation(@PathVariable Integer id, @RequestBody Map<String, Double> body) {
+    @PutMapping("/profile/location")
+    public User updateLocation(@AuthenticationPrincipal Integer userId, @RequestBody Map<String, Double> body) {
         Double lat = body.get("lat");
         Double lng = body.get("lng");
-        return userService.updateLocation(id, lat, lng);
+        return userService.updateLocation(userId, lat, lng);
     }
 
     @GetMapping("/drivers/active")
