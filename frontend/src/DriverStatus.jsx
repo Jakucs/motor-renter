@@ -43,8 +43,7 @@ function DriverStatus() {
                 return;
             }
 
-            const userId = localStorage.getItem("userId"); // a VehicleController még nincs átírva
-            const vehicleResponse = await fetch(`http://localhost:8080/api/vehicle/${userId}`);
+            const vehicleResponse = await authFetch(`http://localhost:8080/api/vehicle`);
             const vehicles = await vehicleResponse.json();
 
             if (!vehicles || vehicles.length === 0) {

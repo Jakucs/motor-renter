@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { authFetch } from "./utils/authFetch";
+
 function LocationTracker({ role, isActive }) {
 
                         //lat: position.coords.latitude,
@@ -11,11 +13,11 @@ function LocationTracker({ role, isActive }) {
     useEffect(() => {
         console.log("LocationTracker role:", role, "isActive:", isActive);
         if (role !== "DRIVER" || !isActive) return;
-        const userId = localStorage.getItem("userId");
+        
         // egyenlőre a böngészőtől kérjük le a locationt ,ha gps-t kapcsolunk áttvált a gps koordinátáira
         const watchId = navigator.geolocation.watchPosition(
             (position) => {
-                fetch(`http://localhost:8080/api/profile/${userId}/location`, {
+                authFetch(`http://localhost:8080/api/profile/location`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
