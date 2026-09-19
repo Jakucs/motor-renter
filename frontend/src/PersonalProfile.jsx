@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authFetch } from "./utils/authFetch";
 
 function PersonalProfile() {
   const [username, setUsername] = useState("");
@@ -14,104 +15,70 @@ function PersonalProfile() {
 
   const navigate = useNavigate();
 
-    useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    console.log("userId:", userId);
-
-    fetch(`http://localhost:8080/api/profile/${userId}`)
-      .then(res => res.json())
-      .then(user => {
-        setUsername(user.userName ?? "");
-        setEmail(user.email);
-        setFirstname(user.firstName);
-        setLastname(user.lastName);
-        setPhone(user.phoneNumber ?? "");
-        setProfilePicture(user.profilePictureUrl ?? "");
-      })
-      .catch(err => console.log("error:", err));
-      ;
+  useEffect(() => {
+      authFetch(`http://localhost:8080/api/profile`)
+        .then(res => res.json())
+        .then(user => {
+          setUsername(user.userName ?? "");
+          setEmail(user.email);
+          setFirstname(user.firstName);
+          setLastname(user.lastName);
+          setPhone(user.phoneNumber ?? "");
+          setProfilePicture(user.profilePictureUrl ?? "");
+        })
+        .catch(err => console.log("error:", err));
   }, []);
 
-    const handleFileChange = async (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
+  const handleFileChange = async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
 
-        setSelectedFile(file);
+      setSelectedFile(file);
 
-        const userId = localStorage.getItem("userId");
-        const formData = new FormData();
-        formData.append("file", file);
-
-        try {
-            const response = await fetch(`http://localhost:8080/api/profile/${userId}/upload-picture`, {
-                method: "POST",
-                body: formData
-            });
-
-            if (response.ok) {
-                const updatedUser = await response.json();
-                setProfilePicture(updatedUser.profilePictureUrl);
-                setUploadSuccess(true);
-            } else {
-                setError("Sikertelen képfeltöltés!");
-            }
-        } catch (err) {
-            setError("Hiba történt a feltöltés során!");
-        }
-    };
-
-/*       const handleUpload = async () => {
-      if (!selectedFile) {
-        setError("Válassz ki egy képet!");
-        return;
-      }
-
-      const userId = localStorage.getItem("userId");
       const formData = new FormData();
-      formData.append("file", selectedFile);
+      formData.append("file", file);
 
       try {
-        const response = await fetch(`http://localhost:8080/api/profile/${userId}/upload-picture`, {
-          method: "POST",
-          body: formData
+          const response = await authFetch(`http://localhost:8080/api/profile/upload-picture`, {
+              method: "POST",
+              body: formData
+          });
+
+          if (response.ok) {
+              const updatedUser = await response.json();
+              setProfilePicture(updatedUser.profilePictureUrl);
+              setUploadSuccess(true);
+          } else {
+              setError("Sikertelen képfeltöltés!");
+          }
+      } catch (err) {
+          setError("Hiba történt a feltöltés során!");
+      }
+  };
+  
+
+    const handleSave = async (event) => {
+        event.preventDefault();
+        setError("");
+
+        const phoneRegex = /^(\+36|06)[0-9]{9}$/;
+
+        if (!phone || !phoneRegex.test(phone)) {
+            setError("Érvénytelen telefonszám! (pl. +36301234567 vagy 06301234567)");
+            return;
+        }
+
+        const response = await authFetch(`http://localhost:8080/api/profile`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phoneNumber: phone })
         });
 
         if (response.ok) {
-          const updatedUser = await response.json();
-          setProfilePicture(updatedUser.profilePictureUrl);
+            navigate("/successful-save");
         } else {
-          setError("Sikertelen képfeltöltés!");
+            setError("Sikertelen mentés!");
         }
-      } catch (err) {
-        setError("Hiba történt a feltöltés során!");
-      }
-    }; */
-  
-
-  const handleSave = async (event) => {
-      event.preventDefault();
-      setError("");
-
-      const phoneRegex = /^(\+36|06)[0-9]{9}$/;
-
-      if (!phone || !phoneRegex.test(phone)) {
-          setError("Érvénytelen telefonszám! (pl. +36301234567 vagy 06301234567)");
-          return;
-      }
-
-      const userId = localStorage.getItem("userId");
-
-      const response = await fetch(`http://localhost:8080/api/profile/${userId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phoneNumber: phone })
-      });
-
-      if (response.ok) {
-        navigate("/successful-save");
-      } else {
-        setError("Sikertelen mentés!");
-      }
     };
 
   return (

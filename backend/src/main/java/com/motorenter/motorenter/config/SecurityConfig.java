@@ -37,6 +37,7 @@ public class SecurityConfig {
                                 "/api/login",
                                 "/api/auth/google"
                         ).permitAll()
+                        .requestMatchers("/uploads/**").permitAll() // ÚJ - statikus képek publikusak
                         // minden más endpoint érvényes tokent igényel
                         .anyRequest().authenticated()
                 )
