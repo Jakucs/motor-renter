@@ -36,9 +36,14 @@ public class VehicleService {
         return vehicleRepository.save(vehicle);
     }
 
-    public Vehicle updateVehicle(int vehicleId, Vehicle updatedVehicle) {
+    public Vehicle updateVehicle(int userId, int vehicleId, Vehicle updatedVehicle) {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        if (vehicle.getUser().getId() != userId) {
+            throw new RuntimeException("Nincs jogosultságod ehhez a művelethez!");
+        }
+
         vehicle.setBrand(updatedVehicle.getBrand());
         vehicle.setModel(updatedVehicle.getModel());
         vehicle.setYear(updatedVehicle.getYear());
@@ -46,18 +51,35 @@ public class VehicleService {
         return vehicleRepository.save(vehicle);
     }
 
-    public Vehicle getVehicleById(int id) {
-        return vehicleRepository.findById(id)
+    public Vehicle getVehicleById(int userId, int id) {
+        Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        if (vehicle.getUser().getId() != userId) {
+            throw new RuntimeException("Nincs jogosultságod ehhez a művelethez!");
+        }
+
+        return vehicle;
     }
 
-    public void deleteVehicle(int vehicleId) {
+    public void deleteVehicle(int userId, int vehicleId) {
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        if (vehicle.getUser().getId() != userId) {
+            throw new RuntimeException("Nincs jogosultságod ehhez a művelethez!");
+        }
+
         vehicleRepository.deleteById(vehicleId);
     }
 
-    public Vehicle uploadPicture(int id, MultipartFile file) throws IOException {
+    public Vehicle uploadPicture(int userId, int id, MultipartFile file) throws IOException {
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        if (vehicle.getUser().getId() != userId) {
+            throw new RuntimeException("Nincs jogosultságod ehhez a művelethez!");
+        }
 
         String fileName = "vehicle_" + id + "_" + file.getOriginalFilename();
         Path uploadPath = Paths.get("uploads/vehicle-pictures/");
