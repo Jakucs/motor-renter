@@ -2,6 +2,7 @@ package com.motorenter.motorenter.controller;
 
 import com.motorenter.motorenter.model.Vehicle;
 import com.motorenter.motorenter.service.VehicleService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,33 +20,33 @@ public class VehicleController {
         this.vehicleService = vehicleService;
     }
 
-    @GetMapping("/{userId}")
-    public List<Vehicle> getVehicles(@PathVariable int userId) {
+    @GetMapping
+    public List<Vehicle> getVehicles(@AuthenticationPrincipal Integer userId) {
         return vehicleService.getVehiclesByUserId(userId);
     }
 
-    @PostMapping("/{userId}")
-    public Vehicle addVehicle(@PathVariable int userId, @RequestBody Vehicle vehicle) {
+    @PostMapping
+    public Vehicle addVehicle(@AuthenticationPrincipal Integer userId, @RequestBody Vehicle vehicle) {
         return vehicleService.addVehicle(userId, vehicle);
     }
 
     @PutMapping("/{vehicleId}")
-    public Vehicle updateVehicle(@PathVariable int vehicleId, @RequestBody Vehicle updatedVehicle) {
-        return vehicleService.updateVehicle(vehicleId, updatedVehicle);
+    public Vehicle updateVehicle(@AuthenticationPrincipal Integer userId, @PathVariable int vehicleId, @RequestBody Vehicle updatedVehicle) {
+        return vehicleService.updateVehicle(userId, vehicleId, updatedVehicle);
     }
 
     @DeleteMapping("/{vehicleId}")
-    public void deleteVehicle(@PathVariable int vehicleId) {
-        vehicleService.deleteVehicle(vehicleId);
+    public void deleteVehicle(@AuthenticationPrincipal Integer userId, @PathVariable int vehicleId) {
+        vehicleService.deleteVehicle(userId, vehicleId);
     }
 
     @GetMapping("/single/{id}")
-    public Vehicle getVehicle(@PathVariable int id) {
-        return vehicleService.getVehicleById(id);
+    public Vehicle getVehicle(@AuthenticationPrincipal Integer userId, @PathVariable int id) {
+        return vehicleService.getVehicleById(userId, id);
     }
 
     @PostMapping("/{id}/upload-picture")
-    public Vehicle uploadPicture(@PathVariable int id, @RequestParam("file") MultipartFile file) throws IOException {
-        return vehicleService.uploadPicture(id, file);
+    public Vehicle uploadPicture(@AuthenticationPrincipal Integer userId, @PathVariable int id, @RequestParam("file") MultipartFile file) throws IOException {
+        return vehicleService.uploadPicture(userId, id, file);
     }
 }
