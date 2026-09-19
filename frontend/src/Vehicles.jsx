@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { authFetch } from "./utils/authFetch";
 
 function Vehicles() {
   const [vehicles, setVehicles] = useState([]);
   const navigate = useNavigate();
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
-
-        fetch(`http://localhost:8080/api/vehicle/${userId}`)
+        authFetch(`http://localhost:8080/api/vehicle`)
         .then(res => res.json())
         .then(data => setVehicles(data));
     }, []);
