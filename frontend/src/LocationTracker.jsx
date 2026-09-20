@@ -43,8 +43,8 @@ function LocationTracker({ role, isActive }) {
                 }).catch((err) => console.error("Heartbeat failed:", err));
             };
 
-            sendHeartbeat(); // azonnal küldünk egyet, ne kelljen 20 mp-et várni az elsőre
-            const heartbeatInterval = setInterval(sendHeartbeat, 20000); // 20 másodpercenként
+            sendHeartbeat(); // azonnal küldünk egyet ne kelljen 20 mp-et várni az elsőre
+            const heartbeatInterval = setInterval(sendHeartbeat, 20000); // 20 mp ként
 
             return () => clearInterval(heartbeatInterval);
         }, [role, isActive]);
