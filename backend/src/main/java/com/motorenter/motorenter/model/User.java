@@ -1,5 +1,6 @@
 package com.motorenter.motorenter.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ public class User {
     private String phoneNumber;
     @Column(unique = true)
     private String email;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password; //google bejelentkezés miatt lehet null is
     private LocalDate createdAt;
     private String profilePictureUrl;
