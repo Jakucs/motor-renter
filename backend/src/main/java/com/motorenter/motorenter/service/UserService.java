@@ -153,6 +153,18 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public void updatePassword(Integer id, String currentPassword, String newPassword) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new RuntimeException("A jelenlegi jelszó helytelen!");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
     public User updateLocation(Integer id, Double lat, Double lng){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -177,6 +189,5 @@ public class UserService {
         user.setLastSeenAt(LocalDateTime.now());
         userRepository.save(user);
     }
-
 
 }

@@ -1,4 +1,2 @@
 Heartbeat/TTL
-VehicleProfile-ba ne lehessen később módosítani a motor paramétereit.
-PersonalProfile-ba nem látszik a profilkép
 milyen egyéb ötletekkel lehetne fejleszteni az alkalmazást?

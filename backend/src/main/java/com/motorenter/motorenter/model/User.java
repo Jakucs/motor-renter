@@ -142,7 +142,7 @@ public class User {
         this.hasProtectiveGear = hasProtectiveGear;
     }
 
-    public boolean getIsActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 
