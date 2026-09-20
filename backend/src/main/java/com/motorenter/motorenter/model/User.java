@@ -3,6 +3,7 @@ package com.motorenter.motorenter.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="users")
@@ -32,6 +33,8 @@ public class User {
     private Boolean isActive;
     private Double lat;
     private Double lng;
+    @Column
+    private LocalDateTime lastSeenAt;
 
     public User(String userName, String lastName, String firstName, String phoneNumber, String email, String password, Role role){
         //this.id = ++counter;
@@ -81,6 +84,14 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public LocalDateTime getLastSeenAt() {
+        return lastSeenAt;
+    }
+
+    public void setLastSeenAt(LocalDateTime lastSeenAt) {
+        this.lastSeenAt = lastSeenAt;
     }
 
     public Double getLat() {

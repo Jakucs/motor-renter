@@ -96,7 +96,7 @@ function PersonalProfile() {
 
         <form onSubmit={handleSave}>
           {error && <div className="error-message">{error}</div>}
-
+          
         <input
             type="file"
             accept="image/*"
