@@ -6,5 +6,14 @@ export async function authFetch(url, options = {}) {
         "Authorization": `Bearer ${token}`
     };
 
-    return fetch(url, { ...options, headers });
+    const response = await fetch(url, { ...options, headers });
+
+    if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("role");
+        window.location.href = "/"; // vissza a login poage -re
+    }
+
+    return response;
 }
