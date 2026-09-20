@@ -92,4 +92,9 @@ public class UserController {
     public List<ActiveDriverDTO> getActiveDrivers() {
         return userService.getActiveDrivers();
     }
+
+    @PutMapping("/profile/heartbeat")
+    public void heartbeat(@AuthenticationPrincipal Integer userId) {
+        userService.updateHeartbeat(userId);
+    }
 }
