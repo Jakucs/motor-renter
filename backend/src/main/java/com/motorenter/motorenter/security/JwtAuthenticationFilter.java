@@ -7,12 +7,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -43,13 +45,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (jwtService.isTokenValid(token)) {
             Integer userId = jwtService.extractUserId(token);
+            String role = jwtService.extractRole(token);
 
             // beállítjuk a SecurityContext-et, hogy a rendszer tudja, ki a bejelentkezett user
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(
                             userId,          // principal - ezt fogjuk @AuthenticationPrincipal-lal kiolvasni
                             null,             // credentials - nem kell, már validáltuk a tokent
-                            Collections.emptyList() // authorities - egyelőre üres, később bővíthető role alapján
+                            List.of(new SimpleGrantedAuthority("ROLE_" + role)) // authorities - a role a SecurityConfig hasRole() ellenőrzéséhez
                     );
 
             SecurityContextHolder.getContext().setAuthentication(authToken);

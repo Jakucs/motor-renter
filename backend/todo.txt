@@ -1,2 +1,4 @@
 Heartbeat/TTL
 milyen egyéb ötletekkel lehetne fejleszteni az alkalmazást?
+adminfelület
+ha user megváltoztatja a telefonszámát/emailcímét, az tárolódjon ovábbra is a dbben-

@@ -168,7 +168,6 @@ function PersonalProfile() {
             placeholder="Email cím"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            readOnly
           />
 
           <input
