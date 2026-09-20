@@ -99,4 +99,9 @@ public class UserController {
     public void changePassword(@AuthenticationPrincipal Integer userId, @RequestBody ChangePasswordRequest request) {
         userService.updatePassword(userId, request.getCurrentPassword(), request.getNewPassword());
     }
+
+    @GetMapping("/admin/users")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
 }

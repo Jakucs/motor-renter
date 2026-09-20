@@ -30,14 +30,15 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // csak token, session nélkül
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // ÚJ
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // publikus endpointok - token nélkül elérhetők
                         .requestMatchers(
                                 "/api/register",
                                 "/api/login",
                                 "/api/auth/google"
                         ).permitAll()
-                        .requestMatchers("/uploads/**").permitAll() // ÚJ - statikus képek publikusak
+                        .requestMatchers("/uploads/**").permitAll() // statikus képek publikusak
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // csak ADMIN role férhet hozzá
                         // minden más endpoint érvényes tokent igényel
                         .anyRequest().authenticated()
                 )
