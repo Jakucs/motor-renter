@@ -1,9 +1,6 @@
 package com.motorenter.motorenter.controller;
 
-import com.motorenter.motorenter.dto.ActiveDriverDTO;
-import com.motorenter.motorenter.dto.GoogleAuthRequest;
-import com.motorenter.motorenter.dto.LoginResponse;
-import com.motorenter.motorenter.dto.RidingGearRequest;
+import com.motorenter.motorenter.dto.*;
 import com.motorenter.motorenter.model.Role;
 import com.motorenter.motorenter.model.User;
 import com.motorenter.motorenter.service.JwtService;
@@ -96,5 +93,10 @@ public class UserController {
     @PutMapping("/profile/heartbeat")
     public void heartbeat(@AuthenticationPrincipal Integer userId) {
         userService.updateHeartbeat(userId);
+    }
+
+    @PutMapping("/profile/password")
+    public void changePassword(@AuthenticationPrincipal Integer userId, @RequestBody ChangePasswordRequest request) {
+        userService.updatePassword(userId, request.getCurrentPassword(), request.getNewPassword());
     }
 }
