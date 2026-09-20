@@ -24,7 +24,35 @@ function ChangePassword() {
     return true;
   };
 
+  const handleSave = async (event) => {
+    event.preventDefault();
+    setError("");
 
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setError("Kérlek töltsd ki az összes mezőt!");
+      return;
+    }
+
+    if (!validate()) return;
+
+    try {
+      const response = await authFetch("http://localhost:8080/api/profile/password", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword })
+      });
+
+      if (response.ok) {
+        navigate("/successful-save");
+      } else {
+        const message = await response.text();
+        setError(message || "Sikertelen jelszóváltoztatás!");
+      }
+    } catch (err) {
+      console.error("Jelszóváltoztatási hiba:", err);
+      setError("Nem sikerült kapcsolódni a szerverhez!");
+    }
+  };
 
   return (
     <div className="wrapper">
