@@ -32,6 +32,22 @@ function LocationTracker({ role, isActive }) {
         //clearWatchal leállítjukl a figyelést
         return () => navigator.geolocation.clearWatch(watchId);
     }, [role, isActive]);
+
+        // ÚJ USEEFFECT HEARTBEAT
+        useEffect(() => {
+            if (role !== "DRIVER" || !isActive) return;
+
+            const sendHeartbeat = () => {
+                authFetch(`http://localhost:8080/api/profile/heartbeat`, {
+                    method: "PUT"
+                }).catch((err) => console.error("Heartbeat failed:", err));
+            };
+
+            sendHeartbeat(); // azonnal küldünk egyet, ne kelljen 20 mp-et várni az elsőre
+            const heartbeatInterval = setInterval(sendHeartbeat, 20000); // 20 másodpercenként
+
+            return () => clearInterval(heartbeatInterval);
+        }, [role, isActive]);
 }
 
 export default LocationTracker;

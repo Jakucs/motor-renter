@@ -162,8 +162,11 @@ public class UserService {
     }
 
     public List<ActiveDriverDTO> getActiveDrivers() {
+        LocalDateTime cutoff = LocalDateTime.now().minusSeconds(60); // 60 másodperces TTL
+
         return userRepository.findByRoleAndIsActive(Role.DRIVER, true).stream()
                 .filter(u -> u.getLat() != null && u.getLng() != null)
+                .filter(u -> u.getLastSeenAt() != null && u.getLastSeenAt().isAfter(cutoff)) // ÚJ SOR
                 .map(u -> new ActiveDriverDTO(u.getId(), u.getLat(), u.getLng()))
                 .toList();
     }
@@ -174,5 +177,6 @@ public class UserService {
         user.setLastSeenAt(LocalDateTime.now());
         userRepository.save(user);
     }
+
 
 }
