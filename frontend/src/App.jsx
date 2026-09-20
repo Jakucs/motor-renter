@@ -17,6 +17,7 @@ import DriverStatus from "./DriverStatus";
 import NoPhoneNumber from "./redirect/NoPhoneNumber";
 import { useEffect, useState } from "react";
 import LocationTracker from "./LocationTracker";
+import ChangePassword from "./ChangePassword";
 
 function App() {
     const [role, setRole] = useState("");
@@ -50,6 +51,7 @@ function App() {
       <Route path="/no-vehicle" element={<ProtectedRoute><NoVehicle /></ProtectedRoute>}/>
       <Route path="/settings/riding-gear" element={<ProtectedRoute><RidingGear /></ProtectedRoute>}/>
       <Route path="/settings/driver-status" element={<ProtectedRoute><DriverStatus /></ProtectedRoute>} />
+      <Route path="/settings/change-password" element={<ProtectedRoute><ChangePassword/></ProtectedRoute>}/>
       <Route path="/no-phone-number" element={<NoPhoneNumber />} />
       <Route path="/about" element={<About />} />
     </Routes>
