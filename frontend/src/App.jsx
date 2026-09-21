@@ -18,6 +18,8 @@ import NoPhoneNumber from "./redirect/NoPhoneNumber";
 import { useEffect, useState } from "react";
 import LocationTracker from "./LocationTracker";
 import ChangePassword from "./ChangePassword";
+import AdminRoute from "./AdminRoute";
+import AdminUsers from "./AdminUsers";
 
 function App() {
     const [role, setRole] = useState("");
@@ -54,6 +56,7 @@ function App() {
       <Route path="/settings/change-password" element={<ProtectedRoute><ChangePassword/></ProtectedRoute>}/>
       <Route path="/no-phone-number" element={<NoPhoneNumber />} />
       <Route path="/about" element={<About />} />
+      <Route path="/admin/users" element={<AdminRoute><AdminUsers/></AdminRoute>}/>
     </Routes>
     </>
   );
