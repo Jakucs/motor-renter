@@ -78,7 +78,7 @@ public class UserService {
 
     }
 
-    public User updatePhone(Integer id, String phoneNumber) {
+    public User updatePhoneNumber(Integer id, String phoneNumber) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         if (!phoneNumber.equals(user.getPhoneNumber())) {

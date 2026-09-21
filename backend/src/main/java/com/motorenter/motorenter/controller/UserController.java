@@ -51,7 +51,7 @@ public class UserController {
 
     @PutMapping("/profile")
     public User updateProfile(@AuthenticationPrincipal Integer userId, @RequestBody User updatedUser) {
-        return userService.updatePhone(userId, updatedUser.getPhoneNumber());
+        return userService.updatePhoneNumber(userId, updatedUser.getPhoneNumber());
     }
 
     @PutMapping("/profile/role")
@@ -108,5 +108,15 @@ public class UserController {
     @DeleteMapping("/admin/users/{id}")
     public void deleteUser(@PathVariable int id) {
         userService.deleteUser(id);
+    }
+
+    @PutMapping("/profile/{id}/email")
+    public User updateEmail(@PathVariable int id, @RequestBody Map<String, String> body) {
+        return userService.updateEmail(id, body.get("email"));
+    }
+
+    @PutMapping("/profile/{id}/phone")
+    public User updatePhoneNumber(@PathVariable int id, @RequestBody Map<String, String> body) {
+        return userService.updatePhoneNumber(id, body.get("phoneNumber"));
     }
 }
