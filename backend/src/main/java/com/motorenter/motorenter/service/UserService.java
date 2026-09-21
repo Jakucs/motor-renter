@@ -93,6 +93,9 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!newEmail.equals(user.getEmail())) {
+            if (userRepository.findByEmail(newEmail).isPresent()) {
+                throw new RuntimeException("Ez az email cím már foglalt!");
+            }
             contactHistoryRepository.save(new UserContactHistory(user, "email", user.getEmail()));
             user.setEmail(newEmail);
         }
