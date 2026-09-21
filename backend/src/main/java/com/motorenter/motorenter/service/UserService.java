@@ -88,6 +88,18 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User updateEmail(Integer id, String newEmail) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!newEmail.equals(user.getEmail())) {
+            contactHistoryRepository.save(new UserContactHistory(user, "email", user.getEmail()));
+            user.setEmail(newEmail);
+        }
+
+        return userRepository.save(user);
+    }
+
     public User updateRole(Integer id, Role role) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
