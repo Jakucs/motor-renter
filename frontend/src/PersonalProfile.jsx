@@ -57,29 +57,48 @@ function PersonalProfile() {
   };
   
 
-    const handleSave = async (event) => {
-        event.preventDefault();
-        setError("");
+  const handleSave = async (event) => {
+      event.preventDefault();
+      setError("");
 
-        const phoneRegex = /^(\+36|06)[0-9]{9}$/;
+      const phoneRegex = /^(\+36|06)[0-9]{9}$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (!phone || !phoneRegex.test(phone)) {
-            setError("Érvénytelen telefonszám! (pl. +36301234567 vagy 06301234567)");
-            return;
-        }
+      if (!phone || !phoneRegex.test(phone)) {
+          setError("Érvénytelen telefonszám! (pl. +36301234567 vagy 06301234567)");
+          return;
+      }
 
-        const response = await authFetch(`http://localhost:8080/api/profile`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ phoneNumber: phone })
-        });
+      if (!email || !emailRegex.test(email)) {
+          setError("Érvénytelen email cím!");
+          return;
+      }
 
-        if (response.ok) {
-            navigate("/successful-save");
-        } else {
-            setError("Sikertelen mentés!");
-        }
-    };
+      try {
+          const phoneRes = await authFetch(`http://localhost:8080/api/profile`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ phoneNumber: phone })
+          });
+
+          const emailRes = await authFetch(`http://localhost:8080/api/profile/email`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email })
+          });
+
+          if (phoneRes.ok && emailRes.ok) {
+              navigate("/successful-save");
+          } else if (!emailRes.ok) {
+              const errText = await emailRes.text();
+              setError(errText || "Sikertelen email mentés!");
+          } else {
+              setError("Sikertelen mentés!");
+          }
+      } catch (err) {
+          setError("Hiba történt a mentés során!");
+      }
+  };
 
   return (
     <div className="wrapper">
