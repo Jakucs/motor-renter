@@ -6,6 +6,8 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.motorenter.motorenter.dto.ActiveDriverDTO;
 import com.motorenter.motorenter.dto.RidingGearRequest;
+import com.motorenter.motorenter.model.UserContactHistory;
+import com.motorenter.motorenter.repository.UserContactHistoryRepository;
 import com.motorenter.motorenter.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Value;
 import com.motorenter.motorenter.model.Role;
@@ -35,15 +37,18 @@ public class UserService {
     private String googleClientId;
 
     private final VehicleRepository vehicleRepository;
+    private final UserContactHistoryRepository contactHistoryRepository;
 
     public UserService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            VehicleRepository vehicleRepository // ÚJ
+            VehicleRepository vehicleRepository, // ÚJ
+            UserContactHistoryRepository contactHistoryRepository
     ){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.vehicleRepository = vehicleRepository;
+        this.contactHistoryRepository = contactHistoryRepository;
     }
 
     public User register(User user){
@@ -76,7 +81,10 @@ public class UserService {
     public User updatePhone(Integer id, String phoneNumber) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        user.setPhoneNumber(phoneNumber);
+        if (!phoneNumber.equals(user.getPhoneNumber())) {
+            contactHistoryRepository.save(new UserContactHistory(user, "phoneNumber", user.getPhoneNumber()));
+            user.setPhoneNumber(phoneNumber);
+        }
         return userRepository.save(user);
     }
 
