@@ -8,6 +8,10 @@ function AdminUsers() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        loadUsers();
+    }, []);
+
+    const loadUsers = () => {
         authFetch("http://localhost:8080/api/admin/users")
             .then(res => res.json())
             .then(data => setUsers(data))
@@ -15,7 +19,26 @@ function AdminUsers() {
                 console.error(err);
                 setError("Nem sikerült betölteni a felhasználókat!");
             });
-    }, []);
+    };
+
+    const handleDelete = async (userId, userName) => {
+        if (!window.confirm(`Biztosan törölni szeretnéd ezt a felhasználót: ${userName}? Ez a művelet nem vonható vissza!`)) return;
+
+        try {
+            const response = await authFetch(`http://localhost:8080/api/admin/users/${userId}`, {
+                method: "DELETE"
+            });
+
+            if (response.ok) {
+                setUsers(users.filter(u => u.id !== userId));
+            } else {
+                setError("Sikertelen törlés!");
+            }
+        } catch (err) {
+            console.error(err);
+            setError("Hiba történt a törlés során!");
+        }
+    };
 
     return (
         <div className="wrapper">
@@ -41,6 +64,7 @@ function AdminUsers() {
                                 <th style={{ padding: "8px" }}>Név</th>
                                 <th style={{ padding: "8px" }}>Szerepkör</th>
                                 <th style={{ padding: "8px" }}>Aktív</th>
+                                <th style={{ padding: "8px" }}>Művelet</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,6 +76,21 @@ function AdminUsers() {
                                     <td style={{ padding: "8px" }}>{user.firstName} {user.lastName}</td>
                                     <td style={{ padding: "8px" }}>{user.role}</td>
                                     <td style={{ padding: "8px" }}>{user.isActive ? "🟢" : "⚪"}</td>
+                                    <td style={{ padding: "8px" }}>
+                                        <button
+                                            onClick={() => handleDelete(user.id, user.userName)}
+                                            style={{
+                                                background: "#e74c3c",
+                                                color: "white",
+                                                border: "none",
+                                                borderRadius: "6px",
+                                                padding: "6px 12px",
+                                                cursor: "pointer"
+                                            }}
+                                        >
+                                            🗑️ Törlés
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
