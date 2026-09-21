@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
     List<Vehicle> findByUserId(int userId);
+    void deleteByUserId(int userId);
 }

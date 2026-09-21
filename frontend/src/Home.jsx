@@ -38,6 +38,9 @@ function Home() {
                   <div onClick={() => navigate("/settings/vehicle")}>Jármű adatok</div>
                   <div onClick={() => navigate("/settings/riding-gear")}>Ruházat</div>
                   <div onClick={() => navigate("/settings/driver-status")}>Sofőr státusz</div>
+                  {localStorage.getItem("role") === "ADMIN" && (
+                      <span onClick={() => navigate("/admin/users")}>Admin</span>
+                  )}
 
                 </div>
               )}

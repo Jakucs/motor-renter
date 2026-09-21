@@ -54,6 +54,9 @@ function Menu() {
                 <div className="sidebar-item" onClick={() => navigate("/settings/vehicle")}>Jármű adatok</div>
                 <div className="sidebar-item" onClick={() => navigate("/settings/riding-gear")}>Ruházat</div>
                 <div className="sidebar-item" onClick={() => navigate("/settings/driver-status")}>Sofőr státusz</div>
+                {localStorage.getItem("role") === "ADMIN" && (
+                    <div className="sidebar-item" onClick={() => navigate("/admin/users")}>Admin</div>
+                )}
               </>
             )}
           </div>

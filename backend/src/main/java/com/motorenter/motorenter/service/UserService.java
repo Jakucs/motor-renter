@@ -6,6 +6,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.motorenter.motorenter.dto.ActiveDriverDTO;
 import com.motorenter.motorenter.dto.RidingGearRequest;
+import com.motorenter.motorenter.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Value;
 import com.motorenter.motorenter.model.Role;
 import com.motorenter.motorenter.model.User;
@@ -33,12 +34,16 @@ public class UserService {
     @Value("${google.client.id}")
     private String googleClientId;
 
+    private final VehicleRepository vehicleRepository;
+
     public UserService(
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            VehicleRepository vehicleRepository // ÚJ
     ){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.vehicleRepository = vehicleRepository;
     }
 
     public User register(User user){
@@ -192,6 +197,14 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public void deleteUser(int id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        vehicleRepository.deleteByUserId(id); // előbb a járműveket töröljük
+        userRepository.deleteById(id);
     }
 
 }
