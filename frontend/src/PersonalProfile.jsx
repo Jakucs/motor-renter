@@ -12,6 +12,7 @@ function PersonalProfile() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [hasPassword, setHasPassword] = useState(true);
 
   const navigate = useNavigate();
 
@@ -25,6 +26,7 @@ function PersonalProfile() {
           setLastname(user.lastName);
           setPhone(user.phoneNumber ?? "");
           setProfilePicture(user.profilePictureUrl ?? "");
+          setHasPassword(user.hasPassword ?? true);
         })
         .catch(err => console.log("error:", err));
   }, []);
@@ -188,7 +190,15 @@ function PersonalProfile() {
             placeholder="Email cím"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            readOnly={!hasPassword}
           />
+          <br />
+
+          {!hasPassword && (
+            <p style={{ color: "#888", fontSize: "13px", marginTop: "-8px", marginBottom: "10px" }}>
+                Google fiókkal bejelentkezve az email cím nem módosítható.
+            </p>
+        )}
 
           <input
             type="text"
