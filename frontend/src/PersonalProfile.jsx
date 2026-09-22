@@ -225,13 +225,15 @@ function PersonalProfile() {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
-
-          <input
-            type="button"
-            className="fadeIn fourth"
-            value="Jelszó módosítása"
-            onClick={() => navigate("/settings/change-password")}
-          />
+          
+        {hasPassword && (
+            <input
+                type="button"
+                className="fadeIn fourth"
+                value="Jelszó módosítása"
+                onClick={() => navigate("/settings/change-password")}
+            />
+        )}
 
           <input
             type="submit"
