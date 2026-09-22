@@ -171,4 +171,10 @@ public class User {
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public boolean isHasPassword() {
+        return password != null;
+    }
 }

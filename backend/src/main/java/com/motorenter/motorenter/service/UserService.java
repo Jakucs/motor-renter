@@ -92,6 +92,10 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        if (user.getPassword() == null) {
+            throw new RuntimeException("Google fiókkal bejelentkezett felhasználó email címe nem módosítható!");
+        }
+
         if (!newEmail.equals(user.getEmail())) {
             if (userRepository.findByEmail(newEmail).isPresent()) {
                 throw new RuntimeException("Ez az email cím már foglalt!");
