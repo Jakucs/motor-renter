@@ -92,9 +92,10 @@ function PersonalProfile() {
           } else if (!emailRes.ok) {
               const errText = await emailRes.text();
               setError(errText || "Sikertelen email mentés!");
-          } else {
-              setError("Sikertelen mentés!");
-          }
+          } else if (!phoneRes.ok) {
+            const errText = await phoneRes.text();
+            setError(errText || "Sikertelen telefonszám mentés!");
+        }
       } catch (err) {
           setError("Hiba történt a mentés során!");
       }

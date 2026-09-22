@@ -110,13 +110,13 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-    @PutMapping("/profile/{id}/email")
-    public User updateEmail(@PathVariable int id, @RequestBody Map<String, String> body) {
-        return userService.updateEmail(id, body.get("email"));
+    @PutMapping("/profile/email")
+    public User updateEmail(@AuthenticationPrincipal Integer userId, @RequestBody Map<String, String> body) {
+        return userService.updateEmail(userId, body.get("email"));
     }
 
-    @PutMapping("/profile/{id}/phone")
-    public User updatePhoneNumber(@PathVariable int id, @RequestBody Map<String, String> body) {
-        return userService.updatePhoneNumber(id, body.get("phoneNumber"));
+    @PutMapping("/profile/phone")
+    public User updatePhoneNumber(@AuthenticationPrincipal Integer userId, @RequestBody Map<String, String> body) {
+        return userService.updatePhoneNumber(userId, body.get("phoneNumber"));
     }
 }

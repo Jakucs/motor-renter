@@ -15,4 +15,12 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.PAYLOAD_TOO_LARGE)
                 .body("A feltöltött fájl mérete meghaladja a megengedett limitet.");
     }
+
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException exc) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(exc.getMessage());
+    }
 }
