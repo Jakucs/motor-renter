@@ -7,10 +7,28 @@ function Vehicles() {
   const navigate = useNavigate();
 
     useEffect(() => {
+        loadVehicles();
+    }, []);
+
+    const loadVehicles = () => {
         authFetch(`http://localhost:8080/api/vehicle`)
         .then(res => res.json())
         .then(data => setVehicles(data));
-    }, []);
+    };
+
+        const handleSetPrimary = async (vehicleId, event) => {
+        event.stopPropagation();
+        try {
+            const response = await authFetch(`http://localhost:8080/api/vehicle/${vehicleId}/set-primary`, {
+                method: "PUT"
+            });
+            if (response.ok) {
+                loadVehicles();
+            }
+        } catch (err) {
+            console.error("Elsődleges jármű beállítása sikertelen:", err);
+        }
+    };
 
     return (
         <div className="wrapper">
@@ -41,10 +59,33 @@ function Vehicles() {
                     borderRadius: "8px",
                     cursor: "pointer",
                     textAlign: "left",
-                    border: "1px solid #ddd"
+                    border: vehicle.isPrimary ? "2px solid #91bbfa" : "1px solid #ddd",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center"
                 }}
                 >
-                🏍️ <strong>{vehicle.brand} {vehicle.model}</strong> — {vehicle.year}
+                <span>
+                    🏍️ <strong>{vehicle.brand} {vehicle.model}</strong> — {vehicle.year}
+                    {vehicle.isPrimary && <span style={{ color: "#91bbfa", marginLeft: "8px" }}>⭐ Elsődleges</span>}
+                </span>
+
+                {!vehicle.isPrimary && (
+                    <button
+                        onClick={(e) => handleSetPrimary(vehicle.id, e)}
+                        style={{
+                            background: "#91bbfa",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "6px",
+                            padding: "6px 10px",
+                            cursor: "pointer",
+                            fontSize: "12px"
+                        }}
+                    >
+                        Elsődlegesnek jelöl
+                    </button>
+                )}
                 </div>
             ))
             )}
