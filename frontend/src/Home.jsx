@@ -7,6 +7,7 @@ import Menu from "./Menu";
 function Home() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  
 
     const handleLogout = () => {
       localStorage.removeItem("token");
