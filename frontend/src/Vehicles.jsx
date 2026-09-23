@@ -13,7 +13,10 @@ function Vehicles() {
     const loadVehicles = () => {
         authFetch(`http://localhost:8080/api/vehicle`)
         .then(res => res.json())
-        .then(data => setVehicles(data));
+        .then(data => {
+            setVehicles(data)
+            console.log("vehicles:", data)
+        });
     };
 
         const handleSetPrimary = async (vehicleId, event) => {
@@ -23,6 +26,7 @@ function Vehicles() {
                 method: "PUT"
             });
             if (response.ok) {
+                console.log("set primary ok, reloading...");
                 loadVehicles();
             }
         } catch (err) {
