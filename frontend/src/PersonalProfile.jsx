@@ -11,6 +11,7 @@ function PersonalProfile() {
   const [profilePicture, setProfilePicture] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [originalEmail, setOriginalEmail] = useState("");
   const [error, setError] = useState("");
   const [hasPassword, setHasPassword] = useState(true);
 
@@ -22,6 +23,7 @@ function PersonalProfile() {
         .then(user => {
           setUsername(user.userName ?? "");
           setEmail(user.email);
+          setOriginalEmail(user.email);
           setFirstname(user.firstName);
           setLastname(user.lastName);
           setPhone(user.phoneNumber ?? "");
@@ -76,31 +78,42 @@ function PersonalProfile() {
           return;
       }
 
-      try {
-          const phoneRes = await authFetch(`http://localhost:8080/api/profile`, {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ phoneNumber: phone })
-          });
+        try {
+            // 1. telefonszámot MIDIG mentjük
+            const phoneRes = await authFetch(`http://localhost:8080/api/profile`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ phoneNumber: phone })
+            });
 
-          const emailRes = await authFetch(`http://localhost:8080/api/profile/email`, {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email })
-          });
+            if (!phoneRes.ok) {
+                const errText = await phoneRes.text();
+                setError(errText || "Sikertelen telefonszám mentés!");
+                return;
+            }
 
-          if (phoneRes.ok && emailRes.ok) {
-              navigate("/successful-save");
-          } else if (!emailRes.ok) {
-              const errText = await emailRes.text();
-              setError(errText || "Sikertelen email mentés!");
-          } else if (!phoneRes.ok) {
-            const errText = await phoneRes.text();
-            setError(errText || "Sikertelen telefonszám mentés!");
+            // 2. email címet csak ha módosított és változtatható
+            const emailChanged = hasPassword && email !== originalEmail;
+
+            if (emailChanged) {
+                const emailRes = await authFetch(`http://localhost:8080/api/profile/email`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email })
+                });
+
+                if (!emailRes.ok) {
+                    const errText = await emailRes.text();
+                    setError(errText || "Sikertelen email mentés!");
+                    return;
+                }
+                setOriginalEmail(email);
+            }
+
+            navigate("/successful-save");
+        } catch (err) {
+            setError("Hiba történt a mentés során!");
         }
-      } catch (err) {
-          setError("Hiba történt a mentés során!");
-      }
   };
 
   return (
