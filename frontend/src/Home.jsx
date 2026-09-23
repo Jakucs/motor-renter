@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./css/Home.css";
 import Menu from "./Menu";
+import ActiveDriversList from "./ActiveDriverList";
 
 function Home() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
-  
+  const [showDrivers, setShowDrivers] = useState(false);
 
     const handleLogout = () => {
       localStorage.removeItem("token");
@@ -65,7 +66,23 @@ function Home() {
 
         <Map />
         <br />
-        <input type="submit" className="fadeIn fourth" value="Rendelés" />
+
+            <input 
+                type="button" 
+                className="fadeIn fourth" 
+                value="Rendelés" 
+                onClick={() => setShowDrivers(true)}
+            />
+
+            {showDrivers && (
+                <ActiveDriversList
+                    onClose={() => setShowDrivers(false)}
+                    onSelect={(driver) => {
+                        console.log("kiválasztott sofőr:", driver);
+                        setShowDrivers(false);
+                    }}
+                />
+            )}
 
       </div>
     </div>
