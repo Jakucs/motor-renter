@@ -21,6 +21,10 @@ public class Vehicle {
     @JoinColumn(name = "user_id")
     private User user;
 
+    //kell elsődleges jármű
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isPrimary;
+
     public Vehicle() {}
 
     public Vehicle(String brand, String model, int year, int engineSize, User user) {
@@ -45,4 +49,12 @@ public class Vehicle {
     public void setEngineSize(int engineSize) { this.engineSize = engineSize; }
     public void setPictureUrl(String pictureUrl) { this.pictureUrl = pictureUrl; }
     public void setUser(User user) { this.user = user; }
+
+    public Boolean getIsPrimary() {
+        return isPrimary;
+    }
+
+    public void setIsPrimary(Boolean isPrimary) {
+        this.isPrimary = isPrimary;
+    }
 }
