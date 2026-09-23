@@ -20,7 +20,7 @@ function About() {
                     <p style={{ marginBottom: "20px", lineHeight: "1.6" }}>
                         A <strong>Moto-Share</strong> egy modern motorkerékpár megosztó platform, 
                         ami összeköti az utasokat a sofőrökkel. Gyors, biztonságos és megbízható 
-                        közlekedést biztosítunk Budapest utcáin.
+                        közlekedést biztosítunk az egész országban.
                     </p>
 
                     <div style={{ borderTop: "1px solid #eee", paddingTop: "20px" }}>

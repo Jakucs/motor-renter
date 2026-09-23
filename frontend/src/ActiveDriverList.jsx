@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
+import { authFetch } from "./utils/authFetch";
 
 function ActiveDriversList({ onClose, onSelect }) {
     const [drivers, setDrivers] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/drivers/active")
+        authFetch("http://localhost:8080/api/drivers/active")
             .then(res => res.json())
             .then(data => setDrivers(data));
     }, []);
@@ -26,7 +27,7 @@ function ActiveDriversList({ onClose, onSelect }) {
                 maxHeight: "70vh",
                 overflowY: "auto"
             }}>
-                <h3 style={{ textAlign: "center", marginBottom: "15px" }}>Elérhető sofőrök</h3>
+                <h3 style={{ textAlign: "center", marginBottom: "15px" }}>Elérhető sofőrök a közelben</h3>
 
                 {drivers.length === 0 ? (
                     <p style={{ textAlign: "center", color: "#555" }}>Nincs elérhető sofőr a közelben.</p>
