@@ -7,6 +7,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.motorenter.motorenter.dto.ActiveDriverDTO;
 import com.motorenter.motorenter.dto.RidingGearRequest;
 import com.motorenter.motorenter.model.UserContactHistory;
+import com.motorenter.motorenter.model.Vehicle;
 import com.motorenter.motorenter.repository.UserContactHistoryRepository;
 import com.motorenter.motorenter.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -210,8 +211,25 @@ public class UserService {
 
         return userRepository.findByRoleAndIsActive(Role.DRIVER, true).stream()
                 .filter(u -> u.getLat() != null && u.getLng() != null)
-                .filter(u -> u.getLastSeenAt() != null && u.getLastSeenAt().isAfter(cutoff)) // ÚJ SOR
-                .map(u -> new ActiveDriverDTO(u.getId(), u.getLat(), u.getLng()))
+                .filter(u -> u.getLastSeenAt() != null && u.getLastSeenAt().isAfter(cutoff))
+                .map(u -> {
+                    Vehicle primaryVehicle = vehicleRepository.findByUserId(u.getId()).stream()
+                            .filter(v -> Boolean.TRUE.equals(v.getIsPrimary()))
+                            .findFirst()
+                            .orElse(null);
+
+                    return new ActiveDriverDTO(
+                            u.getId(),
+                            u.getLat(),
+                            u.getLng(),
+                            u.getUserName(),
+                            u.getFirstName(),
+                            u.getLastName(),
+                            u.getProfilePictureUrl(),
+                            primaryVehicle != null ? primaryVehicle.getBrand() : null,
+                            primaryVehicle != null ? primaryVehicle.getModel() : null
+                    );
+                })
                 .toList();
     }
 

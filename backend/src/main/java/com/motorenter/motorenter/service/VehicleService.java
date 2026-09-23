@@ -33,6 +33,8 @@ public class VehicleService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         vehicle.setUser(user);
+        List<Vehicle> existingVehicles = vehicleRepository.findByUserId(userId);
+        vehicle.setIsPrimary(existingVehicles.isEmpty()); // automatikusan elsődleges ha az 1.
         return vehicleRepository.save(vehicle);
     }
 

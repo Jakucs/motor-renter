@@ -49,4 +49,9 @@ public class VehicleController {
     public Vehicle uploadPicture(@AuthenticationPrincipal Integer userId, @PathVariable int id, @RequestParam("file") MultipartFile file) throws IOException {
         return vehicleService.uploadPicture(userId, id, file);
     }
+
+    @PutMapping("/{vehicleId}/set-primary")
+    public Vehicle setPrimaryVehicle(@AuthenticationPrincipal Integer userId, @PathVariable int vehicleId) {
+        return vehicleService.setPrimaryVehicle(userId, vehicleId);
+    }
 }
