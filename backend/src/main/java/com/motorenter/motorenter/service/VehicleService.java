@@ -94,4 +94,22 @@ public class VehicleService {
         vehicle.setPictureUrl("/uploads/vehicle-pictures/" + fileName);
         return vehicleRepository.save(vehicle);
     }
+
+    public Vehicle setPrimaryVehicle(int userId, int vehicleId) {
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        if (vehicle.getUser().getId() != userId) {
+            throw new RuntimeException("Nincs jogosultságod ehhez a művelethez!");
+        }
+
+        List<Vehicle> userVehicles = vehicleRepository.findByUserId(userId);
+        for (Vehicle v : userVehicles) {
+            v.setIsPrimary(v.getId() == vehicleId);
+        }
+
+        vehicleRepository.saveAll(userVehicles);
+
+        return vehicle;
+    }
 }
