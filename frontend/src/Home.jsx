@@ -23,9 +23,7 @@ function Home() {
       navigate("/");
   };
 
-  useEffect(() => {
-    console.log("acceptedDriverId changed:", acceptedDriverId);
-}, [acceptedDriverId]);
+
 
 useEffect(() => {
     if (!orderId) return;

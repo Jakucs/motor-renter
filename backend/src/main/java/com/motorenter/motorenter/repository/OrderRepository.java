@@ -5,8 +5,10 @@ import com.motorenter.motorenter.model.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findByDriverIdAndStatus(int driverId, OrderStatus status);
     List<Order> findByPassengerIdAndStatus(int passengerId, OrderStatus status);
+    Optional<Order> findFirstByPassengerIdAndStatusInOrderByCreatedAtDesc(Integer passengerId, List<OrderStatus> statuses);
 }

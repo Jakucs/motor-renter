@@ -1,5 +1,6 @@
 package com.motorenter.motorenter.service;
 
+import com.motorenter.motorenter.dto.OrderDTO;
 import com.motorenter.motorenter.model.Order;
 import com.motorenter.motorenter.model.OrderStatus;
 import com.motorenter.motorenter.model.User;
@@ -8,6 +9,7 @@ import com.motorenter.motorenter.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -44,5 +46,15 @@ public class OrderService {
     public Order getOrderById(int id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
+    }
+
+    public OrderDTO getActiveOrderForPassenger(Integer passengerId) {
+        Optional<Order> activeOrder = orderRepository
+                .findFirstByPassengerIdAndStatusInOrderByCreatedAtDesc(
+                        passengerId,
+                        List.of(OrderStatus.PENDING, OrderStatus.ACCEPTED)
+                );
+
+        return activeOrder.map(OrderDTO::new).orElse(null);
     }
 }
