@@ -20,6 +20,7 @@ import LocationTracker from "./LocationTracker";
 import ChangePassword from "./ChangePassword";
 import AdminRoute from "./AdminRoute";
 import AdminUsers from "./AdminUsers";
+import PendingOrders from "./PendingOrders";
 
 function App() {
     const [role, setRole] = useState("");
@@ -40,6 +41,7 @@ function App() {
   return (
     <>
     <LocationTracker role={role} isActive={isActive} />
+    <PendingOrders role={role} />
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />

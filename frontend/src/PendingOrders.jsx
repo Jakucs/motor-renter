@@ -97,4 +97,4 @@ function PendingOrders({ role }) {
     );
 }
 
-export default OrderNotification;
+export default PendingOrders;
