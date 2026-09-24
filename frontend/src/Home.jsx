@@ -71,6 +71,18 @@ function Home() {
         <Map />
         <br />
 
+        {orderSent && (
+            <div style={{
+                background: "#e8f5e9",
+                color: "#2e7d32",
+                padding: "12px",
+                borderRadius: "8px",
+                textAlign: "center",
+                margin: "10px"
+            }}>
+                ✅ Rendelés elküldve! Kérlek várj.
+            </div>
+        )}
             <input 
                 type="button" 
                 className="fadeIn fourth" 
@@ -78,18 +90,6 @@ function Home() {
                 onClick={() => setShowDrivers(true)}
             />
 
-            {orderSent && (
-                <div style={{
-                    background: "#e8f5e9",
-                    color: "#2e7d32",
-                    padding: "12px",
-                    borderRadius: "8px",
-                    textAlign: "center",
-                    margin: "10px"
-                }}>
-                    ✅ Rendelés elküldve! Kérlek várj.
-                </div>
-            )}
 
           {showDrivers && (
               <ActiveDriversList
