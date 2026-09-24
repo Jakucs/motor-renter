@@ -99,6 +99,21 @@ function Home() {
                 ✅ Rendelés elküldve! Kérlek várj.
             </div>
         )}
+
+        {orderSent && (
+              <div style={{
+                  background: orderStatus === "ACCEPTED" ? "#e8f5e9" : orderStatus === "REJECTED" ? "#ffebee" : "#fff8e1",
+                  color: orderStatus === "ACCEPTED" ? "#2e7d32" : orderStatus === "REJECTED" ? "#c62828" : "#f57f17",
+                  padding: "12px",
+                  borderRadius: "8px",
+                  textAlign: "center",
+                  margin: "10px"
+              }}>
+                  {orderStatus === "ACCEPTED" && "✅ A sofőr elfogadta a rendelést! Hamarosan megérkezik."}
+                  {orderStatus === "REJECTED" && "❌ A sofőr elutasította a rendelést. Kérlek próbálj másikat."}
+                  {!orderStatus || orderStatus === "PENDING" && "⏳ Rendelés elküldve! Kérlek várj."}
+              </div>
+          )}
             <input 
                 type="button" 
                 className="fadeIn fourth" 
