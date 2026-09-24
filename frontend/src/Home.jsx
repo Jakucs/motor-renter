@@ -23,7 +23,21 @@ function Home() {
       navigate("/");
   };
 
-
+  useEffect(() => {
+      authFetch(`http://localhost:8080/api/orders/my-active-order`)
+          .then(res => res.ok ? res.json() : null)
+          .then(order => {
+              if (order) {
+                  setOrderId(order.id);
+                  setOrderStatus(order.status);
+                  setOrderSent(true);
+                  if (order.status === "ACCEPTED") {
+                      setAcceptedDriverId(order.driver.id);
+                  }
+              }
+          })
+          .catch(err => console.error("Failed to load active order:", err));
+  }, []);
 
 useEffect(() => {
     if (!orderId) return;
