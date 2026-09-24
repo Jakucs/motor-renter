@@ -4,6 +4,7 @@ import { useState } from "react";
 import "./css/Home.css";
 import Menu from "./Menu";
 import ActiveDriversList from "./ActiveDriverList";
+import { authFetch } from "./utils/authFetch";
 
 function Home() {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ function Home() {
       localStorage.removeItem("role");
       navigate("/");
   };
+
+  
 
   return (
     <div className="wrapper">
@@ -74,15 +77,25 @@ function Home() {
                 onClick={() => setShowDrivers(true)}
             />
 
-            {showDrivers && (
-                <ActiveDriversList
-                    onClose={() => setShowDrivers(false)}
-                    onSelect={(driver) => {
-                        console.log("kiválasztott sofőr:", driver);
-                        setShowDrivers(false);
-                    }}
-                />
-            )}
+          {showDrivers && (
+              <ActiveDriversList
+                  onClose={() => setShowDrivers(false)}
+                  onSelect={async (driver) => {
+                      const passengerId = localStorage.getItem("userId");
+                      
+                      await authFetch("http://localhost:8080/api/orders", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                              passengerId: parseInt(passengerId),
+                              driverId: driver.userId
+                          })
+                      });
+
+                      setShowDrivers(false);
+                  }}
+              />
+          )}
 
       </div>
     </div>
