@@ -1,3 +1,6 @@
 Heartbeat/TTL
 milyen egyéb ötletekkel lehetne fejleszteni az alkalmazást?
 adminfelület
+
+Ha a VehicleProfile oldalon még nincs kitöltve adat, de feltöltöm a képet, akkor a Előbb mentsd el a jármű adatait, majd töltsd fel a képet! hibaüzenetet látom.
+Ha már nem érvéyes a token, a frontend akkor sem jelentkeztet ki.

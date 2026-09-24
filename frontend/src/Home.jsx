@@ -10,6 +10,7 @@ function Home() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [showDrivers, setShowDrivers] = useState(false);
+  const [orderSent, setOrderSent] = useState(false);
 
     const handleLogout = () => {
       localStorage.removeItem("token");
@@ -77,6 +78,19 @@ function Home() {
                 onClick={() => setShowDrivers(true)}
             />
 
+            {orderSent && (
+                <div style={{
+                    background: "#e8f5e9",
+                    color: "#2e7d32",
+                    padding: "12px",
+                    borderRadius: "8px",
+                    textAlign: "center",
+                    margin: "10px"
+                }}>
+                    ✅ Rendelés elküldve! Kérlek várj.
+                </div>
+            )}
+
           {showDrivers && (
               <ActiveDriversList
                   onClose={() => setShowDrivers(false)}
@@ -93,6 +107,7 @@ function Home() {
                       });
 
                       setShowDrivers(false);
+                      setOrderSent(true);
                   }}
               />
           )}
