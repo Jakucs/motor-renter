@@ -13,6 +13,8 @@ function Home() {
   const [orderSent, setOrderSent] = useState(false);
   const [orderId, setOrderId] = useState(null);
   const [orderStatus, setOrderStatus] = useState(null);
+  const [acceptedDriverId, setAcceptedDriverId] = useState(null);
+  const [currentOrderId, setCurrentOrderId] = useState(null);
 
     const handleLogout = () => {
       localStorage.removeItem("token");
@@ -22,20 +24,46 @@ function Home() {
   };
 
   useEffect(() => {
+    console.log("acceptedDriverId changed:", acceptedDriverId);
+}, [acceptedDriverId]);
+
+useEffect(() => {
     if (!orderId) return;
 
     const interval = setInterval(async () => {
         const res = await authFetch(`http://localhost:8080/api/orders/${orderId}`);
         const order = await res.json();
+        console.log("polled order:", order);  // ideiglenes log, teszteléshez
         setOrderStatus(order.status);
 
-        if (order.status === "ACCEPTED" || order.status === "REJECTED") {
+        if (order.status === "ACCEPTED") {
+            setAcceptedDriverId(order.driver.id);
+            clearInterval(interval);
+        }
+
+        if (order.status === "REJECTED") {
             clearInterval(interval);
         }
     }, 3000);
 
     return () => clearInterval(interval);
 }, [orderId]);
+
+  useEffect(() => {
+        if (!orderId) return;
+
+        const interval = setInterval(async () => {
+            const res = await authFetch(`http://localhost:8080/api/orders/${orderId}`);
+            const order = await res.json();
+            setOrderStatus(order.status);
+
+            if (order.status === "ACCEPTED" || order.status === "REJECTED") {
+                clearInterval(interval);
+            }
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [orderId]);
 
   return (
     <div className="wrapper">
@@ -84,7 +112,7 @@ function Home() {
           />
         </div>
 
-        <Map />
+        <Map acceptedDriverId={acceptedDriverId} />
         <br />
 
         {orderSent && (

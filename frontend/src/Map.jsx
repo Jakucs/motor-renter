@@ -12,7 +12,7 @@ const mapContainerStyle = {
   lng: 19.0402
 }; */
 
-function Map() {
+function Map({ acceptedDriverId }) {
    const [center, setCenter] = useState(null);
    const [activeDrivers, setActiveDrivers] = useState([]);
 
@@ -122,9 +122,11 @@ return center ? (
                     key={`${driver.userId}-${driver.lat}-${driver.lng}`}
                     position={{ lat: driver.lat, lng: driver.lng }}
                     icon={{
-                        url: "/moto-marker.png",
-                        scaledSize: new window.google.maps.Size(36, 36)
-                    }}
+                            url: String(driver.userId) === String(acceptedDriverId)
+                                ? "/moto-marker2.png"
+                                : "/moto-marker.png",
+                            scaledSize: new window.google.maps.Size(36, 36)
+                        }}
                 />
             ))}
     </GoogleMap>
