@@ -48,53 +48,69 @@ function PendingOrders({ role }) {
         setPendingOrder(null);
     };
 
-    return (
-        <div style={{
-            position: "fixed",
-            top: 0, left: 0, right: 0, bottom: 0,
-            background: "rgba(0,0,0,0.5)",
-            zIndex: 2000,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-        }}>
+        return (
             <div style={{
-                background: "white",
-                borderRadius: "16px",
-                padding: "30px",
-                width: "90%",
-                maxWidth: "400px",
-                textAlign: "center"
+                position: "fixed",
+                top: 0, left: 0, right: 0, bottom: 0,
+                background: "rgba(0,0,0,0.5)",
+                zIndex: 2000,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
             }}>
-                <h3>🔔 Új rendelés érkezett!</h3>
-                <p style={{ color: "#555" }}>
-                    <strong>{pendingOrder.passenger.firstName} {pendingOrder.passenger.lastName}</strong> fuvart rendelt.
-                </p>
-                <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
-                    <button
-                        onClick={handleAccept}
-                        style={{
-                            flex: 1, padding: "12px",
-                            background: "#2e7d32", color: "white",
-                            border: "none", borderRadius: "8px", cursor: "pointer"
-                        }}
-                    >
-                        ✅ Elfogad
-                    </button>
-                    <button
-                        onClick={handleReject}
-                        style={{
-                            flex: 1, padding: "12px",
-                            background: "#e74c3c", color: "white",
-                            border: "none", borderRadius: "8px", cursor: "pointer"
-                        }}
-                    >
-                        ❌ Elutasít
-                    </button>
+                <div style={{
+                    background: "white",
+                    borderRadius: "16px",
+                    padding: "30px",
+                    width: "90%",
+                    maxWidth: "400px",
+                    textAlign: "center"
+                }}>
+                    <img
+                        src={pendingOrder.passenger.profilePictureUrl 
+                            ? `http://localhost:8080${pendingOrder.passenger.profilePictureUrl}` 
+                            : "/default-avatar.png"}
+                        alt="profil"
+                        style={{ width: "80px", height: "80px", borderRadius: "50%", objectFit: "cover", marginBottom: "10px" }}
+                    />
+                    <h3>🔔 Új rendelés érkezett!</h3>
+                    <p style={{ color: "#555" }}>
+                        <strong>{pendingOrder.passenger.firstName} {pendingOrder.passenger.lastName}</strong> fuvart rendelt.
+                    </p>
+                    <div style={{ marginTop: "10px", fontSize: "14px", color: "#555" }}>
+                        {pendingOrder.passenger.hasHelmet 
+                            ? "✅ Van bukósisakja" 
+                            : "❌ Nincs bukósisakja"}
+                        <br />
+                        {pendingOrder.passenger.hasProtectiveGear 
+                            ? "✅ Van protektoros ruhája" 
+                            : "❌ Nincs protektoros ruhája"}
+                    </div>
+                    <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+                        <button
+                            onClick={handleAccept}
+                            style={{
+                                flex: 1, padding: "12px",
+                                background: "#2e7d32", color: "white",
+                                border: "none", borderRadius: "8px", cursor: "pointer"
+                            }}
+                        >
+                            ✅ Elfogad
+                        </button>
+                        <button
+                            onClick={handleReject}
+                            style={{
+                                flex: 1, padding: "12px",
+                                background: "#e74c3c", color: "white",
+                                border: "none", borderRadius: "8px", cursor: "pointer"
+                            }}
+                        >
+                            ❌ Elutasít
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        );
 }
 
 export default PendingOrders;

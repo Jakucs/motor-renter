@@ -1,6 +1,6 @@
 import Map from "./Map";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./css/Home.css";
 import Menu from "./Menu";
 import ActiveDriversList from "./ActiveDriverList";
@@ -86,19 +86,6 @@ function Home() {
 
         <Map />
         <br />
-
-        {orderSent && (
-            <div style={{
-                background: "#e8f5e9",
-                color: "#2e7d32",
-                padding: "12px",
-                borderRadius: "8px",
-                textAlign: "center",
-                margin: "10px"
-            }}>
-                ✅ Rendelés elküldve! Kérlek várj.
-            </div>
-        )}
 
         {orderSent && (
               <div style={{
