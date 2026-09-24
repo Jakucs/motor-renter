@@ -4,6 +4,8 @@ import com.motorenter.motorenter.dto.OrderDTO;
 import com.motorenter.motorenter.model.Order;
 import com.motorenter.motorenter.model.OrderStatus;
 import com.motorenter.motorenter.service.OrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +16,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
-
     private final OrderService orderService;
 
     public OrderController(OrderService orderService) {
@@ -44,7 +45,7 @@ public class OrderController {
         return orderService.getOrderById(id);
     }
 
-    @GetMapping("/orders/my-active-order")
+    @GetMapping("/my-active-order")
     public OrderDTO getMyActiveOrder(@AuthenticationPrincipal Integer userId) {
         return orderService.getActiveOrderForPassenger(userId); // null vagy a legutóbbi PENDING/ACCEPTED rendelés
     }

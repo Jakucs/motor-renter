@@ -24,9 +24,31 @@ function Home() {
   };
 
   useEffect(() => {
+    authFetch(`http://localhost:8080/api/orders/my-active-order`)
+        .then(async res => {
+            const text = await res.text();
+            console.log("my-active-order status:", res.status, "body:", text);
+            if (!res.ok || !text) return null;
+            return JSON.parse(text);
+        })
+        .then(order => {
+            if (order) {
+                setOrderId(order.id);
+                setOrderStatus(order.status);
+                setOrderSent(true);
+                if (order.status === "ACCEPTED" && order.driver) {
+                    setAcceptedDriverId(order.driver.id);
+                }
+            }
+        })
+        .catch(err => console.error("Failed to load active order:", err));
+}, []);
+
+/*   useEffect(() => {
       authFetch(`http://localhost:8080/api/orders/my-active-order`)
           .then(res => res.ok ? res.json() : null)
           .then(order => {
+            console.log("my-active-order response:", order);
               if (order) {
                   setOrderId(order.id);
                   setOrderStatus(order.status);
@@ -37,7 +59,7 @@ function Home() {
               }
           })
           .catch(err => console.error("Failed to load active order:", err));
-  }, []);
+  }, []); */
 
 useEffect(() => {
     if (!orderId) return;
@@ -60,22 +82,6 @@ useEffect(() => {
 
     return () => clearInterval(interval);
 }, [orderId]);
-
-  useEffect(() => {
-        if (!orderId) return;
-
-        const interval = setInterval(async () => {
-            const res = await authFetch(`http://localhost:8080/api/orders/${orderId}`);
-            const order = await res.json();
-            setOrderStatus(order.status);
-
-            if (order.status === "ACCEPTED" || order.status === "REJECTED") {
-                clearInterval(interval);
-            }
-        }, 3000);
-
-        return () => clearInterval(interval);
-    }, [orderId]);
 
   return (
     <div className="wrapper">
