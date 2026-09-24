@@ -3,6 +3,7 @@ package com.motorenter.motorenter.controller;
 import com.motorenter.motorenter.model.Order;
 import com.motorenter.motorenter.model.OrderStatus;
 import com.motorenter.motorenter.service.OrderService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,5 +41,10 @@ public class OrderController {
     @GetMapping("/{id}")
     public Order getOrder(@PathVariable int id) {
         return orderService.getOrderById(id);
+    }
+
+    @GetMapping("/orders/my-active-order")
+    public OrderDTO getMyActiveOrder(@AuthenticationPrincipal Integer userId) {
+        return orderService.getActiveOrderForPassenger(userId); // null vagy a legutóbbi PENDING/ACCEPTED rendelés
     }
 }
