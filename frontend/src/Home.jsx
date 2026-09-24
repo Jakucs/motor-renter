@@ -11,6 +11,8 @@ function Home() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [showDrivers, setShowDrivers] = useState(false);
   const [orderSent, setOrderSent] = useState(false);
+  const [orderId, setOrderId] = useState(null);
+  const [orderStatus, setOrderStatus] = useState(null);
 
     const handleLogout = () => {
       localStorage.removeItem("token");
@@ -19,7 +21,21 @@ function Home() {
       navigate("/");
   };
 
-  
+  useEffect(() => {
+    if (!orderId) return;
+
+    const interval = setInterval(async () => {
+        const res = await authFetch(`http://localhost:8080/api/orders/${orderId}`);
+        const order = await res.json();
+        setOrderStatus(order.status);
+
+        if (order.status === "ACCEPTED" || order.status === "REJECTED") {
+            clearInterval(interval);
+        }
+    }, 3000);
+
+    return () => clearInterval(interval);
+}, [orderId]);
 
   return (
     <div className="wrapper">
@@ -97,7 +113,7 @@ function Home() {
                   onSelect={async (driver) => {
                       const passengerId = localStorage.getItem("userId");
                       
-                      await authFetch("http://localhost:8080/api/orders", {
+                      const res = await authFetch("http://localhost:8080/api/orders", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
                           body: JSON.stringify({
@@ -105,9 +121,10 @@ function Home() {
                               driverId: driver.userId
                           })
                       });
-
-                      setShowDrivers(false);
+                      const order = await res.json();
+                      setOrderId(order.id);
                       setOrderSent(true);
+                      setShowDrivers(false);
                   }}
               />
           )}
