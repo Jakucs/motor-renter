@@ -36,4 +36,9 @@ public class OrderController {
         OrderStatus status = OrderStatus.valueOf(body.get("status"));
         return orderService.updateOrderStatus(orderId, status);
     }
+
+    @GetMapping("/{id}")
+    public Order getOrder(@PathVariable int id) {
+        return orderService.getOrderById(id);
+    }
 }
