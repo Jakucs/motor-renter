@@ -77,6 +77,19 @@ function PendingOrders({ role }) {
                     <p style={{ color: "#555" }}>
                         <strong>{pendingOrder.passenger.firstName} {pendingOrder.passenger.lastName}</strong> fuvart rendelt.
                     </p>
+
+                    {pendingOrder.passengerAddress && (
+                        <p style={{ color: "#555", fontSize: "14px" }}>
+                            📍 {pendingOrder.passengerAddress}
+                        </p>
+                    )}
+
+                    {pendingOrder.passengerLat && pendingOrder.passengerLng && driverLat && driverLng && (
+                        <p style={{ color: "#555", fontSize: "14px" }}>
+                            📏 {calculateDistance(driverLat, driverLng, pendingOrder.passengerLat, pendingOrder.passengerLng).toFixed(1)} km
+                        </p>
+                    )}
+
                     <div style={{ marginTop: "10px", fontSize: "14px", color: "#555" }}>
                         {pendingOrder.passenger.hasHelmet 
                             ? "✅ Van bukósisakja" 

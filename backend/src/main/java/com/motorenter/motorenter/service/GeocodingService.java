@@ -17,6 +17,7 @@ public class GeocodingService {
 
     public String getAddressFromCoordinates(double lat, double lng) {
         String url = String.format(
+                java.util.Locale.US,  // EZ AZ ÚJ RÉSZ
                 "https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&key=%s",
                 lat, lng, apiKey
         );

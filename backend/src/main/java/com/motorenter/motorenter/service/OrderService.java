@@ -16,10 +16,12 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+    private final GeocodingService geocodingService;
 
-    public OrderService(OrderRepository orderRepository, UserRepository userRepository) {
+    public OrderService(OrderRepository orderRepository, UserRepository userRepository, GeocodingService geocodingService) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
+        this.geocodingService = geocodingService;
     }
 
     public Order createOrder(int passengerId, int driverId, Double lat, Double lng) {
@@ -31,6 +33,11 @@ public class OrderService {
         Order order = new Order(passenger, driver);
         order.setPassengerLat(lat);
         order.setPassengerLng(lng);
+
+        if (lat != null && lng != null) {
+            String address = geocodingService.getAddressFromCoordinates(lat, lng);
+            order.setPassengerAddress(address);
+        }
         return orderRepository.save(order);
     }
 
