@@ -1,28 +1,51 @@
 import { useState, useEffect } from "react";
 import { authFetch } from "./utils/authFetch";
 
+    function calculateDistance(lat1, lng1, lat2, lng2) {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLng = (lng2 - lng1) * (Math.PI / 180);
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+            Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+
 function PendingOrders({ role }) {
     const [pendingOrder, setPendingOrder] = useState(null);
+    const [driverLocation, setDriverLocation] = useState({ lat: null, lng: null });
 
     useEffect(() => {
         if (role !== "DRIVER") return;
 
-        const userId = localStorage.getItem("userId");
+        authFetch(`http://localhost:8080/api/profile`)
+            .then(res => res.json())
+            .then(user => {
+                setDriverLocation({ lat: user.lat, lng: user.lng });
+            })
+            .catch(err => console.error("Driver location fetch failed:", err));
+    }, [role]);
 
-        const checkOrders = async () => {
-            try {
-                const res = await authFetch(`http://localhost:8080/api/orders/driver/${userId}/pending`);
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.length > 0) {
-                        setPendingOrder(data[0]);
-                    }
+    const userId = localStorage.getItem("userId");
+
+    const checkOrders = async () => {
+        try {
+            const res = await authFetch(`http://localhost:8080/api/orders/driver/${userId}/pending`);
+            if (res.ok) {
+                const data = await res.json();
+                if (data.length > 0) {
+                    setPendingOrder(data[0]);
                 }
-            } catch (err) {
-                console.error("Order check failed:", err);
             }
-        };
+        } catch (err) {
+            console.error("Order check failed:", err);
+        }
+    };
 
+    useEffect(() => {
+        if (role !== "DRIVER") return;
         checkOrders();
         const interval = setInterval(checkOrders, 3000);
         return () => clearInterval(interval);
@@ -47,6 +70,9 @@ function PendingOrders({ role }) {
         });
         setPendingOrder(null);
     };
+
+    console.log("driverLocation:", driverLocation);
+    console.log("pendingOrder lat/lng:", pendingOrder?.passengerLat, pendingOrder?.passengerLng);
 
         return (
             <div style={{
@@ -84,9 +110,9 @@ function PendingOrders({ role }) {
                         </p>
                     )}
 
-                    {pendingOrder.passengerLat && pendingOrder.passengerLng && driverLat && driverLng && (
+                    {pendingOrder.passengerLat && pendingOrder.passengerLng && driverLocation.lat && driverLocation.lng && (
                         <p style={{ color: "#555", fontSize: "14px" }}>
-                            📏 {calculateDistance(driverLat, driverLng, pendingOrder.passengerLat, pendingOrder.passengerLng).toFixed(1)} km
+                            📏 {calculateDistance(driverLocation.lat, driverLocation.lng, pendingOrder.passengerLat, pendingOrder.passengerLng).toFixed(1)} km
                         </p>
                     )}
 

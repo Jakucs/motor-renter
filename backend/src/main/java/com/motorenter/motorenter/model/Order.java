@@ -50,14 +50,14 @@ public class Order {
     public void setStatus(OrderStatus status) { this.status = status; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
+    public Double getPassengerLat() { return passengerLat; }
+    public void setPassengerLat(Double passengerLat) { this.passengerLat = passengerLat; }
+
+    public Double getPassengerLng() { return passengerLng; }
+    public void setPassengerLng(Double passengerLng) { this.passengerLng = passengerLng; }
+
     public String getPassengerAddress() { return passengerAddress; }
     public void setPassengerAddress(String passengerAddress) { this.passengerAddress = passengerAddress; }
 
-    public void setPassengerLat(Double passengerLat) {
-        this.passengerLat = passengerLat;
-    }
 
-    public void setPassengerLng(Double passengerLng) {
-        this.passengerLng = passengerLng;
-    }
 }
