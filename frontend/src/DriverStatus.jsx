@@ -80,7 +80,7 @@ function DriverStatus() {
 
         try {
             const response = await authFetch(
-                `http://localhost:8080/api/profile/active`,
+                `http://localhost:8080/api/profile/${localStorage.getItem("userId")}/active`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
