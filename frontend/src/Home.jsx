@@ -156,25 +156,26 @@ useEffect(() => {
 
 
           {showDrivers && (
-              <ActiveDriversList
-                  onClose={() => setShowDrivers(false)}
-                  onSelect={async (driver) => {
-                      const passengerId = localStorage.getItem("userId");
-                      
+          <ActiveDriversList
+              onClose={() => setShowDrivers(false)}
+              onSelect={(driver) => {
+                  navigator.geolocation.getCurrentPosition(async (position) => {
                       const res = await authFetch("http://localhost:8080/api/orders", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
                           body: JSON.stringify({
-                              passengerId: parseInt(passengerId),
-                              driverId: driver.userId
+                              driverId: driver.userId,
+                              lat: position.coords.latitude,
+                              lng: position.coords.longitude
                           })
                       });
                       const order = await res.json();
                       setOrderId(order.id);
                       setOrderSent(true);
                       setShowDrivers(false);
-                  }}
-              />
+                  });
+              }}
+          />
           )}
 
       </div>

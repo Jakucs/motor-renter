@@ -1,5 +1,6 @@
 package com.motorenter.motorenter.controller;
 
+import com.motorenter.motorenter.dto.CreateOrderRequest;
 import com.motorenter.motorenter.dto.OrderDTO;
 import com.motorenter.motorenter.model.Order;
 import com.motorenter.motorenter.model.OrderStatus;
@@ -23,10 +24,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody Map<String, Integer> body) {
-        int passengerId = body.get("passengerId");
-        int driverId = body.get("driverId");
-        return orderService.createOrder(passengerId, driverId);
+    public Order createOrder(@AuthenticationPrincipal Integer passengerId, @RequestBody CreateOrderRequest request) {
+        return orderService.createOrder(passengerId, request.getDriverId(), request.getLat(), request.getLng());
     }
 
     @GetMapping("/driver/{driverId}/pending")

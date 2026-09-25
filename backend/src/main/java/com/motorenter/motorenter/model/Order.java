@@ -23,6 +23,11 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    private Double passengerLat;
+    private Double passengerLng;
+
+    private String passengerAddress;
+
     private LocalDateTime createdAt;
 
     public Order() {}
@@ -44,4 +49,12 @@ public class Order {
     public void setDriver(User driver) { this.driver = driver; }
     public void setStatus(OrderStatus status) { this.status = status; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public void setPassengerLat(Double passengerLat) {
+        this.passengerLat = passengerLat;
+    }
+
+    public void setPassengerLng(Double passengerLng) {
+        this.passengerLng = passengerLng;
+    }
 }

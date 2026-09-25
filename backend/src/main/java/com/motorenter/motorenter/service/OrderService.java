@@ -22,13 +22,15 @@ public class OrderService {
         this.userRepository = userRepository;
     }
 
-    public Order createOrder(int passengerId, int driverId) {
+    public Order createOrder(int passengerId, int driverId, Double lat, Double lng) {
         User passenger = userRepository.findById(passengerId)
                 .orElseThrow(() -> new RuntimeException("Passenger not found"));
         User driver = userRepository.findById(driverId)
                 .orElseThrow(() -> new RuntimeException("Driver not found"));
 
         Order order = new Order(passenger, driver);
+        order.setPassengerLat(lat);
+        order.setPassengerLng(lng);
         return orderRepository.save(order);
     }
 
