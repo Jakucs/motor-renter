@@ -13,7 +13,7 @@ import { authFetch } from "./utils/authFetch";
         return R * c;
     }
 
-function PendingOrders({ role }) {
+function PendingOrders({ role, onOrderAccepted  }) {
     const [pendingOrder, setPendingOrder] = useState(null);
     const [driverLocation, setDriverLocation] = useState({ lat: null, lng: null });
 
@@ -54,12 +54,17 @@ function PendingOrders({ role }) {
     if (!pendingOrder) return null;
 
     const handleAccept = async () => {
-        await authFetch(`http://localhost:8080/api/orders/${pendingOrder.id}/status`, {
+        const res = await authFetch(`http://localhost:8080/api/orders/${pendingOrder.id}/status`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ status: "ACCEPTED" })
         });
-        setPendingOrder(null);
+        if (res.ok) {
+            const updatedOrder = await res.json();
+            console.log("updatedOrder:", updatedOrder);
+            onOrderAccepted(updatedOrder);
+            setPendingOrder(null);
+        }
     };
 
     const handleReject = async () => {

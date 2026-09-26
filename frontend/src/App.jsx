@@ -21,47 +21,59 @@ import ChangePassword from "./ChangePassword";
 import AdminRoute from "./AdminRoute";
 import AdminUsers from "./AdminUsers";
 import PendingOrders from "./PendingOrders";
+import ActiveRide from "./ActiveRide";
 
 function App() {
     const [role, setRole] = useState("");
     const [isActive, setIsActive] = useState(false);
+    const [activeOrder, setActiveOrder] = useState(null);
+    console.log("activeOrder:", activeOrder);
 
-  useEffect(() => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) return;
 
-      authFetch(`http://localhost:8080/api/profile`)
-        .then(res => res.json())
-        .then(user => {
-          setRole(user.role ?? "");
-          setIsActive(user.isActive ?? false);
-        });
-  }, []);
+        authFetch(`http://localhost:8080/api/profile`)
+            .then(res => res.json())
+            .then(user => {
+                setRole(user.role ?? "");
+                setIsActive(user.isActive ?? false);
+            });
+    }, []);
 
-  return (
-    <>
-    <LocationTracker role={role} isActive={isActive} />
-    <PendingOrders role={role} />
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/successfulregister" element={<SuccessfulRegister/>}/>
-      <Route path="/home" element={<ProtectedRoute><Home/></ProtectedRoute>}/>
-      <Route path="/settings/profile" element={<ProtectedRoute><PersonalProfile/></ProtectedRoute>}/>
-      <Route path="/successful-save" element={<ProtectedRoute><Successful /></ProtectedRoute>}/>
-      <Route path="/settings/vehicle" element={<ProtectedRoute><Vehicles /></ProtectedRoute>}/>
-      <Route path="/settings/vehicle/new" element={<ProtectedRoute><VehicleData /></ProtectedRoute>}/>
-      <Route path="/settings/vehicle/:id" element={<ProtectedRoute><VehicleData /></ProtectedRoute>}/>
-      <Route path="/no-vehicle" element={<ProtectedRoute><NoVehicle /></ProtectedRoute>}/>
-      <Route path="/settings/riding-gear" element={<ProtectedRoute><RidingGear /></ProtectedRoute>}/>
-      <Route path="/settings/driver-status" element={<ProtectedRoute><DriverStatus /></ProtectedRoute>} />
-      <Route path="/settings/change-password" element={<ProtectedRoute><ChangePassword/></ProtectedRoute>}/>
-      <Route path="/no-phone-number" element={<NoPhoneNumber />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/admin/users" element={<AdminRoute><AdminUsers/></AdminRoute>}/>
-    </Routes>
-    </>
-  );
+    return (
+        <>
+            <LocationTracker role={role} isActive={isActive} />
+            <PendingOrders
+                role={role}
+                onOrderAccepted={(order) => setActiveOrder(order)}
+            />
+            {activeOrder && (
+                <ActiveRide
+                    order={activeOrder}
+                    onComplete={() => setActiveOrder(null)}
+                />
+            )}
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/successfulregister" element={<SuccessfulRegister/>}/>
+                <Route path="/home" element={<ProtectedRoute><Home/></ProtectedRoute>}/>
+                <Route path="/settings/profile" element={<ProtectedRoute><PersonalProfile/></ProtectedRoute>}/>
+                <Route path="/successful-save" element={<ProtectedRoute><Successful /></ProtectedRoute>}/>
+                <Route path="/settings/vehicle" element={<ProtectedRoute><Vehicles /></ProtectedRoute>}/>
+                <Route path="/settings/vehicle/new" element={<ProtectedRoute><VehicleData /></ProtectedRoute>}/>
+                <Route path="/settings/vehicle/:id" element={<ProtectedRoute><VehicleData /></ProtectedRoute>}/>
+                <Route path="/no-vehicle" element={<ProtectedRoute><NoVehicle /></ProtectedRoute>}/>
+                <Route path="/settings/riding-gear" element={<ProtectedRoute><RidingGear /></ProtectedRoute>}/>
+                <Route path="/settings/driver-status" element={<ProtectedRoute><DriverStatus /></ProtectedRoute>} />
+                <Route path="/settings/change-password" element={<ProtectedRoute><ChangePassword/></ProtectedRoute>}/>
+                <Route path="/no-phone-number" element={<NoPhoneNumber />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/admin/users" element={<AdminRoute><AdminUsers/></AdminRoute>}/>
+            </Routes>
+        </>
+    );
 }
 
 export default App;
